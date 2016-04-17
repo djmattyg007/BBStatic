@@ -1,0 +1,14 @@
+#!/usr/bin/php
+<?php
+declare(strict_types=1);
+
+require(dirname(__DIR__) . "/vendor/autoload.php");
+
+use MattyG\BBStatic\Cli;
+use Symfony\Component\Console\Application;
+
+$app = new Application("BBStatic", \MattyG\BBStatic\BBStatic::VERSION);
+$cliInit = new Cli\Init();
+$cliInit->addCommands($app);
+
+$app->run();

@@ -1,0 +1,25 @@
+{
+    "name": "mattyg/bbstatic",
+    "description": "Static site generator powered by BBCode",
+    "keywords": ["static site generator", "static site", "bbcode"],
+    "license": "Unlicense",
+    "authors": [
+        {
+            "name": "Matthew Gamble",
+            "email": "git@matthewgamble.net"
+        }
+    ],
+    "require": {
+        "php": "~7.0.0",
+        "thunderer/shortcode": "0.6.1",
+        "symfony/console": "3.0.4"
+    },
+    "autoload": {
+        "files": [
+            "src/constants.php"
+        ],
+        "psr-4": {
+            "MattyG\\BBStatic\\": "src/"
+        }
+    }
+}
