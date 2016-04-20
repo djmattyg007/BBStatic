@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c4eb7e0b154e96b8051e606ecb3bbc7a",
-    "content-hash": "ff39a7085a270b554454a0873506f44f",
+    "hash": "71e972680d12f764449759129f0bc286",
+    "content-hash": "5c17161fd7f3017b53a1fcf46e6fceaa",
     "packages": [
         {
             "name": "symfony/console",
@@ -127,62 +127,55 @@
             "time": "2016-01-20 09:13:37"
         },
         {
-            "name": "thunderer/shortcode",
-            "version": "v0.6.1",
+            "name": "vanilla/nbbc",
+            "version": "dev-custom-djmattyg",
             "source": {
                 "type": "git",
-                "url": "https://github.com/thunderer/Shortcode.git",
-                "reference": "d1bfba438ffc65c6beae323e73859134b766cd05"
+                "url": "https://github.com/djmattyg007/nbbc.git",
+                "reference": "4eafa02ef8a140f81ec9df24fffcb5303ca18199"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thunderer/Shortcode/zipball/d1bfba438ffc65c6beae323e73859134b766cd05",
-                "reference": "d1bfba438ffc65c6beae323e73859134b766cd05",
+                "url": "https://api.github.com/repos/djmattyg007/nbbc/zipball/4eafa02ef8a140f81ec9df24fffcb5303ca18199",
+                "reference": "4eafa02ef8a140f81ec9df24fffcb5303ca18199",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.1|^5.0"
-            },
-            "suggest": {
-                "ext-dom": "if you want to use XML serializer",
-                "ext-json": "if you want to use JSON serializer",
-                "symfony/yaml": "if you want to use YAML serializer"
+                "php": ">=5.4.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Thunder\\Shortcode\\": "src/",
-                    "Thunder\\Shortcode\\Tests\\": "tests/"
+                    "Nbbc\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Nbbc\\Tests\\": "tests"
+                }
+            },
             "license": [
-                "MIT"
+                "BSDv2"
             ],
             "authors": [
                 {
-                    "name": "Tomasz Kowalczyk",
-                    "email": "tomasz@kowalczyk.cc"
+                    "name": "Todd Burry",
+                    "email": "todd@vanillaforums.com"
                 }
             ],
-            "description": "Advanced shortcode (BBCode) parser and engine for PHP",
-            "keywords": [
-                "bbcode",
-                "engine",
-                "library",
-                "parser",
-                "shortcode"
-            ],
-            "time": "2016-02-25 12:49:16"
+            "description": "A composer-compatible fork of the NBBC BBCode parsing library.",
+            "support": {
+                "source": "https://github.com/djmattyg007/nbbc/tree/custom-djmattyg"
+            },
+            "time": "2016-04-20 09:27:22"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "vanilla/nbbc": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

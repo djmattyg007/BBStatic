@@ -3,19 +3,19 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic;
 
-use Thunder\Shortcode\Processor\Processor;
+use Nbbc\BBCode;
 
 class FileBuilder
 {
     /**
-     * @var Processor
+     * @var BBCode
      */
     private $processor;
 
     /**
-     * @param Processor $processor
+     * @param BBCode $processor
      */
-    public function __construct(Processor $processor)
+    public function __construct(BBCode $processor)
     {
         $this->processor = $processor;
     }
@@ -26,6 +26,6 @@ class FileBuilder
      */
     public function build(string $content): string
     {
-        return $this->processor->process($content);
+        return $this->processor->parse($content);
     }
 }

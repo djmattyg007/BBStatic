@@ -3,15 +3,14 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\BBCode;
 
-use Thunder\Shortcode\HandlerContainer\HandlerContainer;
-use Thunder\Shortcode\Processor\Processor;
-use Thunder\Shortcode\Parser\RegularParser;
+use MattyG\BBStatic\BBCode\Rule\ConfigurableCallableRuleInterface;
+use Nbbc\BBCode;
 
 /**
  * @param string $filename
- * @return callable
+ * @return array
  */
-function MattyGBBStaticInitHandler(string $filename): callable
+function MattyGBBStaticInitRequire(string $filename): array
 {
     return require($filename);
 }
@@ -21,40 +20,101 @@ class Init
     /**
      * @var string[]
      */
-    protected $handlerDirs = array();
+    protected $rulesDirs = array();
 
     /**
+     * @var string[]
+     */
+    protected $templateOverridesDirs = array();
+
+    /**
+     * @param string[]
+     */
+    protected $customRules = array();
+
+    /**
+     * @param string $rulesDir
      * @param string $handlersDir
      */
-    public function __construct(string $handlersDir = __DIR__ . "/handlers")
+    public function __construct(string $rulesDir = __DIR__ . "/rules", string $templateOverridesDir = __DIR__ . "/template_overrides")
     {
-        $this->addHandlersDir($handlersDir);
+        $this->addRulesDir($rulesDir);
+        $this->addTemplateOverridesDir($templateOverridesDir);
     }
 
     /**
-     * @param string $handlersDir
+     * @param string $rulesDir
      */
-    public function addHandlersDir(string $handlersDir)
+    public function addRulesDir(string $rulesDir)
     {
-        $this->handlersDirs[] = realpath($handlersDir);
-    }
-
-    public function init(): Processor
-    {
-        $handlerContainer = new HandlerContainer();
-        $this->initHandlers($handlerContainer);
-        return new Processor(new RegularParser(), $handlerContainer);
+        $this->rulesDirs[] = realpath($rulesDir);
     }
 
     /**
-     * @param HandlerContainer $handlerContainer
+     * @param string $templateOverridesDir
      */
-    protected function initHandlers(HandlerContainer $handlerContainer)
+    public function addTemplateOverridesDir(string $templateOverridesDir)
     {
-        foreach ($this->handlersDirs as $handlersDir) {
-            foreach (glob($handlersDir . "/*.php") as $handlerFile) {
-                $handlerName = pathinfo($handlerFile, PATHINFO_FILENAME);
-                $handlerContainer->add($handlerName, MattyGBBStaticInitHandler($handlerFile));
+        $this->templateOverridesDirs[] = realpath($templateOverridesDir);
+    }
+
+    public function init(): BBCode
+    {
+        $bbcode = new BBCode;
+        $this->initRules($bbcode);
+        $this->initTemplateOverrides($bbcode);
+        return $bbcode;
+    }
+
+    protected function initRules(BBCode $bbcode)
+    {
+        foreach ($this->rulesDirs as $rulesDir) {
+            foreach (glob($rulesDir . "/*.php") as $ruleFile) {
+                $ruleName = pathinfo($ruleFile, PATHINFO_FILENAME);
+                $this->customRules[] = $ruleName;
+                $rule = MattyGBBStaticInitRequire($ruleFile);
+                /*if (isset($rule["mode"]) && $rule["mode"] === BBCode::BBCODE_MODE_CALLBACK) {
+                    if ($rule["method"] instanceof ConfigurableCallableRuleInterface) {
+                        $rule["method"] = $this->wrapCallbackRule($rule["method"]);
+                    }
+                }*/
+                $bbcode->addRule($ruleName, $rule);
+            }
+        }
+    }
+
+    /**
+     * @param ConfigurableCallableRuleInterface $callback
+     * @return callable
+     */
+    protected function wrapCallbackRule(ConfigurableCallableRuleInterface $callback): callable
+    {
+        //
+    }
+
+    /**
+     * @param BBCode $bbcode
+     */
+    protected function initTemplateOverrides(BBCode $bbcode)
+    {
+        foreach ($this->templateOverridesDirs as $templateOverridesDir) {
+            foreach (glob($templateOverridesDir . "/*.php") as $templateOverrideFile) {
+                $ruleName = pathinfo($templateOverrideFile, PATHINFO_FILENAME);
+                $overrides = MattyGBBStaticInitRequire($templateOverrideFile);
+                foreach ($overrides as $key => $value) {
+                    $rule = $bbcode->getRule($ruleName);
+                    if ($key === "method_template") {
+                        $method = $value["method"];
+                        if (isset($rule["method"]) && $rule["method"] instanceof ConfigurableCallableRuleInterface) {
+                            $rule["method"]->$method($value["template"]);
+                        } else {
+                            $bbcode->$method($value["template"]);
+                        }
+                    } else {
+                        $rule[$key] = $value;
+                        $bbcode->addRule($key, $value);
+                    }
+                }
             }
         }
     }

@@ -11,9 +11,15 @@
     ],
     "require": {
         "php": "~7.0.0",
-        "thunderer/shortcode": "0.6.1",
+        "vanilla/nbbc": "dev-custom-djmattyg",
         "symfony/console": "3.0.4"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/djmattyg007/nbbc"
+        }
+    ],
     "autoload": {
         "files": [
             "src/constants.php"
