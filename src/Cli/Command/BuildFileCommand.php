@@ -39,12 +39,9 @@ class BuildFileCommand extends Command
             $outFilename = $inFilenameParts["dirname"] . "/" . $inFilenameParts["filename"] . ".html";
         }
 
-        $inFile = file_get_contents($inFilename);
         $bbCodeInit = new \MattyG\BBStatic\BBCode\Init();
         $builder = new \MattyG\BBStatic\FileBuilder($bbCodeInit->init());
-        $convertedContent = $builder->build($inFile);
-        echo $convertedContent . "\n";
-        file_put_contents($outFilename, $convertedContent);
+        $builder->buildAndOutput($inFilename, $outFilename);
 
         $output->writeln("In Filename: " . $inFilename);
         $output->writeln("Out Filename: " . $outFilename);
