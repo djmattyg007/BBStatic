@@ -23,7 +23,7 @@ class Init
     public function __construct(string $commandNamespace = __NAMESPACE__ . "\\Command", string $commandsDir = __DIR__ . "/Command")
     {
         $this->commandNamespace = $commandNamespace;
-        $this->commandsDir = realpath($commandsDir);
+        $this->commandsDir = $commandsDir;
     }
 
     /**
@@ -31,10 +31,14 @@ class Init
      */
     public function addCommands(SymfonyApplication $application)
     {
-        foreach (glob($this->commandsDir . "/*Command.php") as $commandFile) {
-            $classname = pathinfo($commandFile, PATHINFO_FILENAME);
+        $globber = new \FilesystemIterator($this->commandsDir);
+        foreach ($globber as $file) {
+            if (substr($file->getFilename(), -11) !== "Command.php") {
+                continue;
+            }
+            $classname = pathinfo($file->getFilename(), PATHINFO_FILENAME);
             $fqcn = $this->commandNamespace . "\\" . $classname;
-            $application->add(new $fqcn());
+            $application->add(new $fqcn);
         }
     }
 }
