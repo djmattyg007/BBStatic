@@ -6,7 +6,7 @@ namespace MattyG\BBStatic;
 use InvalidArgumentException;
 use Nbbc\BBCode;
 
-class FileBuilder
+final class FileBuilder
 {
     /**
      * @var BBCode

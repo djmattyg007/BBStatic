@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MattyG\BBStatic\Cli\Command;
+namespace MattyG\BBStatic\Cli\Command\Builder;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -10,6 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class BuildFileCommand extends Command
 {
+    use BuilderTrait;
+
     protected function configure()
     {
         $this->setName("build:file")
@@ -39,9 +41,7 @@ class BuildFileCommand extends Command
             $outFilename = $inFilenameParts["dirname"] . "/" . $inFilenameParts["filename"] . ".html";
         }
 
-        $bbCodeInit = new \MattyG\BBStatic\BBCode\Init();
-        $builder = new \MattyG\BBStatic\FileBuilder($bbCodeInit->init());
-        $builder->buildAndOutput($inFilename, $outFilename);
+        $this->getFileBuilder()->buildAndOutput($inFilename, $outFilename);
 
         $output->writeln("In Filename: " . $inFilename);
         $output->writeln("Out Filename: " . $outFilename);

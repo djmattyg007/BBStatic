@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\BBCode;
 
-use MattyG\BBStatic\BBCode\Rule\ConfigurableCallableRuleInterface;
 use Nbbc\BBCode;
+use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 /**
  * @param string $filename
@@ -15,22 +15,22 @@ function MattyGBBStaticInitRequire(string $filename): array
     return require($filename);
 }
 
-class Init
+final class Init
 {
     /**
      * @var string[]
      */
-    protected $rulesDirs = array();
+    private $rulesDirs = array();
 
     /**
      * @var string[]
      */
-    protected $templateOverridesDirs = array();
+    private $templateOverridesDirs = array();
 
     /**
-     * @param string[]
+     * @var SymfonyFinder
      */
-    protected $customRules = array();
+    private $finderProto;
 
     /**
      * @param string $rulesDir
@@ -40,6 +40,13 @@ class Init
     {
         $this->addRulesDir($rulesDir);
         $this->addTemplateOverridesDir($templateOverridesDir);
+
+        $this->finderProto = new SymfonyFinder();
+        $this->finderProto->files()
+            ->name("*.php")
+            ->ignoreVCS(true)
+            ->ignoreDotFiles(true)
+            ->followLinks();
     }
 
     /**
@@ -47,7 +54,7 @@ class Init
      */
     public function addRulesDir(string $rulesDir)
     {
-        $this->rulesDirs[] = realpath($rulesDir);
+        $this->rulesDirs[] = $rulesDir;
     }
 
     /**
@@ -55,9 +62,12 @@ class Init
      */
     public function addTemplateOverridesDir(string $templateOverridesDir)
     {
-        $this->templateOverridesDirs[] = realpath($templateOverridesDir);
+        $this->templateOverridesDirs[] = $templateOverridesDir;
     }
 
+    /**
+     * @return BBCode
+     */
     public function init(): BBCode
     {
         $bbcode = new BBCode;
@@ -69,27 +79,15 @@ class Init
     protected function initRules(BBCode $bbcode)
     {
         foreach ($this->rulesDirs as $rulesDir) {
-            foreach (glob($rulesDir . "/*.php") as $ruleFile) {
-                $ruleName = pathinfo($ruleFile, PATHINFO_FILENAME);
-                $this->customRules[] = $ruleName;
-                $rule = MattyGBBStaticInitRequire($ruleFile);
-                /*if (isset($rule["mode"]) && $rule["mode"] === BBCode::BBCODE_MODE_CALLBACK) {
-                    if ($rule["method"] instanceof ConfigurableCallableRuleInterface) {
-                        $rule["method"] = $this->wrapCallbackRule($rule["method"]);
-                    }
-                }*/
+            $globber = clone $this->finderProto;
+            $globber->in($rulesDir);
+            foreach ($globber as $ruleFile) {
+                $ruleFilename = $ruleFile->getRelativePathname();
+                $ruleName = pathinfo($ruleFilename, PATHINFO_FILENAME);
+                $rule = MattyGBBStaticInitRequire($rulesDir . "/" . $ruleFilename);
                 $bbcode->addRule($ruleName, $rule);
             }
         }
-    }
-
-    /**
-     * @param ConfigurableCallableRuleInterface $callback
-     * @return callable
-     */
-    protected function wrapCallbackRule(ConfigurableCallableRuleInterface $callback): callable
-    {
-        //
     }
 
     /**
@@ -98,9 +96,12 @@ class Init
     protected function initTemplateOverrides(BBCode $bbcode)
     {
         foreach ($this->templateOverridesDirs as $templateOverridesDir) {
-            foreach (glob($templateOverridesDir . "/*.php") as $templateOverrideFile) {
-                $ruleName = pathinfo($templateOverrideFile, PATHINFO_FILENAME);
-                $overrides = MattyGBBStaticInitRequire($templateOverrideFile);
+            $globber = clone $this->finderProto;
+            $globber->in($templateOverridesDir);
+            foreach ($globber as $templateOverrideFile) {
+                $templateOverrideFilename = $templateOverrideFile->getRelativePathname();
+                $ruleName = pathinfo($templateOverrideFilename, PATHINFO_FILENAME);
+                $overrides = MattyGBBStaticInitRequire($templateOverridesDir . "/" . $templateOverrideFilename);
                 foreach ($overrides as $key => $value) {
                     $rule = $bbcode->getRule($ruleName);
                     if ($key === "method_template") {

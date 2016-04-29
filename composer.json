@@ -12,7 +12,8 @@
     "require": {
         "php": "~7.0.0",
         "vanilla/nbbc": "dev-custom-djmattyg",
-        "symfony/console": "3.0.4"
+        "symfony/console": "3.0.4",
+        "symfony/finder": "3.0.4"
     },
     "repositories": [
         {

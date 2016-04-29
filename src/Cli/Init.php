@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Cli;
 
-use Symfony\Component\Console\Application as SymfonyApplication;
+use Symfony\Component\Console\Application as SymfonyCliApplication;
+use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 class Init
 {
@@ -27,16 +28,20 @@ class Init
     }
 
     /**
-     * @param SymfonyApplication $application
+     * @param SymfonyCliApplication
      */
-    public function addCommands(SymfonyApplication $application)
+    public function addCommands(SymfonyCliApplication $application)
     {
-        $globber = new \FilesystemIterator($this->commandsDir);
+        $globber = new SymfonyFinder();
+        $globber->files()
+            ->name("*Command.php")
+            ->in($this->commandsDir)
+            ->ignoreVCS(true)
+            ->ignoreDotFiles(true)
+            ->followLinks();
+        $extLen = strlen(".php");
         foreach ($globber as $file) {
-            if (substr($file->getFilename(), -11) !== "Command.php") {
-                continue;
-            }
-            $classname = pathinfo($file->getFilename(), PATHINFO_FILENAME);
+            $classname = str_replace("/", "\\", substr($file->getRelativePathname(), 0, -$extLen));
             $fqcn = $this->commandNamespace . "\\" . $classname;
             $application->add(new $fqcn);
         }
