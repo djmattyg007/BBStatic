@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "75ffaf3c38b0d9bbd844514262226cee",
-    "content-hash": "d5894dadca52361a1973d706277e4c1b",
+    "hash": "2328e813d530ac0d091588ef5d1101f1",
+    "content-hash": "cf9a449ee4e385b4fed1bb401ec4a360",
     "packages": [
         {
             "name": "symfony/console",
@@ -177,16 +177,16 @@
         },
         {
             "name": "vanilla/nbbc",
-            "version": "dev-custom-djmattyg",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/djmattyg007/nbbc.git",
-                "reference": "4eafa02ef8a140f81ec9df24fffcb5303ca18199"
+                "url": "https://github.com/vanilla/nbbc.git",
+                "reference": "ad4f7654b8950f190d326b8ffdcc3fa7d31a0b69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/djmattyg007/nbbc/zipball/4eafa02ef8a140f81ec9df24fffcb5303ca18199",
-                "reference": "4eafa02ef8a140f81ec9df24fffcb5303ca18199",
+                "url": "https://api.github.com/repos/vanilla/nbbc/zipball/ad4f7654b8950f190d326b8ffdcc3fa7d31a0b69",
+                "reference": "ad4f7654b8950f190d326b8ffdcc3fa7d31a0b69",
                 "shasum": ""
             },
             "require": {
@@ -198,11 +198,7 @@
                     "Nbbc\\": "src"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Nbbc\\Tests\\": "tests"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSDv2"
             ],
@@ -213,18 +209,13 @@
                 }
             ],
             "description": "A composer-compatible fork of the NBBC BBCode parsing library.",
-            "support": {
-                "source": "https://github.com/djmattyg007/nbbc/tree/custom-djmattyg"
-            },
-            "time": "2016-04-20 09:27:22"
+            "time": "2016-04-26 18:19:47"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "vanilla/nbbc": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

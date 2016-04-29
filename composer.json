@@ -11,16 +11,10 @@
     ],
     "require": {
         "php": "~7.0.0",
-        "vanilla/nbbc": "dev-custom-djmattyg",
+        "vanilla/nbbc": "2.2.0",
         "symfony/console": "3.0.4",
         "symfony/finder": "3.0.4"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/djmattyg007/nbbc"
-        }
-    ],
     "autoload": {
         "files": [
             "src/constants.php"
