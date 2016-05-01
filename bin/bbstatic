@@ -7,7 +7,6 @@ require(dirname(__DIR__) . "/vendor/autoload.php");
 use MattyG\BBStatic;
 use Webmozart\Console\ConsoleApplication;
 
-$config = new BBStatic\Util\Config(BBStatic\BBStatic::CONFIG_FILENAME);
 $di = (new BBStatic\DiConfig($config))->createContainer();
 $cliConfig = new BBStatic\Cli\Config();
 $cliConfig->setDiContainer($di);
