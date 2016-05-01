@@ -6,4 +6,6 @@ namespace MattyG\BBStatic;
 final class BBStatic
 {
     const VERSION = "0.1.0-dev";
+
+    const CONFIG_FILENAME = "bbstatic.json";
 }

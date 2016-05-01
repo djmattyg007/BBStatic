@@ -1,14 +1,18 @@
-#!/usr/bin/php
+#!/usr/bin/env php
 <?php
 declare(strict_types=1);
 
 require(dirname(__DIR__) . "/vendor/autoload.php");
 
-use MattyG\BBStatic\Cli;
-use Symfony\Component\Console\Application;
+use MattyG\BBStatic;
+use Webmozart\Console\ConsoleApplication;
 
-$app = new Application("BBStatic", \MattyG\BBStatic\BBStatic::VERSION);
-$cliInit = new Cli\Init();
-$cliInit->addCommands($app);
+$config = new BBStatic\Util\Config(BBStatic\BBStatic::CONFIG_FILENAME);
+$di = (new BBStatic\DiConfig($config))->createContainer();
+$cliConfig = new BBStatic\Cli\Config();
+$cliConfig->setDiContainer($di);
+$cliConfig->addCommands();
 
+
+$app = new ConsoleApplication($cliConfig);
 $app->run();
