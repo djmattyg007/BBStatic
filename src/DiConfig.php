@@ -33,6 +33,23 @@ class DiConfig
         $di->setters[$rootNs . "Signing\\NeedsSignerTrait"]["setSigner"] = $di->lazyGet("signer");
         $di->set("signer", $di->lazyNew($rootNs . "Signing\\SigningManager"));
 
+        $di->params["Mustache_Cache_FilesystemCache"]["baseDir"] = $di->lazyGetCall("config", "getValue", "directories/cache");
+        $di->setters["Mustache_Engine"]["setCache"] = $di->lazyGet("template_cache");
+        $di->setters["Mustache_Engine"]["setLoader"] = $di->lazyGet("template_loader");
+        $di->setters["Mustache_Engine"]["setPartialsLoader"] = $di->lazyGet("template_partials_loader");
+        $di->set("template_cache", $di->lazyNew("Mustache_Cache_FilesystemCache"));
+        $di->set("template_loader", $di->lazyNew("Mustache_Loader_FilesystemLoader", array(
+            "baseDir" => $di->lazyValue("theme_directory"),
+        )));
+        $di->set("template_partials_loader", $di->lazyNew("Mustache_Loader_FilesystemLoader", array(
+            "baseDir" => $di->lazyValue("theme_partials_directory"),
+        )));
+        $di->set("template_engine", $di->lazyNew("Mustache_Engine"));
+        $di->values["theme_directory"] = $di->lazyGetCall("config", "getValue", "directories/theme");
+        $di->values["theme_partials_directory"] = $di->lazy(function() use ($di) {
+            return $di->get("config")->getValue("directories/theme") . DIRECTORY_SEPARATOR . "partials";
+        });
+
         return $di;
     }
 }
