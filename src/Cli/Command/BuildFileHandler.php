@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MattyG\BBStatic\Cli\Command\Build;
+namespace MattyG\BBStatic\Cli\Command;
 
 use MattyG\BBStatic\NeedsFileBuilderTrait;
 use MattyG\BBStatic\Signing\NeedsSignerTrait;
@@ -9,7 +9,7 @@ use MattyG\BBStatic\Util\NeedsConfigTrait;
 use Webmozart\Console\Api\Args\Args;
 use Webmozart\Console\Api\IO\IO;
 
-class BuildFileCommand
+class BuildFileHandler
 {
     use NeedsConfigTrait;
     use NeedsFileBuilderTrait;
