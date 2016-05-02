@@ -18,6 +18,9 @@ class DiConfig
         $rootNs = "MattyG\\BBStatic\\";
         $di = (new ContainerBuilder())->newInstance(true);
 
+        // Necessary evil, we need to be able to resolve objects based on runtime configuration
+        $di->types["Aura\\Di\\Container"] = $di;
+
         $di->params[$rootNs . "Util\\Config"]["filename"] = BBStatic::CONFIG_FILENAME;
         $di->setters[$rootNs . "Util\\NeedsConfigTrait"]["setConfig"] = $di->lazyGet("config");
         $di->set("config", $di->lazyNew($rootNs . "Util\\Config"));
@@ -26,24 +29,9 @@ class DiConfig
         $di->setters[$rootNs . "NeedsFileBuilderTrait"]["setFileBuilder"] = $di->lazyGet("file_builder");
         $di->set("file_builder", $di->lazyNew($rootNs . "FileBuilder"));
 
-        $di->types[$rootNs . "Signing\\Adapter\\SigningAdapterInterface"] = $di->lazyGet("signer");
         $di->params[$rootNs . "Signing\\Adapter\\GnuPG"]["options"] = $di->lazyGetCall("config", "getValue", "signing/gnupg", array());
         $di->setters[$rootNs . "Signing\\NeedsSignerTrait"]["setSigner"] = $di->lazyGet("signer");
-        $di->set("signer", $di->lazy(function() use ($di, $rootNs) {
-            $config = $di->get("config");
-            $enabled = $config->getValue("signing/enabled", false);
-            if ($enabled === false) {
-                return $di->newInstance($rootNs . "Signing\\Adapter\\NullAdapter");
-            }
-            $adapter = $config->getValue("signing/adapter", null);
-            if ($adapter === null) {
-                return $di->newInstance($rootNs . "Signing\\Adapter\\NullAdapter");
-            } elseif ($adapter === "gnupg") {
-                return $di->newInstance($rootNs . "Signing\\Adapter\\GnuPG");
-            } else {
-                return $di->newInstance($adapter);
-            }
-        }));
+        $di->set("signer", $di->lazyNew($rootNs . "Signing\\SigningManager"));
 
         return $di;
     }

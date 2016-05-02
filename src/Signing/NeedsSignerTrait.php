@@ -3,19 +3,17 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Signing;
 
-use MattyG\BBStatic\Signing\Adapter\SigningAdapterInterface;
-
 trait NeedsSignerTrait
 {
     /**
-     * @var SigningAdapterInterface
+     * @var SigningManager
      */
     protected $signer = null;
 
     /**
-     * @param SigningAdapterInterface $signer
+     * @param SigningManager $signer
      */
-    public function setSigner(SigningAdapterInterface $signer)
+    public function setSigner(SigningManager $signer)
     {
         $this->signer = $signer;
     }

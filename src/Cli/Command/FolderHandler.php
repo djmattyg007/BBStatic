@@ -39,7 +39,7 @@ class FolderHandler
             $inFilenameParts = pathinfo($inFilename);
             $outFilename = $inFilenameParts["dirname"] . "/" . $inFilenameParts["filename"] . ".html";
             $this->fileBuilder->buildAndOutput($inFilename, $outFilename);
-            $this->signer->signDetached($outFilename);
+            $this->signer->sign($outFilename);
             $io->writeLine("done.", IO::VERBOSE);
         }
     }
