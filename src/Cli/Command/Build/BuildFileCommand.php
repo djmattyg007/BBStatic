@@ -29,6 +29,7 @@ class BuildFileCommand
         }
 
         $this->fileBuilder->buildAndOutput($inFilename, $outFilename);
+        $this->signer->signDetached($outFilename);
 
         $io->writeLine(sprintf("In Filename: %s", $inFilename));
         $io->writeLine(sprintf("Out Filename: %s", $outFilename));

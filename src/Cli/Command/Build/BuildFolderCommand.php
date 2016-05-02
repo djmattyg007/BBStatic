@@ -39,6 +39,7 @@ class BuildFolderCommand
             $inFilenameParts = pathinfo($inFilename);
             $outFilename = $inFilenameParts["dirname"] . "/" . $inFilenameParts["filename"] . ".html";
             $this->fileBuilder->buildAndOutput($inFilename, $outFilename);
+            $this->signer->signDetached($outFilename);
             $io->writeLine("done.", IO::VERBOSE);
         }
     }
