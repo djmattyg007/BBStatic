@@ -23,7 +23,10 @@ class FolderHandler
     public function handleBuild(Args $args, IO $io)
     {
         $folderPath = $args->getArgument("folder-path");
+        $shouldSign = $this->shouldSignOutput($args);
+
         $io->writeLine("Folder path: " . $folderPath);
+        $io->writeLine("Signing output: " . ($shouldSign === true ? "yes" : "no"));
 
         $finder = new SymfonyFinder();
         $finder->files()
@@ -39,9 +42,30 @@ class FolderHandler
             $inFilenameParts = pathinfo($inFilename);
             $outFilename = $inFilenameParts["dirname"] . "/" . $inFilenameParts["filename"] . ".html";
             $this->fileBuilder->buildAndOutput($inFilename, $outFilename);
-            $this->signer->sign($outFilename);
+            if ($shouldSign === true) {
+                $this->signer->sign($outFilename);
+            }
             $io->writeLine("done.", IO::VERBOSE);
         }
+    }
+
+    /**
+     * @param Args $args
+     * @return bool
+     */
+    private function shouldSignOutput(Args $args) : bool
+    {
+        $configuredSigningOption = $this->config->getValue("signing/enabled", false);
+        if ($configuredSigningOption === true) {
+            if ($args->isOptionSet("no-sign") === false) {
+                return true;
+            }
+        } else {
+            if ($args->isOptionSet("sign") === true) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
