@@ -5,6 +5,8 @@ namespace MattyG\BBStatic\Signing\Adapter;
 
 class GnuPG implements SigningAdapterInterface
 {
+    const SIG_FILE_EXT_DETACHED = "sig";
+
     /**
      * @var string
      */
@@ -49,7 +51,7 @@ class GnuPG implements SigningAdapterInterface
      */
     public function signDetached(string $filename)
     {
-        $sigFilename = $this->makeSigFilename($filename, "sig");
+        $sigFilename = $this->makeSigFilename($filename, self::SIG_FILE_EXT_DETACHED);
         if (file_exists($sigFilename) === true) {
             unlink($sigFilename);
         }
@@ -65,6 +67,14 @@ class GnuPG implements SigningAdapterInterface
         if ($ret !== 0) {
             throw new \RuntimeException(sprintf("GnuPG failed to create a detached signature for %s.", $filename));
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getDetachedSignatureFileGlobPattern() : string
+    {
+        return "*." . self::SIG_FILE_EXT_DETACHED;
     }
 
     /**

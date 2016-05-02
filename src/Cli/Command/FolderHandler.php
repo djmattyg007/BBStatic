@@ -56,6 +56,7 @@ class FolderHandler
         $finder = new SymfonyFinder();
         $finder->files()
             ->name("*.html")
+            ->name($this->signer->getSignatureFileGlobPattern())
             ->in($folderPath)
             ->ignoreVCS(true)
             ->ignoreDotFiles(true)

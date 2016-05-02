@@ -5,6 +5,7 @@ namespace MattyG\BBStatic\Signing;
 use Aura\Di\Container as DiContainer;
 use MattyG\BBStatic\Signing\Adapter\SigningAdapterInterface;
 use MattyG\BBStatic\Util\Config;
+use InvalidArgumentException; // TODO: Change this to a more appropriate exception type
 
 class SigningManager
 {
@@ -37,6 +38,10 @@ class SigningManager
         $this->config = $config;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws \RuntimeException
+     */
     private function resolveSigner()
     {
         if ($this->signer !== null) {
@@ -44,14 +49,14 @@ class SigningManager
         }
         $adapter = $this->config->getValue("signing/adapter", null);
         if ($adapter === null) {
-            throw new \InvalidArgumentException("No signing adapter configured.");
+            throw new InvalidArgumentException("No signing adapter configured.");
         }
         if ($adapter === "gnupg") {
             $this->signer = $this->diContainer->newInstance("MattyG\\BBStatic\\Signing\\Adapter\\GnuPG");
         } elseif (class_exists($adapter)) {
             $this->signer = $this->diContainer->newInstance($adapter);
         } else {
-            throw new \InvalidArgumentException(sprintf("Unrecognised signing adapter '%s' configured.", $adapter));
+            throw new InvalidArgumentException(sprintf("Unrecognised signing adapter '%s' configured.", $adapter));
         }
         if (!$this->signer instanceof SigningAdapterInterface) {
             throw new \RuntimeException(sprintf("Invalid signing adapter '%s' configured.", $adapter));
@@ -60,6 +65,7 @@ class SigningManager
 
     /**
      * @param string $filename
+     * @throws InvalidArgumentException
      */
     public function sign(string $filename)
     {
@@ -70,7 +76,25 @@ class SigningManager
         } elseif ($type === "clearsign") {
             $this->signer->signClear($filename);
         } else {
-            throw \InvalidArgumentException(sprintf("Unrecognised signing type '%s'.", $type));
+            throw InvalidArgumentException(sprintf("Unrecognised signing type '%s'.", $type));
         }
     }
+
+    /**
+     * @return string
+     * @throws InvalidArgumentException
+     */
+    public function getSignatureFileGlobPattern() : string
+    {
+        $this->resolveSigner();
+        $type = $this->config->getValue("signing/sigtype");
+        if ($type === "detached") {
+            return $this->signer->getDetachedSignatureFileGlobPattern();
+        } elseif ($type === "clearsign") {
+            return $this->signer->getClearsignFileGlobPattern();
+        } else {
+            throw InvalidArgumentException(sprintf("Unrecognised signing type '%s'.", $type));
+        }
+    }
+
 }

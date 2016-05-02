@@ -10,4 +10,9 @@ interface SigningAdapterInterface
      * @throws \Exception If a signature cannot be generated.
      */
     public function signDetached(string $filename);
+
+    /**
+     * @return string
+     */
+    public function getDetachedSignatureFileGlobPattern() : string;
 }
