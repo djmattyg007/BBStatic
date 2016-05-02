@@ -4,15 +4,17 @@ declare(strict_types=1);
 namespace MattyG\BBStatic\Cli\Command\Build;
 
 use MattyG\BBStatic\NeedsFileBuilderTrait;
+use MattyG\BBStatic\Signing\NeedsSignerTrait;
 use MattyG\BBStatic\Util\NeedsConfigTrait;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 use Webmozart\Console\Api\Args\Args;
 use Webmozart\Console\Api\IO\IO;
 
-class Folder
+class BuildFolderCommand
 {
     use NeedsConfigTrait;
     use NeedsFileBuilderTrait;
+    use NeedsSignerTrait;
 
     /**
      * @param Args $args

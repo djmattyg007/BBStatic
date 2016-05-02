@@ -4,14 +4,16 @@ declare(strict_types=1);
 namespace MattyG\BBStatic\Cli\Command\Build;
 
 use MattyG\BBStatic\NeedsFileBuilderTrait;
+use MattyG\BBStatic\Signing\NeedsSignerTrait;
 use MattyG\BBStatic\Util\NeedsConfigTrait;
 use Webmozart\Console\Api\Args\Args;
 use Webmozart\Console\Api\IO\IO;
 
-class File
+class BuildFileCommand
 {
     use NeedsConfigTrait;
     use NeedsFileBuilderTrait;
+    use NeedsSignerTrait;
 
     /**
      * @param Args $args

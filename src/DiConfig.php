@@ -18,18 +18,17 @@ class DiConfig
         $rootNs = "MattyG\\BBStatic\\";
         $di = (new ContainerBuilder())->newInstance(true);
 
-        $di->set("config", $di->lazyNew($rootNs . "Util\\Config"));
         $di->params[$rootNs . "Util\\Config"]["filename"] = BBStatic::CONFIG_FILENAME;
+        $di->setters[$rootNs . "Util\\NeedsConfigTrait"]["setConfig"] = $di->lazyGet("config");
+        $di->set("config", $di->lazyNew($rootNs . "Util\\Config"));
 
         $di->types["Nbbc\\BBCode"] = $di->lazy(array($di->lazyNew($rootNs . "BBCode\\Init"), "init"));
-        $di->set("file_builder", $di->lazyNew($rootNs . "FileBuilder"));
-
-        $di->setters[$rootNs . "Util\\NeedsConfigTrait"]["setConfig"] = $di->lazyGet("config");
-
         $di->setters[$rootNs . "NeedsFileBuilderTrait"]["setFileBuilder"] = $di->lazyGet("file_builder");
+        $di->set("file_builder", $di->lazyNew($rootNs . "FileBuilder"));
 
         $di->types[$rootNs . "Signing\\Adapter\\SigningAdapterInterface"] = $di->lazyGet("signer");
         $di->params[$rootNs . "Signing\\Adapter\\GnuPG"]["options"] = $di->lazyGetCall("config", "getValue", "signing/gnupg", array());
+        $di->setters[$rootNs . "Signing\\NeedsSignerTrait"]["setSigner"] = $di->lazyGet("signer");
         $di->set("signer", $di->lazy(function() use ($di, $rootNs) {
             $config = $di->get("config");
             $enabled = $config->getValue("signing/enabled", false);

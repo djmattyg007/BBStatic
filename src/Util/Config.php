@@ -37,7 +37,7 @@ class Config
      */
     public function getValue(string $settingName, $default = null)
     {
-        if (strpos($key, "/")) {
+        if (strpos($settingName, "/")) {
             $settingPath = explode("/", $settingName);
             $config = $this->config;
             foreach ($settingPath as $segment) {
