@@ -19,9 +19,6 @@
         "webmozart/console": "1.0.0-beta5"
     },
     "autoload": {
-        "files": [
-            "src/constants.php"
-        ],
         "psr-4": {
             "MattyG\\BBStatic\\": "src/"
         }
