@@ -29,9 +29,27 @@ class BuildFileHandler
         }
 
         $this->fileBuilder->buildAndOutput($inFilename, $outFilename);
-        $this->signer->sign($outFilename);
+        $this->signOutputFile($args, $outFilename);
 
         $io->writeLine(sprintf("In Filename: %s", $inFilename));
         $io->writeLine(sprintf("Out Filename: %s", $outFilename));
+    }
+
+    /**
+     * @param Args $args
+     * @param string $filename
+     */
+    private function signOutputFile(Args $args, string $filename)
+    {
+        $configuredSigningOption = $this->config->getValue("signing/enabled", false);
+        if ($configuredSigningOption === true) {
+            if ($args->isOptionSet("no-sign") === false) {
+                $this->signer->sign($filename);
+            }
+        } else {
+            if ($args->isOptionSet("sign") === true) {
+                $this->signer->sign($filename);
+            }
+        }
     }
 }
