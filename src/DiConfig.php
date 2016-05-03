@@ -29,6 +29,7 @@ class DiConfig
         $di->setters[$rootNs . "NeedsFileBuilderTrait"]["setFileBuilder"] = $di->lazyGet("file_builder");
         $di->set("file_builder", $di->lazyNew($rootNs . "FileBuilder"));
 
+        $di->types[$rootNs . "Signing\\Adapter\\SigningAdapterInterface"] = $di->lazyNew($rootNs . "Signing\\Adapter\\SigningAdapterInterfaceProxy");
         $di->params[$rootNs . "Signing\\Adapter\\GnuPG"]["options"] = $di->lazyGetCall("config", "getValue", "signing/gnupg", array());
         $di->setters[$rootNs . "Signing\\NeedsSignerTrait"]["setSigner"] = $di->lazyGet("signer");
         $di->set("signer", $di->lazyNew($rootNs . "Signing\\SigningManager"));
