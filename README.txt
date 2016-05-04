@@ -1,6 +1,6 @@
 BBStatic
 
-BBStatic is a static site generator written in PHP that uses BBCode as its
-input format.
+BBStatic is a static site generator written in PHP that uses BBCode for content
+and Mustache templates for rendering full pages.
 
 This is still very much a work in progress.

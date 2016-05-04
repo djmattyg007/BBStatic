@@ -12,6 +12,5 @@ $cliConfig = new BBStatic\Cli\Config();
 $cliConfig->setDiContainer($di);
 $cliConfig->addCommands();
 
-
 $app = new ConsoleApplication($cliConfig);
 $app->run();
