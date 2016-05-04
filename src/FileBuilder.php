@@ -4,10 +4,13 @@ declare(strict_types=1);
 namespace MattyG\BBStatic;
 
 use InvalidArgumentException;
+use MattyG\BBStatic\Util\Vendor\NeedsFilesystemTrait;
 use Nbbc\BBCode;
 
 final class FileBuilder
 {
+    use NeedsFilesystemTrait;
+
     /**
      * @var BBCode
      */
@@ -25,7 +28,7 @@ final class FileBuilder
      * @param string $content
      * @return string
      */
-    public function process(string $content): string
+    public function process(string $content) : string
     {
         return $this->processor->parse($content);
     }
@@ -35,7 +38,7 @@ final class FileBuilder
      * @return string
      * @throws InvalidArgumentException
      */
-    public function build(string $inputFilename): string
+    public function build(string $inputFilename) : string
     {
         if (!is_readable($inputFilename)) {
             throw new InvalidArgumentException(sprintf("File '%s' does not exist.", $inputFilename));
@@ -48,17 +51,11 @@ final class FileBuilder
     /**
      * @param string $inputFilename
      * @param string $outputFilename
-     * @return bool Whether or not the output file was written to successfully.
      * @throws InvalidArgumentException
      */
-    public function buildAndOutput(string $inputFilename, string $outputFilename): bool
+    public function buildAndOutput(string $inputFilename, string $outputFilename)
     {
         $processedContent = $this->build($inputFilename);
-        $check = file_put_contents($outputFilename, $processedContent);
-        if ($check === false) {
-            return false;
-        } else {
-            return true;
-        }
+        $this->filesystem->dumpFile($outputFilename, $processedContent);
     }
 }

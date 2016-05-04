@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Util;
 
+/**
+ * Provides the central BBStatic configuration.
+ */
 trait NeedsConfigTrait
 {
     /**

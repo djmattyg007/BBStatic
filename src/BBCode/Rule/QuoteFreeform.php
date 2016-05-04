@@ -10,7 +10,7 @@ class QuoteFreeform implements ConfigurableCallableRuleInterface
     /**
      * @var string
      */
-    private $template = '<blockquote><p>{$content/v}</p><footer>{$citation/h}</blockquote>' . "\n";
+    private $template = '<blockquote><p>{$content/v}</p><footer>{$citation/h}</footer></blockquote>' . "\n";
 
     /**
      * @param string

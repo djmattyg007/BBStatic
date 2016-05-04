@@ -1,8 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace MattyG\BBStatic\Util;
 
-class Config
+final class Config
 {
     /**
      * @param string $filename
