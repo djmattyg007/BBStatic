@@ -33,6 +33,9 @@ class Renderer
         $template = $this->templateEngine->loadTemplate($pageType);
         $context = array(
             "title" => $page->getTitle(),
+            "author" => $page->getAuthor(),
+            "date_posted" => $page->getDatePosted(),
+            "date_updated" => $page->getDateUpdated(),
             "content" => file_get_contents($convertedContentFilename),
             "vars" => $page->getTemplateVariables(),
         );

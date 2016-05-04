@@ -78,6 +78,30 @@ class Page
     }
 
     /**
+     * @return string|null
+     */
+    public function getAuthor()
+    {
+        return $this->pageConfig->getValue("author", null);
+    }
+
+    /**
+     * @return int
+     */
+    public function getDatePosted() : int
+    {
+        return $this->pageConfig->getValue("date_posted");
+    }
+
+    /**
+     * @return int
+     */
+    public function getDateUpdated() : int
+    {
+        return $this->pageConfig->getValue("date_updated", $this->pageConfig->getValue("date_posted"));
+    }
+
+    /**
      * @return array
      */
     public function getTemplateVariables() : array
