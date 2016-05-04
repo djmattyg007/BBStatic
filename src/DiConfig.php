@@ -21,6 +21,7 @@ class DiConfig
         // Necessary evil, we need to be able to resolve objects based on runtime configuration
         $di->types["Aura\\Di\\Container"] = $di;
 
+        $di->types[$rootNs . "Util\\ConfigFactory"] = $di->lazyGet("config_factory");
         $di->setters[$rootNs . "Util\\NeedsConfigTrait"]["setConfig"] = $di->lazyGet("config");
         $di->setters[$rootNs . "Util\\NeedsConfigFactoryTrait"]["setConfigFactory"] = $di->lazyGet("config_factory");
         $di->set("config", $di->lazyNew($rootNs . "Util\\Config", array("filename" => BBStatic::CONFIG_FILENAME)));
@@ -41,14 +42,11 @@ class DiConfig
         $di->setters[$rootNs . "Signing\\NeedsSignerTrait"]["setSigner"] = $di->lazyGet("signer");
         $di->set("signer", $di->lazyNew($rootNs . "Signing\\SigningManager"));
 
-        $di->params[$rootNs . "Page\\Page"]["config"] = $di->lazyGet("config");
-        $di->params[$rootNs . "Page\\Page"]["configFactory"] = $di->lazyGet("config_factory");
         $di->setters[$rootNs . "Page\\NeedsPageFactoryTrait"]["setPageFactory"] = $di->lazyGet("page_factory");
         $di->setters[$rootNs . "Page\\NeedsPageRendererTrait"]["setPageRenderer"] = $di->lazyGet("page_renderer");
         $di->set("page_factory", $di->lazyNew($rootNs . "Page\\PageFactory"));
         $di->set("page_renderer", $di->lazyNew($rootNs . "Page\\Renderer"));
 
-        // TODO: Update to use directory manager
         $di->params["Mustache_Cache_FilesystemCache"]["baseDir"] = $di->lazyGetCall("directory_manager", "getCacheDirectory", "templates");
         $di->setters["Mustache_Engine"]["setCache"] = $di->lazyGet("template_cache");
         $di->setters["Mustache_Engine"]["setLoader"] = $di->lazyGet("template_loader");
