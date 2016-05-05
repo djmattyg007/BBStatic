@@ -6,16 +6,18 @@ namespace MattyG\BBStatic\Cli\Command;
 use MattyG\BBStatic\BBCode\NeedsBBCodeRendererTrait;
 use MattyG\BBStatic\Signing\NeedsSignerTrait;
 use MattyG\BBStatic\Util\NeedsConfigTrait;
-// TODO: Should be using a factory for symfony/finder
-use Symfony\Component\Finder\Finder as SymfonyFinder;
+use MattyG\BBStatic\Util\Vendor\NeedsFilesystemTrait;
+use MattyG\BBStatic\Util\Vendor\NeedsFinderFactoryTrait;
 use Webmozart\Console\Api\Args\Args;
 use Webmozart\Console\Api\IO\IO;
 
 class FolderHandler
 {
-    use NeedsConfigTrait;
     use NeedsBBCodeRendererTrait;
     use NeedsSignerTrait;
+    use NeedsConfigTrait;
+    use NeedsFinderFactoryTrait;
+    use NeedsFilesystemTrait;
 
     /**
      * @param Args $args
@@ -29,7 +31,7 @@ class FolderHandler
         $io->writeLine("Folder path: " . $folderPath);
         $io->writeLine("Signing output: " . ($shouldSign === true ? "yes" : "no"));
 
-        $finder = new SymfonyFinder();
+        $finder = $this->finderFactory->create();
         $finder->files()
             ->name("*.bb")
             ->in($folderPath)
@@ -78,9 +80,10 @@ class FolderHandler
         $folderPath = $args->getArgument("folder-path");
         $io->writeLine("Folder path: " . $folderPath);
 
-        $finder = new SymfonyFinder();
+        $finder = $this->finderFactory->create();
         $finder->files()
             ->name("*.html")
+            // TODO: This line must be performed conditionally
             ->name($this->signer->getSignatureFileGlobPattern())
             ->in($folderPath)
             ->ignoreVCS(true)
@@ -90,10 +93,8 @@ class FolderHandler
         foreach ($finder as $file) {
             $filename = $file->getPathname();
             $io->write(sprintf("Deleting %s ... ", $filename), IO::VERBOSE);
-            $check = @unlink($filename);
-            if ($check !== true) {
-                throw new \RuntimeException(sprintf("Error while deleting %s", $filename));
-            }
+            // Use symfony/filesystem
+            $this->filesystem->remove($filename);
             $io->writeLine("done.", IO::VERBOSE);
         }
     }

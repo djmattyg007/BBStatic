@@ -8,7 +8,7 @@ use Aura\Di\ContainerBuilder;
 use MattyG\BBStatic\BBStatic;
 use MattyG\BBStatic\Util\Config;
 
-class DiConfig
+final class DiConfig
 {
     /**
      * @return Container
