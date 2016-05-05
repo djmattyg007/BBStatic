@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace MattyG\BBStatic;
+namespace MattyG\BBStatic\BBCode;
 
 use InvalidArgumentException;
 use MattyG\BBStatic\Util\Vendor\NeedsFilesystemTrait;
 use Nbbc\BBCode;
 
-final class FileBuilder
+final class Renderer
 {
     use NeedsFilesystemTrait;
 

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Cli\Command;
 
-use MattyG\BBStatic\NeedsFileBuilderTrait;
 use MattyG\BBStatic\Page\NeedsPageFactoryTrait;
 use MattyG\BBStatic\Page\NeedsPageRendererTrait;
 use MattyG\BBStatic\Signing\NeedsSignerTrait;
@@ -14,7 +13,6 @@ use Webmozart\Console\Api\IO\IO;
 class BuildPageHandler
 {
     use NeedsConfigTrait;
-    use NeedsFileBuilderTrait;
     use NeedsPageFactoryTrait;
     use NeedsPageRendererTrait;
     use NeedsSignerTrait;
@@ -30,7 +28,7 @@ class BuildPageHandler
 
         $page = $this->pageFactory->create(array("name" => $pageName));
 
-        $renderedPageFilename = $this->pageRenderer->renderPage($page);
+        $renderedPageFilename = $this->pageRenderer->render($page);
         $this->signOutputFile($args, $renderedPageFilename);
 
         $io->writeLine(sprintf("Rendered Page Filename: %s", $renderedPageFilename));

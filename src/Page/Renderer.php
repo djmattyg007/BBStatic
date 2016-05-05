@@ -4,15 +4,15 @@ declare(strict_types=1);
 namespace MattyG\BBStatic\Page;
 
 use MattyG\BBStatic\NeedsDirectoryManagerTrait;
-use MattyG\BBStatic\NeedsFileBuilderTrait;
+use MattyG\BBStatic\BBCode\NeedsBBCodeRendererTrait;
 use MattyG\BBStatic\Util\Vendor\NeedsFilesystemTrait;
 use MattyG\BBStatic\Util\Vendor\NeedsTemplateEngineTrait;
 use Symfony\Component\Filesystem\Filesystem;
 
-class Renderer
+final class Renderer
 {
     use NeedsDirectoryManagerTrait;
-    use NeedsFileBuilderTrait;
+    use NeedsBBCodeRendererTrait;
     use NeedsFilesystemTrait;
     use NeedsTemplateEngineTrait;
 
@@ -20,7 +20,7 @@ class Renderer
      * @param Page $page
      * @return string The filename of the rendered page.
      */
-    public function renderPage(Page $page) : string
+    public function render(Page $page) : string
     {
         $tempDirectory = $this->directoryManager->getTempDirectory("page-content");
         $pageType = $page->getPageType();
@@ -28,7 +28,7 @@ class Renderer
         $inputFilename = $this->makeInputFilenameRelative($contentFilename);
 
         $convertedContentFilename = $this->filesystem->tempnam($tempDirectory . DIRECTORY_SEPARATOR, $page->getName());
-        $this->fileBuilder->buildAndOutput($contentFilename, $convertedContentFilename);
+        $this->bbcodeRenderer->buildAndOutput($contentFilename, $convertedContentFilename);
 
         $template = $this->templateEngine->loadTemplate($pageType);
         $context = array(

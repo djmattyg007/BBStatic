@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Cli\Command;
 
-use MattyG\BBStatic\NeedsFileBuilderTrait;
+use MattyG\BBStatic\BBCode\NeedsBBCodeRendererTrait;
 use MattyG\BBStatic\Signing\NeedsSignerTrait;
 use MattyG\BBStatic\Util\NeedsConfigTrait;
 use Webmozart\Console\Api\Args\Args;
@@ -12,7 +12,7 @@ use Webmozart\Console\Api\IO\IO;
 class BuildFileHandler
 {
     use NeedsConfigTrait;
-    use NeedsFileBuilderTrait;
+    use NeedsBBCodeRendererTrait;
     use NeedsSignerTrait;
 
     /**
@@ -28,7 +28,7 @@ class BuildFileHandler
             $outFilename = $inFilenameParts["dirname"] . DIRECTORY_SEPARATOR . $inFilenameParts["filename"] . ".html";
         }
 
-        $this->fileBuilder->buildAndOutput($inFilename, $outFilename);
+        $this->bbcodeRenderer->buildAndOutput($inFilename, $outFilename);
         $this->signOutputFile($args, $outFilename);
 
         $io->writeLine(sprintf("In Filename: %s", $inFilename));

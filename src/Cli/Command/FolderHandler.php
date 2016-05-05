@@ -3,9 +3,10 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Cli\Command;
 
-use MattyG\BBStatic\NeedsFileBuilderTrait;
+use MattyG\BBStatic\BBCode\NeedsBBCodeRendererTrait;
 use MattyG\BBStatic\Signing\NeedsSignerTrait;
 use MattyG\BBStatic\Util\NeedsConfigTrait;
+// TODO: Should be using a factory for symfony/finder
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 use Webmozart\Console\Api\Args\Args;
 use Webmozart\Console\Api\IO\IO;
@@ -13,7 +14,7 @@ use Webmozart\Console\Api\IO\IO;
 class FolderHandler
 {
     use NeedsConfigTrait;
-    use NeedsFileBuilderTrait;
+    use NeedsBBCodeRendererTrait;
     use NeedsSignerTrait;
 
     /**
@@ -41,7 +42,7 @@ class FolderHandler
             $io->write(sprintf("Converting %s ... ", $inFilename), IO::VERBOSE);
             $inFilenameParts = pathinfo($inFilename);
             $outFilename = $inFilenameParts["dirname"] . "/" . $inFilenameParts["filename"] . ".html";
-            $this->fileBuilder->buildAndOutput($inFilename, $outFilename);
+            $this->bbcodeRenderer->buildAndOutput($inFilename, $outFilename);
             if ($shouldSign === true) {
                 $this->signer->sign($outFilename);
             }

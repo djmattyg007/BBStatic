@@ -64,8 +64,8 @@ class DiConfig
     private function initBBCodeConfig(Container $di, string $rootNs)
     {
         $di->types["Nbbc\\BBCode"] = $di->lazy(array($di->lazyNew($rootNs . "BBCode\\Init"), "init"));
-        $di->setters[$rootNs . "NeedsFileBuilderTrait"]["setFileBuilder"] = $di->lazyGet("file_builder");
-        $di->set("file_builder", $di->lazyNew($rootNs . "FileBuilder"));
+        $di->setters[$rootNs . "BBCode\\NeedsBBCodeRendererTrait"]["setBBCodeRenderer"] = $di->lazyGet("bbcode_renderer");
+        $di->set("bbcode_renderer", $di->lazyNew($rootNs . "BBCode\\Renderer"));
     }
 
     /**
