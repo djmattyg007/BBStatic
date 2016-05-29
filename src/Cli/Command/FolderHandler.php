@@ -6,18 +6,18 @@ namespace MattyG\BBStatic\Cli\Command;
 use MattyG\BBStatic\BBCode\NeedsBBCodeRendererTrait;
 use MattyG\BBStatic\Signing\NeedsSignerTrait;
 use MattyG\BBStatic\Util\NeedsConfigTrait;
-use MattyG\BBStatic\Util\Vendor\NeedsFilesystemTrait;
-use MattyG\BBStatic\Util\Vendor\NeedsFinderFactoryTrait;
+use Symfony\Component\Filesystem\NeedsFilesystemTrait;
+use Symfony\Component\Finder\NeedsFinderFactoryTrait;
 use Webmozart\Console\Api\Args\Args;
 use Webmozart\Console\Api\IO\IO;
 
 class FolderHandler
 {
     use NeedsBBCodeRendererTrait;
-    use NeedsSignerTrait;
     use NeedsConfigTrait;
-    use NeedsFinderFactoryTrait;
     use NeedsFilesystemTrait;
+    use NeedsFinderFactoryTrait;
+    use NeedsSignerTrait;
 
     /**
      * @param Args $args

@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace MattyG\BBStatic\BBCode;
 
 use InvalidArgumentException;
-use MattyG\BBStatic\Util\Vendor\NeedsFilesystemTrait;
 use Nbbc\BBCode;
+use Symfony\Component\Filesystem\NeedsFilesystemTrait;
 
 final class BBCodeRenderer
 {

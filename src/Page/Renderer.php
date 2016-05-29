@@ -5,9 +5,8 @@ namespace MattyG\BBStatic\Page;
 
 use MattyG\BBStatic\NeedsDirectoryManagerTrait;
 use MattyG\BBStatic\BBCode\NeedsBBCodeRendererTrait;
-use MattyG\BBStatic\Util\Vendor\NeedsFilesystemTrait;
 use MattyG\BBStatic\Util\Vendor\NeedsTemplateEngineTrait;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\NeedsFilesystemTrait;
 
 final class Renderer
 {

@@ -121,7 +121,7 @@ final class DiConfig
     private function initSymfonyFilesystemConfig(Container $di, string $rootNs)
     {
         $di->types["Symfony\\Component\\Filesystem\\Filesystem"] = $di->lazyGet("filesystem");
-        $di->setters[$rootNs . "Util\\Vendor\\NeedsFilesystemTrait"]["setFilesystem"] = $di->lazyGet("filesystem");
+        $di->setters["Symfony\\Component\\Filesystem\\NeedsFilesystemTrait"]["setFilesystem"] = $di->lazyGet("filesystem");
         $di->set("filesystem", $di->lazyNew("Symfony\\Component\\Filesystem\\Filesystem"));
     }
 }
