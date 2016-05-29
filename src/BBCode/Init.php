@@ -68,7 +68,7 @@ final class Init
     /**
      * @return BBCode
      */
-    public function init(): BBCode
+    public function init() : BBCode
     {
         $bbcode = new BBCode;
         $this->initRules($bbcode);

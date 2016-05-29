@@ -7,7 +7,7 @@ use InvalidArgumentException;
 use MattyG\BBStatic\Util\Vendor\NeedsFilesystemTrait;
 use Nbbc\BBCode;
 
-final class Renderer
+final class BBCodeRenderer
 {
     use NeedsFilesystemTrait;
 

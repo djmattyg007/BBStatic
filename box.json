@@ -1,12 +1,13 @@
 {
     "chmod": "0755",
     "directories": [
-        "src"
+        "src",
+        "var"
     ],
     "finder": [
         {
             "name": "*.php",
-            "exclude": ["Tests"],
+            "exclude": ["autocodeloader", "Tests", "zendframework"],
             "in": "vendor"
         }
     ],
