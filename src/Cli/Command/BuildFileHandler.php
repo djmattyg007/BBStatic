@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace MattyG\BBStatic\Cli\Command;
 
 use MattyG\BBStatic\BBCode\NeedsBBCodeRendererTrait;
-use MattyG\BBStatic\Signing\NeedsSignerTrait;
+use MattyG\BBStatic\Signing\NeedsSigningAdapterInterfaceTrait;
 use MattyG\BBStatic\Util\NeedsConfigTrait;
 use Webmozart\Console\Api\Args\Args;
 use Webmozart\Console\Api\IO\IO;
@@ -13,7 +13,7 @@ class BuildFileHandler
 {
     use NeedsConfigTrait;
     use NeedsBBCodeRendererTrait;
-    use NeedsSignerTrait;
+    use NeedsSigningAdapterInterfaceTrait;
 
     /**
      * @param Args $args
@@ -44,11 +44,11 @@ class BuildFileHandler
         $configuredSigningOption = $this->config->getValue("signing/enabled", false);
         if ($configuredSigningOption === true) {
             if ($args->isOptionSet("no-sign") === false) {
-                $this->signer->sign($filename);
+                $this->signingAdapter->sign($filename);
             }
         } else {
             if ($args->isOptionSet("sign") === true) {
-                $this->signer->sign($filename);
+                $this->signingAdapter->sign($filename);
             }
         }
     }

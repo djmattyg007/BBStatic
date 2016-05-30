@@ -74,11 +74,10 @@ final class DiConfig
      */
     private function initSigningConfig(Container $di, string $rootNs)
     {
-        $di->types[$rootNs . "Signing\\Adapter\\SigningAdapterInterface"] = $di->lazyNew($rootNs . "Signing\\Adapter\\SigningAdapterInterfaceProxy");
-        $di->params[$rootNs . "Signing\\SigningManager"]["config"] = $di->lazyGet("config");
-        $di->params[$rootNs . "Signing\\Adapter\\GnuPG"]["options"] = $di->lazyGetCall("config", "getValue", "signing/gnupg", array());
-        $di->setters[$rootNs . "Signing\\NeedsSignerTrait"]["setSigner"] = $di->lazyGet("signer");
-        $di->set("signer", $di->lazyNew($rootNs . "Signing\\SigningManager"));
+        $di->types[$rootNs . "Signing\\SigningAdapterInterface"] = $di->lazyGet("signer");
+        $di->params[$rootNs . "Signing\\GnuPGAdapter"]["options"] = $di->lazyGetCall("config", "getValue", "signing/gnupg", array());
+        $di->setters[$rootNs . "Signing\\NeedsSigningAdapterInterfaceTrait"]["setSigningAdapter"] = $di->lazyGet("signer");
+        $di->set("signer", $di->lazyNew($rootNs . "Signing\\SigningAdapterInterfaceSharedProxy");
     }
 
     /**

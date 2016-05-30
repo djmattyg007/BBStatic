@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace MattyG\BBStatic\Signing\Adapter;
+namespace MattyG\BBStatic\Signing;
 
-class GnuPG implements SigningAdapterInterface
+class GnuPGAdapter implements SigningAdapterInterface
 {
     const SIG_FILE_EXT_DETACHED = "sig";
 
@@ -49,7 +49,7 @@ class GnuPG implements SigningAdapterInterface
      * @param string $filename
      * @throws \Exception If a signature cannot be generated.
      */
-    public function signDetached(string $filename)
+    public function sign(string $filename)
     {
         $sigFilename = $this->makeSigFilename($filename, self::SIG_FILE_EXT_DETACHED);
         if (file_exists($sigFilename) === true) {
@@ -72,7 +72,7 @@ class GnuPG implements SigningAdapterInterface
     /**
      * @return string
      */
-    public function getDetachedSignatureFileGlobPattern() : string
+    public function getSignatureFileGlobPattern() : string
     {
         return "*." . self::SIG_FILE_EXT_DETACHED;
     }

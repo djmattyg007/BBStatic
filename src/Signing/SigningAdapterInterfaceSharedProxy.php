@@ -1,71 +1,70 @@
 <?php
 declare(strict_types=1);
 
-namespace MattyG\BBStatic\Signing\Adapter;
+namespace MattyG\BBStatic\Signing;
 
 use Aura\Di\Container as DiContainer;
 use InvalidArgumentException; // TODO: Change this to a more appropriate exception type
 
-class SigningAdapterInterfaceProxy implements SigningAdapterInterface
+class SigningAdapterInterfaceSharedProxy implements SigningAdapterInterface
 {
     /**
      * @var DiContainer
      */
-    private $diContainer;
+    private $_diContainer;
 
     /**
      * @var SigningAdapterInterface
      */
-    private $subject;
+    private $_subject;
 
     /**
      * @param DiContainer $diContainer
      */
     public function __construct(DiContainer $diContainer)
     {
-        $this->diContainer = $diContainer;
+        $this->_diContainer = $diContainer;
     }
 
     /**
      * @return SigningAdapterInterface
      */
-    private function getSubject() : SigningAdapterInterface
+    private function _getSubject() : SigningAdapterInterface
     {
-        if ($this->subject === null) {
-            $config = $this->diContainer->get("config");
+        if ($this->_subject === null) {
+            $config = $this->_diContainer->get("config");
             $adapter = $config->getValue("signing/adapter", null);
             if ($adapter === null) {
                 throw new InvalidArgumentException("No signing adapter configured.");
             }
             if ($adapter === "gnupg") {
-                $this->subject = $this->diContainer->newInstance("MattyG\\BBStatic\\Signing\\Adapter\\GnuPG");
+                $this->_subject = $this->_diContainer->newInstance("MattyG\\BBStatic\\Signing\\GnuPGAdapter");
             } elseif (class_exists($adapter)) {
-                $this->subject = $this->diContainer->newInstance($adapter);
+                $this->_subject = $this->_diContainer->newInstance($adapter);
             } else {
                 throw new InvalidArgumentException(sprintf("Unrecognised signing adapter '%s' configured.", $adapter));
             }
-            if (!$this->subject instanceof SigningAdapterInterface) {
+            if (!$this->_subject instanceof SigningAdapterInterface) {
                 throw new \RuntimeException(sprintf("Invalid signing adapter '%s' configured.", $adapter));
             }
         }
-        return $this->subject;
+        return $this->_subject;
     }
 
     /**
      * @param string $filename
      * @throws \Exception If a signature cannot be generated.
      */
-    public function signDetached(string $filename)
+    public function sign(string $filename)
     {
-        $this->getSubject()->signDetached($filename);
+        $this->_getSubject()->sign($filename);
     }
 
     /**
      * @return string
      */
-    public function getDetachedSignatureFileGlobPattern() : string
+    public function getSignatureFileGlobPattern() : string
     {
-        return $this->getSubject()->getDetachedSignatureFileGlobPattern();
+        return $this->_getSubject()->getSignatureFileGlobPattern();
     }
 }
-

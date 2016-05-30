@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace MattyG\BBStatic\Cli\Command;
 
 use MattyG\BBStatic\BBCode\NeedsBBCodeRendererTrait;
-use MattyG\BBStatic\Signing\NeedsSignerTrait;
+use MattyG\BBStatic\Signing\NeedsSigningAdapterInterfaceTrait;
 use MattyG\BBStatic\Util\NeedsConfigTrait;
 use Symfony\Component\Filesystem\NeedsFilesystemTrait;
 use Symfony\Component\Finder\NeedsFinderFactoryTrait;
@@ -17,7 +17,7 @@ class FolderHandler
     use NeedsConfigTrait;
     use NeedsFilesystemTrait;
     use NeedsFinderFactoryTrait;
-    use NeedsSignerTrait;
+    use NeedsSigningAdapterInterfaceTrait;
 
     /**
      * @param Args $args
@@ -46,7 +46,7 @@ class FolderHandler
             $outFilename = $inFilenameParts["dirname"] . "/" . $inFilenameParts["filename"] . ".html";
             $this->bbcodeRenderer->buildAndOutput($inFilename, $outFilename);
             if ($shouldSign === true) {
-                $this->signer->sign($outFilename);
+                $this->signingAdapter->sign($outFilename);
             }
             $io->writeLine("done.", IO::VERBOSE);
         }
@@ -84,7 +84,7 @@ class FolderHandler
         $finder->files()
             ->name("*.html")
             // TODO: This line must be performed conditionally
-            ->name($this->signer->getSignatureFileGlobPattern())
+            ->name($this->signingAdapter->getSignatureFileGlobPattern())
             ->in($folderPath)
             ->ignoreVCS(true)
             ->ignoreDotFiles(true)
@@ -93,7 +93,6 @@ class FolderHandler
         foreach ($finder as $file) {
             $filename = $file->getPathname();
             $io->write(sprintf("Deleting %s ... ", $filename), IO::VERBOSE);
-            // Use symfony/filesystem
             $this->filesystem->remove($filename);
             $io->writeLine("done.", IO::VERBOSE);
         }
