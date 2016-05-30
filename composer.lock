@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ef9f5c0d9920c7a12e25b6217168ca6b",
-    "content-hash": "11603f072e8e4d5a27575a4d4674d299",
+    "hash": "3c4c476a561c0f21242f77b3f58167d2",
+    "content-hash": "cb2be20ab74bac11e4068f5928f14129",
     "packages": [
         {
             "name": "aura/di",
@@ -85,16 +85,16 @@
         },
         {
             "name": "djmattyg007/autocodeloader",
-            "version": "0.2.0",
+            "version": "0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/djmattyg007/AutoCodeLoader.git",
-                "reference": "0a45433bda7a4770c656b074986fc273021c9ce5"
+                "reference": "057d56192eb3d56e730ff8a5fa4a863c93270a80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/djmattyg007/AutoCodeLoader/zipball/0a45433bda7a4770c656b074986fc273021c9ce5",
-                "reference": "0a45433bda7a4770c656b074986fc273021c9ce5",
+                "url": "https://api.github.com/repos/djmattyg007/AutoCodeLoader/zipball/057d56192eb3d56e730ff8a5fa4a863c93270a80",
+                "reference": "057d56192eb3d56e730ff8a5fa4a863c93270a80",
                 "shasum": ""
             },
             "require": {
@@ -121,7 +121,7 @@
                 }
             ],
             "description": "Generate utility classes such as proxies and factories automatically.",
-            "time": "2016-05-29 07:43:04"
+            "time": "2016-05-30 14:35:46"
         },
         {
             "name": "mustache/mustache",
