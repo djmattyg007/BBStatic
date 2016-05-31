@@ -8,7 +8,7 @@ use MattyG\BBStatic\BBCode\NeedsBBCodeRendererTrait;
 use MattyG\BBStatic\Util\Vendor\NeedsTemplateEngineTrait;
 use Symfony\Component\Filesystem\NeedsFilesystemTrait;
 
-final class Renderer
+final class PageRenderer
 {
     use NeedsDirectoryManagerTrait;
     use NeedsBBCodeRendererTrait;
@@ -49,7 +49,7 @@ final class Renderer
      * @param string $filename
      * @return string
      */
-    protected function makeInputFilenameRelative(string $filename) : string
+    private function makeInputFilenameRelative(string $filename) : string
     {
         $pagesDirectory = $this->directoryManager->getPagesDirectory();
         $relativeFilename = $this->filesystem->makePathRelative($filename, $pagesDirectory);
