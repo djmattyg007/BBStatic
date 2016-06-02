@@ -24,7 +24,6 @@ final class PageRenderer
         $tempDirectory = $this->directoryManager->getTempDirectory("page-content");
         $pageType = $page->getPageType();
         $contentFilename = $page->getContentFilename();
-        $inputFilename = $this->makeInputFilenameRelative($contentFilename);
 
         $convertedContent = $this->bbcodeRenderer->build($contentFilename);
 
@@ -39,20 +38,8 @@ final class PageRenderer
         );
         $renderedContent = $template->render($context);
 
-        $outFilename = $this->directoryManager->getHtmlDirectory() . DIRECTORY_SEPARATOR . $inputFilename . ".html";
+        $outFilename = $this->directoryManager->getHtmlDirectory() . DIRECTORY_SEPARATOR . $page->getName() . ".html";
         $this->filesystem->dumpFile($outFilename, $renderedContent);
         return $outFilename;
-    }
-
-    /**
-     * @param string $filename
-     * @return string
-     */
-    private function makeInputFilenameRelative(string $filename) : string
-    {
-        $pagesDirectory = $this->directoryManager->getPagesDirectory();
-        $relativeFilename = $this->filesystem->makePathRelative($filename, $pagesDirectory);
-        // Strip trailing slash from makePathRelative() and remove '.bb' file extension
-        return substr(rtrim($relativeFilename, "/"), 0, -3);
     }
 }
