@@ -16,7 +16,7 @@ class Page
     /**
      * @var string
      */
-    protected $pagesDirectory;
+    protected $pageFolder;
 
     /**
      * @var \MattyG\BBStatic\Util\Config
@@ -31,7 +31,7 @@ class Page
     public function __construct(string $name, DirectoryManager $directoryManager, ConfigFactory $configFactory)
     {
         $this->name = $name;
-        $this->pagesDirectory = $directoryManager->getPagesDirectory();
+        $this->pageFolder = $directoryManager->getPagesDirectory() . DIRECTORY_SEPARATOR . str_replace("/", DIRECTORY_SEPARATOR, $name);
 
         $this->loadPageConfig($configFactory);
     }
@@ -41,7 +41,7 @@ class Page
      */
     private function loadPageConfig(ConfigFactory $configFactory)
     {
-        $filename = $this->pagesDirectory . DIRECTORY_SEPARATOR . str_replace("/", DIRECTORY_SEPARATOR, $this->name) . ".json";
+        $filename = $this->pageFolder . DIRECTORY_SEPARATOR . "config.json";
         $this->pageConfig = $configFactory->create(array("filename" => $filename));
     }
 
@@ -66,7 +66,7 @@ class Page
      */
     public function getContentFilename() : string
     {
-        return $this->pagesDirectory . DIRECTORY_SEPARATOR . str_replace("/", DIRECTORY_SEPARATOR, $this->name) . ".bb";
+        return $this->pageFolder . DIRECTORY_SEPARATOR . "content.bb";
     }
 
     /**

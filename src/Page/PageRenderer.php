@@ -26,8 +26,7 @@ final class PageRenderer
         $contentFilename = $page->getContentFilename();
         $inputFilename = $this->makeInputFilenameRelative($contentFilename);
 
-        $convertedContentFilename = $this->filesystem->tempnam($tempDirectory . DIRECTORY_SEPARATOR, $page->getName());
-        $this->bbcodeRenderer->buildAndOutput($contentFilename, $convertedContentFilename);
+        $convertedContent = $this->bbcodeRenderer->build($contentFilename);
 
         $template = $this->templateEngine->loadTemplate($pageType);
         $context = array(
@@ -35,7 +34,7 @@ final class PageRenderer
             "author" => $page->getAuthor(),
             "date_posted" => $page->getDatePosted(),
             "date_updated" => $page->getDateUpdated(),
-            "content" => file_get_contents($convertedContentFilename),
+            "content" => $convertedContent,
             "vars" => $page->getTemplateVariables(),
         );
         $renderedContent = $template->render($context);
