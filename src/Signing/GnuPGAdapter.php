@@ -3,9 +3,17 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Signing;
 
+use Symfony\Component\Process\Exception as SymfonyException;
+use Symfony\Component\Process\ProcessBuilderFactory;
+
 class GnuPGAdapter implements SigningAdapterInterface
 {
     const SIG_FILE_EXT_DETACHED = "sig";
+
+    /**
+     * @var ProcessBuilderFactory
+     */
+    protected $processBuilderFactory;
 
     /**
      * @var string
@@ -13,25 +21,27 @@ class GnuPGAdapter implements SigningAdapterInterface
     protected $gpgPath;
 
     /**
+     * @param ProcessBuilderFactory $processBuilderFactory
      * @param array $options
      * @throws \RuntimeException
      */
-    public function __construct(array $options = array())
+    public function __construct(ProcessBuilderFactory $processBuilderFactory, array $options = array())
     {
         if (isset($options["gpg_path"]) && is_executable($options["gpg_path"])) {
             $this->gpgPath = $options["gpg_path"];
         } else {
-            $this->gpgPath = $this->findGpgPath();
+            $this->gpgPath = $this->findPathToGpg();
         }
         if (!$this->gpgPath) {
             throw \RuntimeException("Cannot locate GnuPG binary.");
         }
+        $this->processBuilderFactory = $processBuilderFactory;
     }
 
     /**
      * @return string
      */
-    private function findGpgPath() : string
+    private function findPathToGpg() : string
     {
         $paths = explode(PATH_SEPARATOR, getenv("PATH"));
         $gpgBinaries = array("gpg2", "gpg");
@@ -56,16 +66,20 @@ class GnuPGAdapter implements SigningAdapterInterface
             unlink($sigFilename);
         }
 
-        $args = array(
+        $processBuilder = $this->processBuilderFactory->create(array("arguments" => array(
             $this->gpgPath,
             "--output",
             $sigFilename,
             "--detach-sign",
             $filename
-        );
-        exec(implode(" ", array_map("escapeshellarg", $args)), $output, $ret);
-        if ($ret !== 0) {
-            throw new \RuntimeException(sprintf("GnuPG failed to create a detached signature for %s.", $filename));
+        )));
+        $process = $processBuilder->getProcess();
+        try {
+            $process->mustRun();
+        } catch (SymfonyException\RuntimeException $e) {
+            throw new SigningException("Failed to run GnuPG.", 1, $e);
+        } catch (SymfonyException\ProcessFailedException $e) {
+            throw new SigningException(sprintf("GnuPG failed to create a detached signature for %s.", $filename), $process->getExitCode(), $e);
         }
     }
 
