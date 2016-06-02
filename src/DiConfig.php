@@ -65,7 +65,7 @@ final class DiConfig
     {
         $di->types["Nbbc\\BBCode"] = $di->lazy(array($di->lazyNew($rootNs . "BBCode\\Init"), "init"));
         $di->setters[$rootNs . "BBCode\\NeedsBBCodeRendererTrait"]["setBBCodeRenderer"] = $di->lazyGet("bbcode_renderer");
-        $di->set("bbcode_renderer", $di->lazyNew($rootNs . "BBCode\\Renderer"));
+        $di->set("bbcode_renderer", $di->lazyNew($rootNs . "BBCode\\BBCodeRenderer"));
     }
 
     /**
@@ -77,7 +77,7 @@ final class DiConfig
         $di->types[$rootNs . "Signing\\SigningAdapterInterface"] = $di->lazyGet("signer");
         $di->params[$rootNs . "Signing\\GnuPGAdapter"]["options"] = $di->lazyGetCall("config", "getValue", "signing/gnupg", array());
         $di->setters[$rootNs . "Signing\\NeedsSigningAdapterInterfaceTrait"]["setSigningAdapter"] = $di->lazyGet("signer");
-        $di->set("signer", $di->lazyNew($rootNs . "Signing\\SigningAdapterInterfaceSharedProxy");
+        $di->set("signer", $di->lazyNew($rootNs . "Signing\\SigningAdapterInterfaceSharedProxy"));
     }
 
     /**
@@ -89,7 +89,7 @@ final class DiConfig
         $di->setters[$rootNs . "Page\\NeedsPageFactoryTrait"]["setPageFactory"] = $di->lazyGet("page_factory");
         $di->setters[$rootNs . "Page\\NeedsPageRendererTrait"]["setPageRenderer"] = $di->lazyGet("page_renderer");
         $di->set("page_factory", $di->lazyNew($rootNs . "Page\\PageFactory"));
-        $di->set("page_renderer", $di->lazyNew($rootNs . "Page\\Renderer"));
+        $di->set("page_renderer", $di->lazyNew($rootNs . "Page\\PageRenderer"));
     }
 
     /**

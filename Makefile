@@ -8,6 +8,7 @@ composer_install:
 	$(COMPOSER) install --no-dev --prefer-dist
 
 generate_classes:
+	rm -rf var/classes/*
 	$(PHP) vendor/bin/autocodeloader.php var/classes src
 
 build_box:
