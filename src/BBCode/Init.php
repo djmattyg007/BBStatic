@@ -3,20 +3,27 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\BBCode;
 
+use Aura\Di\Container as DiContainer;
 use Nbbc\BBCode;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 /**
+ * @param DiContainer $di
  * @param string $filename
  * @return array
  */
-function MattyGBBStaticInitRequire(string $filename): array
+function MattyGBBStaticInitRequire(DiContainer $di, string $filename): array
 {
     return require($filename);
 }
 
 final class Init
 {
+    /**
+     * @var DiContainer
+     */
+    private $di;
+
     /**
      * @var string[]
      */
@@ -36,8 +43,9 @@ final class Init
      * @param string $rulesDir
      * @param string $handlersDir
      */
-    public function __construct(string $rulesDir = __DIR__ . "/rules", string $templateOverridesDir = __DIR__ . "/template_overrides")
+    public function __construct(DiContainer $di, string $rulesDir = __DIR__ . "/rules", string $templateOverridesDir = __DIR__ . "/template_overrides")
     {
+        $this->di = $di;
         $this->addRulesDir($rulesDir);
         $this->addTemplateOverridesDir($templateOverridesDir);
 
@@ -87,7 +95,7 @@ final class Init
             foreach ($globber as $ruleFile) {
                 $ruleFilename = $ruleFile->getRelativePathname();
                 $ruleName = pathinfo($ruleFilename, PATHINFO_FILENAME);
-                $rule = MattyGBBStaticInitRequire($rulesDir . "/" . $ruleFilename);
+                $rule = MattyGBBStaticInitRequire($this->di, $rulesDir . "/" . $ruleFilename);
                 $bbcode->addRule($ruleName, $rule);
             }
         }
@@ -104,7 +112,7 @@ final class Init
             foreach ($globber as $templateOverrideFile) {
                 $templateOverrideFilename = $templateOverrideFile->getRelativePathname();
                 $ruleName = pathinfo($templateOverrideFilename, PATHINFO_FILENAME);
-                $overrides = MattyGBBStaticInitRequire($templateOverridesDir . "/" . $templateOverrideFilename);
+                $overrides = MattyGBBStaticInitRequire($this->di, $templateOverridesDir . "/" . $templateOverrideFilename);
                 foreach ($overrides as $key => $value) {
                     $rule = $bbcode->getRule($ruleName);
                     if ($key === "method_template") {
