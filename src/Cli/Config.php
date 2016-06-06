@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Cli;
 
-use Aura\Di\Container;
+use Aura\Di\Container as DiContainer;
 use MattyG\BBStatic\BBStatic;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 use Webmozart\Console\Config\DefaultApplicationConfig;
@@ -11,9 +11,9 @@ use Webmozart\Console\Config\DefaultApplicationConfig;
 /**
  * @param string $filename
  * @param Init $config
- * @param Container $di
+ * @param DiContainer $di
  */
-function MattyGBBStaticRequireCommandConfig(string $filename, Config $config, Container $di)
+function MattyGBBStaticRequireCommandConfig(string $filename, Config $config, DiContainer $di)
 {
     require($filename);
 }
@@ -21,7 +21,7 @@ function MattyGBBStaticRequireCommandConfig(string $filename, Config $config, Co
 class Config extends DefaultApplicationConfig
 {
     /**
-     * @var Container
+     * @var DiContainer
      */
     protected $di;
 
@@ -35,7 +35,7 @@ class Config extends DefaultApplicationConfig
     /**
      * @param Container $di
      */
-    public function setDiContainer(Container $di)
+    public function setDiContainer(DiContainer $di)
     {
         $this->di = $di;
     }

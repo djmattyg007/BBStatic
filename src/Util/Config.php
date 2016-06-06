@@ -3,17 +3,24 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Util;
 
+use RuntimeException;
+
 final class Config
 {
+    /**
+     * @var array
+     */
+    private $config;
+
     /**
      * @param string $filename
      */
     public function __construct(string $filename)
     {
-        if (is_readable($filename)) {
+        if (is_file($filename) === true && is_readable($filename) === true) {
             $this->loadConfig($filename);
         } else {
-            throw new \RuntimeException(sprintf("Cannot read configuration file '%s'.", $filename));
+            throw new RuntimeException(sprintf("Cannot read configuration file '%s'.", $filename));
         }
     }
 
@@ -25,7 +32,7 @@ final class Config
         $file = file_get_contents($filename);
         $config = json_decode($file, true);
         if (!$config) {
-            throw \RuntimeException(sprintf("Invalid configuration in '%s'.", $filename));
+            throw new RuntimeException(sprintf("Invalid configuration in '%s'.", $filename));
         }
 
         $this->config = $config;

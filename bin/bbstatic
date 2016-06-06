@@ -5,7 +5,7 @@ declare(strict_types=1);
 cli_set_process_title("bbstatic");
 
 $composer = require(dirname(__DIR__) . "/vendor/autoload.php");
-if (class_exists("\MattyG\AutoCodeLoader\Autoloader") === true) {
+if (class_exists("\\MattyG\\AutoCodeLoader\\Autoloader") === true) {
     \MattyG\AutoCodeLoader\Autoloader::registerAutoloader(dirname(__DIR__) . "/var/classes");
 } else {
     $composer->addPsr4("", dirname(__DIR__) . "/var/classes");
@@ -14,7 +14,7 @@ if (class_exists("\MattyG\AutoCodeLoader\Autoloader") === true) {
 use MattyG\BBStatic;
 use Webmozart\Console\ConsoleApplication;
 
-$di = (new BBStatic\DiConfig($config))->createContainer();
+$di = (new BBStatic\DiConfig())->createContainer();
 $cliConfig = new BBStatic\Cli\Config();
 $cliConfig->setDiContainer($di);
 $cliConfig->addCommands();

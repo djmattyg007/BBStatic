@@ -76,6 +76,9 @@ final class Init
         return $bbcode;
     }
 
+    /**
+     * @param BBCode $bbcode
+     */
     protected function initRules(BBCode $bbcode)
     {
         foreach ($this->rulesDirs as $rulesDir) {
