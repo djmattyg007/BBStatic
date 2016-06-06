@@ -40,7 +40,6 @@ final class DiConfig
     {
         $di->types[$rootNs . "Util\\ConfigFactory"] = $di->lazyGet("config_factory");
         $di->setters[$rootNs . "Util\\NeedsConfigTrait"]["setConfig"] = $di->lazyGet("config");
-        //$di->setters[$rootNs . "Util\\NeedsConfigFactoryTrait"]["setConfigFactory"] = $di->lazyGet("config_factory");
         $di->set("config", $di->lazyNew($rootNs . "Util\\Config", array("filename" => BBStatic::CONFIG_FILENAME)));
         $di->set("config_factory", $di->lazyNew($rootNs . "Util\\ConfigFactory"));
     }
