@@ -21,6 +21,11 @@ class GnuPGAdapter implements SigningAdapterInterface
     protected $gpgPath;
 
     /**
+     * @var string
+     */
+    protected $localUser = null;
+
+    /**
      * @param ProcessBuilderFactory $processBuilderFactory
      * @param array $options
      * @throws \RuntimeException
@@ -34,6 +39,9 @@ class GnuPGAdapter implements SigningAdapterInterface
         }
         if (!$this->gpgPath) {
             throw \RuntimeException("Cannot locate GnuPG binary.");
+        }
+        if (!empty($options["local_user"])) {
+            $this->localUser = $options["local_user"];
         }
         $this->processBuilderFactory = $processBuilderFactory;
     }
@@ -71,8 +79,12 @@ class GnuPGAdapter implements SigningAdapterInterface
             "--output",
             $sigFilename,
             "--detach-sign",
-            $filename
         )));
+        if (is_string($this->localUser)) {
+            $processBuilder->add("--local-user")->add($this->localUser);
+        }
+        $processBuilder->add($filename);
+
         $process = $processBuilder->getProcess();
         try {
             $process->mustRun();
