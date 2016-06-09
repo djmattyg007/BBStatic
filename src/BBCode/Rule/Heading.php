@@ -21,7 +21,6 @@ class Heading implements ConfigurableCallableRuleInterface
         if ($action == BBCode::BBCODE_CHECK) {
             return strlen($default) === 0 && !empty($params["level"]);
         }
-        var_dump(preg_match('/^[1-6]$/', $params["level"]));
 
         $level = $params["level"];
         if (empty($params["id"])) {
