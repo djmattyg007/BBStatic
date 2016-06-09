@@ -124,7 +124,7 @@ final class Init
                         }
                     } else {
                         $rule[$key] = $value;
-                        $bbcode->addRule($key, $value);
+                        $bbcode->addRule($ruleName, $rule);
                     }
                 }
             }
