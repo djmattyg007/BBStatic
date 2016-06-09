@@ -110,7 +110,6 @@ class GnuPGAdapter implements SigningAdapterInterface
      */
     private function makeSigFilename(string $filename, string $sigExtension) : string
     {
-        $pathInfo = pathinfo($filename);
-        return $pathInfo["dirname"] . DIRECTORY_SEPARATOR . $pathInfo["filename"] . "." . $sigExtension;
+        return "{$filename}.{$sigExtension}";
     }
 }
