@@ -78,6 +78,14 @@ class DirectoryManager
     /**
      * @return string
      */
+    public function getConfigFolderDirectory() : string
+    {
+        return $this->directories["conf"];
+    }
+
+    /**
+     * @return string
+     */
     public function getTemplatesDirectory() : string
     {
         return $this->directories["theme"];

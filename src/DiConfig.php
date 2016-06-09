@@ -42,6 +42,10 @@ final class DiConfig
         $di->setters[$rootNs . "Util\\NeedsConfigTrait"]["setConfig"] = $di->lazyGet("config");
         $di->set("config", $di->lazyNew($rootNs . "Util\\Config", array("filename" => BBStatic::CONFIG_FILENAME)));
         $di->set("config_factory", $di->lazyNew($rootNs . "Util\\ConfigFactory"));
+
+        $di->set("config_folder", $di->lazyNew($rootNs . "Util\\ConfigFolder", array(
+            "folder" => $di->lazyGetCall("directory_manager", "getConfigFolderDirectory")
+        )));
     }
 
     /**
@@ -65,6 +69,8 @@ final class DiConfig
         $di->types["Nbbc\\BBCode"] = $di->lazy(array($di->lazyNew($rootNs . "BBCode\\Init"), "init"));
         $di->setters[$rootNs . "BBCode\\NeedsBBCodeRendererTrait"]["setBBCodeRenderer"] = $di->lazyGet("bbcode_renderer");
         $di->set("bbcode_renderer", $di->lazyNew($rootNs . "BBCode\\BBCodeRenderer"));
+
+        $di->params[$rootNs . "BBCode\\Rules\\URLMap"]["urlMap"] = $di->lazyGetCall("config_folder", "get", "url_map");
     }
 
     /**
