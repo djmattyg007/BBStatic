@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Cli\Command;
 
-use MattyG\BBStatic\Page\NeedsPageFactoryTrait;
-use MattyG\BBStatic\Page\NeedsPageRendererTrait;
-use MattyG\BBStatic\Signing\NeedsSigningAdapterInterfaceTrait;
+use MattyG\BBStatic\Page\NeedsPageBuilderTrait;
 use MattyG\BBStatic\Util\NeedsConfigTrait;
 use Webmozart\Console\Api\Args\Args;
 use Webmozart\Console\Api\IO\IO;
@@ -13,9 +11,6 @@ use Webmozart\Console\Api\IO\IO;
 class BuildPageHandler
 {
     use NeedsConfigTrait;
-    use NeedsPageFactoryTrait;
-    use NeedsPageRendererTrait;
-    use NeedsSigningAdapterInterfaceTrait;
 
     /**
      * @param Args $args
@@ -24,31 +19,21 @@ class BuildPageHandler
     public function handle(Args $args, IO $io)
     {
         $pageName = $args->getArgument("page");
-        $io->writeLine(sprintf("Page Name: %s", $pageName));
 
-        $page = $this->pageFactory->create(array("name" => $pageName));
-
-        $renderedPageFilename = $this->pageRenderer->render($page);
-        $this->signOutputFile($args, $renderedPageFilename);
-
-        $io->writeLine(sprintf("Rendered Page Filename: %s", $renderedPageFilename));
+        $page = $this->pageBuilder->build($pageName, $this->shouldSignOutput($args));
     }
 
     /**
      * @param Args $args
-     * @param string $filename
+     * @return bool
      */
-    private function signOutputFile(Args $args, string $filename)
+    private function shouldSignOutput(Args $args) : bool
     {
         $configuredSigningOption = $this->config->getValue("signing/enabled", false);
         if ($configuredSigningOption === true) {
-            if ($args->isOptionSet("no-sign") === false) {
-                $this->signingAdapter->sign($filename);
-            }
+            return !$args->isOptionSet("no-sign");
         } else {
-            if ($args->isOptionSet("sign") === true) {
-                $this->signingAdapter->sign($filename);
-            }
+            return $args->isOptionSet("sign");
         }
     }
 }

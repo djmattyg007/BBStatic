@@ -5,9 +5,12 @@ namespace MattyG\BBStatic\Page;
 
 use MattyG\BBStatic\DirectoryManager;
 use MattyG\BBStatic\Util\ConfigFactory;
+use Symfony\Component\Finder\NeedsFinderFactoryTrait;
 
 class Page
 {
+    use NeedsFinderFactoryTrait;
+
     /**
      * @var string
      */
@@ -32,6 +35,7 @@ class Page
     {
         $this->name = $name;
         $this->pageFolder = $directoryManager->getPagesDirectory() . DIRECTORY_SEPARATOR . str_replace("/", DIRECTORY_SEPARATOR, $name);
+        $this->outputFolder = $directoryManager->getHtmlDirectory() . DIRECTORY_SEPARATOR . str_replace("/", DIRECTORY_SEPARATOR, $name);
 
         $this->loadPageConfig($configFactory);
     }
@@ -72,6 +76,14 @@ class Page
     /**
      * @return string
      */
+    public function getOutputFolder() : string
+    {
+        return $this->outputFolder;
+    }
+
+    /**
+     * @return string
+     */
     public function getTitle() : string
     {
         return $this->pageConfig->getValue("title");
@@ -107,5 +119,27 @@ class Page
     public function getTemplateVariables() : array
     {
         return $this->pageConfig->getValue("template_vars", array());
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdditionalFiles() : array
+    {
+        $finder = $this->finderFactory->create();
+        $finder->files()
+            ->in($this->pageFolder)
+            ->notName("content.bb")
+            ->notName("config.json")
+            ->ignoreVCS(true)
+            ->ignoreDotFiles(true)
+            ->followLinks(true);
+
+        $filenames = array();
+        foreach ($finder as $file) {
+            $filenames[] = $file->getPathname();
+        }
+
+        return $filenames;
     }
 }

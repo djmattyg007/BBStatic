@@ -91,8 +91,10 @@ final class DiConfig
      */
     private function initPageConfig(Container $di, string $rootNs)
     {
+        $di->setters[$rootNs . "Page\\NeedsPageBuilderTrait"]["setPageBuilder"] = $di->lazyGet("page_builder");
         $di->setters[$rootNs . "Page\\NeedsPageFactoryTrait"]["setPageFactory"] = $di->lazyGet("page_factory");
         $di->setters[$rootNs . "Page\\NeedsPageRendererTrait"]["setPageRenderer"] = $di->lazyGet("page_renderer");
+        $di->set("page_builder", $di->lazyNew($rootNs . "Page\\PageBuilder"));
         $di->set("page_factory", $di->lazyNew($rootNs . "Page\\PageFactory"));
         $di->set("page_renderer", $di->lazyNew($rootNs . "Page\\PageRenderer"));
     }

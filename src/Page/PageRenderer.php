@@ -3,14 +3,12 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Page;
 
-use MattyG\BBStatic\NeedsDirectoryManagerTrait;
 use MattyG\BBStatic\BBCode\NeedsBBCodeRendererTrait;
 use MattyG\BBStatic\Util\Vendor\NeedsTemplateEngineTrait;
 use Symfony\Component\Filesystem\NeedsFilesystemTrait;
 
 final class PageRenderer
 {
-    use NeedsDirectoryManagerTrait;
     use NeedsBBCodeRendererTrait;
     use NeedsFilesystemTrait;
     use NeedsTemplateEngineTrait;
@@ -21,7 +19,6 @@ final class PageRenderer
      */
     public function render(Page $page) : string
     {
-        $tempDirectory = $this->directoryManager->getTempDirectory("page-content");
         $pageType = $page->getPageType();
         $contentFilename = $page->getContentFilename();
 
@@ -38,7 +35,7 @@ final class PageRenderer
         );
         $renderedContent = $template->render($context);
 
-        $outFilename = $this->directoryManager->getHtmlDirectory() . DIRECTORY_SEPARATOR . $page->getName() . ".html";
+        $outFilename = $page->getOutputFolder() . DIRECTORY_SEPARATOR . "index.html";
         $this->filesystem->dumpFile($outFilename, $renderedContent);
         return $outFilename;
     }
