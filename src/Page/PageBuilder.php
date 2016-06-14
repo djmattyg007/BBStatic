@@ -10,15 +10,18 @@ use Symfony\Component\Filesystem\NeedsFilesystemTrait;
 
 final class PageBuilder
 {
+    use NeedsPageFactoryTrait;
+    use NeedsPageRendererTrait;
+    use NeedsSigningAdapterInterfaceTrait;
+    use NeedsFilesystemTrait;
+
     /**
-     * @param string $pageName
+     * @param Page $page
      * @param bool $shouldSign
      * @return Page
      */
-    public function build(string $pageName, bool $shouldSign) : Page
+    public function build(Page $page, bool $shouldSign) : Page
     {
-        $page = $this->pageFactory->create(array("name" => $pageName));
-
         $renderedPageFilename = $this->pageRenderer->render($page);
         if ($shouldSign === true) {
             $this->signingAdapter->sign($renderedPageFilename);
@@ -32,7 +35,16 @@ final class PageBuilder
                 $this->signingAdapter->sign($outputFile);
             }
         }
+    }
 
+    /**
+     * @param string $pageName
+     * @param bool $shouldSign
+     */
+    public function createAndBuild(string $pageName, bool $shouldSign) : Page
+    {
+        $page = $this->pageFactory->create(array("name" => $pageName));
+        $this->build($page, $shouldSign);
         return $page;
     }
 }

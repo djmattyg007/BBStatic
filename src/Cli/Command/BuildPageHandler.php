@@ -20,7 +20,7 @@ class BuildPageHandler
     {
         $pageName = $args->getArgument("page");
 
-        $page = $this->pageBuilder->build($pageName, $this->shouldSignOutput($args));
+        $this->pageBuilder->createAndBuild($pageName, $this->shouldSignOutput($args));
     }
 
     /**
