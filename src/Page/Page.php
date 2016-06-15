@@ -3,12 +3,17 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Page;
 
+use Icecave\Parity\Exception\NotComparableException;
+use Icecave\Parity\ExtendedComparableInterface;
+use Icecave\Parity\ExtendedComparableTrait;
+use Icecave\Parity\SubClassComparableInterface;
 use MattyG\BBStatic\DirectoryManager;
 use MattyG\BBStatic\Util\ConfigFactory;
 use Symfony\Component\Finder\NeedsFinderFactoryTrait;
 
-class Page
+class Page implements ExtendedComparableInterface, SubClassComparableInterface
 {
+    use ExtendedComparableTrait;
     use NeedsFinderFactoryTrait;
 
     /**
@@ -141,5 +146,22 @@ class Page
         }
 
         return $filenames;
+    }
+
+    /**
+     * @param Page $value
+     * @return int The result of the comparison.
+     * @throws NotComparableException
+     */
+    public function compare($value)
+    {
+        if (is_object($value) === false) {
+            throw new NotComparableException(sprintf("Cannot compare %s with Page", gettype($value)));
+        }
+        if (!$value instanceof Page) {
+            throw new NotComparableException(sprintf("%s is not of type Page", get_class($value)));
+        }
+
+        return $this->getDatePosted() - $value->getDatePosted();
     }
 }

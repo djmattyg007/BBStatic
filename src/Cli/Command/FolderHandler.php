@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Cli\Command;
 
-use MattyG\BBStatic\BBCode\NeedsBBCodeRendererTrait;
+use Icecave\Collections\NeedsVectorFactoryTrait;
+use Icecave\Parity\Comparator\NeedsParityComparatorTrait;
+use MattyG\BBStatic\Page\NeedsPageBuilderTrait;
+use MattyG\BBStatic\Page\NeedsPageFactoryTrait;
 use MattyG\BBStatic\Signing\NeedsSigningAdapterInterfaceTrait;
 use MattyG\BBStatic\Util\NeedsConfigTrait;
 use Symfony\Component\Filesystem\NeedsFilesystemTrait;
@@ -13,11 +16,15 @@ use Webmozart\Console\Api\IO\IO;
 
 class FolderHandler
 {
-    use NeedsBBCodeRendererTrait;
     use NeedsConfigTrait;
     use NeedsFilesystemTrait;
     use NeedsFinderFactoryTrait;
+    use NeedsPageBuilderTrait;
+    use NeedsPageFactoryTrait;
+    use NeedsParityComparatorTrait;
     use NeedsSigningAdapterInterfaceTrait;
+    use NeedsVectorFactoryTrait;
+    use ShouldSignOutputTrait;
 
     /**
      * @param Args $args
@@ -33,42 +40,23 @@ class FolderHandler
 
         $finder = $this->finderFactory->create();
         $finder->files()
-            ->name("*.bb")
+            ->name("config.json")
             ->in($folderPath)
             ->ignoreVCS(true)
             ->ignoreDotFiles(true)
             ->followLinks();
 
+        $pageCollection = $this->vectorFactory->create();
         foreach ($finder as $file) {
-            $inFilename = $file->getPathname();
-            $io->write(sprintf("Converting %s ... ", $inFilename), IO::VERBOSE);
-            $inFilenameParts = pathinfo($inFilename);
-            $outFilename = $inFilenameParts["dirname"] . "/" . $inFilenameParts["filename"] . ".html";
-            $this->bbcodeRenderer->buildAndOutput($inFilename, $outFilename);
-            if ($shouldSign === true) {
-                $this->signingAdapter->sign($outFilename);
-            }
-            $io->writeLine("done.", IO::VERBOSE);
+            $inFilename = $file->getRelativePath();
+            $page = $this->pageFactory->create(array("name" => $inFilename));
+            $pageCollection->pushBack($page);
         }
-    }
 
-    /**
-     * @param Args $args
-     * @return bool
-     */
-    private function shouldSignOutput(Args $args) : bool
-    {
-        $configuredSigningOption = $this->config->getValue("signing/enabled", false);
-        if ($configuredSigningOption === true) {
-            if ($args->isOptionSet("no-sign") === false) {
-                return true;
-            }
-        } else {
-            if ($args->isOptionSet("sign") === true) {
-                return true;
-            }
+        $sortedPageCollection = $pageCollection->sort($this->parityComparator);
+        foreach ($sortedPageCollection as $page) {
+            $io->writeLine("Found " . $page->getName());
         }
-        return false;
     }
 
     /**

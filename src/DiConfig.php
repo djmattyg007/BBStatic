@@ -27,7 +27,10 @@ final class DiConfig
         $this->initSigningConfig($di, $rootNs);
         $this->initPageConfig($di, $rootNs);
         $this->initTemplateEngineConfig($di, $rootNs);
-        $this->initSymfonyFilesystemConfig($di, $rootNs);
+        $this->initIcecaveCollectionsConfig($di, "Icecave\\Collections\\");
+        $this->initIcecaveParityConfig($di, "Icecave\\Parity\\");
+        $this->initSymfonyFilesystemConfig($di, "Symfony\\Component\\Filesystem\\");
+        $this->initSymfonyFinderConfig($di, "Symfony\\Component\\Finder\\");
 
         return $di;
     }
@@ -124,10 +127,42 @@ final class DiConfig
      * @param Container $di
      * @param string $rootNs
      */
+    private function initIcecaveCollectionsConfig(Container $di, string $rootNs)
+    {
+        $di->setters[$rootNs . "NeedsVectorFactoryTrait"]["setVectorFactory"] = $di->lazyGet("vector_collection_factory");
+        $di->set("vector_collection_factory", $di->lazyNew($rootNs . "VectorFactory"));
+    }
+
+    /**
+     * @param Container $di
+     * @param string $rootNs
+     */
+    private function initIcecaveParityConfig(Container $di, string $rootNs)
+    {
+        $di->params[$rootNs . "Comparator\\ParityComparator"]["fallbackComparator"] = $di->lazyGet("null_comparator");
+        $di->setters[$rootNs . "NeedsParityComparatorTrait"]["setParityComparator"] = $di->lazyGet("parity_comparator");
+        $di->set("parity_comparator", $di->lazyNew($rootNs . "Comparator\\ParityComparator"));
+        $di->set("null_comparator", $di->lazyNew("MattyG\\BBStatic\\Util\\Vendor\\NullComparator"));
+    }
+
+    /**
+     * @param Container $di
+     * @param string $rootNs
+     */
     private function initSymfonyFilesystemConfig(Container $di, string $rootNs)
     {
-        $di->types["Symfony\\Component\\Filesystem\\Filesystem"] = $di->lazyGet("filesystem");
-        $di->setters["Symfony\\Component\\Filesystem\\NeedsFilesystemTrait"]["setFilesystem"] = $di->lazyGet("filesystem");
-        $di->set("filesystem", $di->lazyNew("Symfony\\Component\\Filesystem\\Filesystem"));
+        $di->types[$rootNs . "Filesystem"] = $di->lazyGet("filesystem");
+        $di->setters[$rootNs . "NeedsFilesystemTrait"]["setFilesystem"] = $di->lazyGet("filesystem");
+        $di->set("filesystem", $di->lazyNew($rootNs . "Filesystem"));
+    }
+
+    /**
+     * @param Container $di
+     * @param string $rootNs
+     */
+    private function initSymfonyFinderConfig(Container $di, string $rootNs)
+    {
+        $di->setters[$rootNs . "NeedsFinderFactoryTrait"]["setFinderFactory"] = $di->lazyGet("finder_factory");
+        $di->set("finder_factory", $di->lazyNew($rootNs . "FinderFactory"));
     }
 }

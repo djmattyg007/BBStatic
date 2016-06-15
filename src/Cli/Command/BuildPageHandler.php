@@ -11,6 +11,7 @@ use Webmozart\Console\Api\IO\IO;
 class BuildPageHandler
 {
     use NeedsConfigTrait;
+    use ShouldSignOutputTrait;
 
     /**
      * @param Args $args
@@ -20,20 +21,6 @@ class BuildPageHandler
     {
         $pageName = $args->getArgument("page");
 
-        $this->pageBuilder->createAndBuild($pageName, $this->shouldSignOutput($args));
-    }
-
-    /**
-     * @param Args $args
-     * @return bool
-     */
-    private function shouldSignOutput(Args $args) : bool
-    {
-        $configuredSigningOption = $this->config->getValue("signing/enabled", false);
-        if ($configuredSigningOption === true) {
-            return !$args->isOptionSet("no-sign");
-        } else {
-            return $args->isOptionSet("sign");
-        }
+        $this->pageBuilder->createAndBuildPage($pageName, $this->shouldSignOutput($args));
     }
 }

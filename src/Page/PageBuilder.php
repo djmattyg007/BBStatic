@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Page;
 
+use Icecave\Collections\Vector as PageCollection;
 use MattyG\BBStatic\Page\NeedsPageFactoryTrait;
 use MattyG\BBStatic\Page\NeedsPageRendererTrait;
 use MattyG\BBStatic\Signing\NeedsSigningAdapterInterfaceTrait;
@@ -15,12 +16,19 @@ final class PageBuilder
     use NeedsSigningAdapterInterfaceTrait;
     use NeedsFilesystemTrait;
 
+    public function buildPages(PageCollection $pages, bool $shouldSign)
+    {
+        foreach ($pages as $page) {
+            $this->buildPage($page, $shouldSign);
+        }
+    }
+
     /**
      * @param Page $page
      * @param bool $shouldSign
      * @return Page
      */
-    public function build(Page $page, bool $shouldSign) : Page
+    public function buildPage(Page $page, bool $shouldSign) : Page
     {
         $renderedPageFilename = $this->pageRenderer->render($page);
         if ($shouldSign === true) {
@@ -41,10 +49,10 @@ final class PageBuilder
      * @param string $pageName
      * @param bool $shouldSign
      */
-    public function createAndBuild(string $pageName, bool $shouldSign) : Page
+    public function createAndBuildPage(string $pageName, bool $shouldSign) : Page
     {
         $page = $this->pageFactory->create(array("name" => $pageName));
-        $this->build($page, $shouldSign);
+        $this->buildPage($page, $shouldSign);
         return $page;
     }
 }
