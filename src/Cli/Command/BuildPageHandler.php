@@ -11,6 +11,7 @@ use Webmozart\Console\Api\IO\IO;
 class BuildPageHandler
 {
     use NeedsConfigTrait;
+    use NeedsPageBuilderTrait;
     use ShouldSignOutputTrait;
 
     /**

@@ -16,20 +16,33 @@ final class PageBuilder
     use NeedsSigningAdapterInterfaceTrait;
     use NeedsFilesystemTrait;
 
-    public function buildPages(PageCollection $pages, bool $shouldSign)
+    /**
+     * @param PageCollection $pages
+     * @param bool $shouldSign
+     * @param callable|null $progressUpdate
+     */
+    public function buildPages(PageCollection $pages, bool $shouldSign, callable $progressUpdate = null)
     {
+        $totalPageCount = count($pages);
+        $counter = 0;
         foreach ($pages as $page) {
+            $counter++;
             $this->buildPage($page, $shouldSign);
+            if ($progressUpdate !== null) {
+                $progressUpdate($counter, $totalCount);
+            }
         }
     }
 
     /**
      * @param Page $page
      * @param bool $shouldSign
-     * @return Page
      */
-    public function buildPage(Page $page, bool $shouldSign) : Page
+    public function buildPage(Page $page, bool $shouldSign)
     {
+        // TODO: Use finder to get only files directly in folder
+        $this->filesystem->remove($page->getOutputFolder());
+
         $renderedPageFilename = $this->pageRenderer->render($page);
         if ($shouldSign === true) {
             $this->signingAdapter->sign($renderedPageFilename);
@@ -48,6 +61,7 @@ final class PageBuilder
     /**
      * @param string $pageName
      * @param bool $shouldSign
+     * @return Page
      */
     public function createAndBuildPage(string $pageName, bool $shouldSign) : Page
     {
