@@ -16,6 +16,9 @@ class Page implements ExtendedComparableInterface, SubClassComparableInterface
     use ExtendedComparableTrait;
     use NeedsFinderFactoryTrait;
 
+    const CONFIG_FILENAME = "config.json";
+    const CONTENT_FILENAME = "content.bb";
+
     /**
      * @var string
      */
@@ -50,7 +53,7 @@ class Page implements ExtendedComparableInterface, SubClassComparableInterface
      */
     private function loadPageConfig(ConfigFactory $configFactory)
     {
-        $filename = $this->pageFolder . DIRECTORY_SEPARATOR . "config.json";
+        $filename = $this->pageFolder . DIRECTORY_SEPARATOR . self::CONFIG_FILENAME;
         $this->pageConfig = $configFactory->create(array("filename" => $filename));
     }
 
@@ -75,7 +78,7 @@ class Page implements ExtendedComparableInterface, SubClassComparableInterface
      */
     public function getContentFilename() : string
     {
-        return $this->pageFolder . DIRECTORY_SEPARATOR . "content.bb";
+        return $this->pageFolder . DIRECTORY_SEPARATOR . self::CONTENT_FILENAME;
     }
 
     /**
@@ -133,9 +136,10 @@ class Page implements ExtendedComparableInterface, SubClassComparableInterface
     {
         $finder = $this->finderFactory->create();
         $finder->files()
+            // TODO: Add depth call. Only files in the immediate folder should be considered.
             ->in($this->pageFolder)
-            ->notName("content.bb")
-            ->notName("config.json")
+            ->notName(self::CONFIG_FILENAME)
+            ->notName(self::CONTENT_FILENAME)
             ->ignoreVCS(true)
             ->ignoreDotFiles(true)
             ->followLinks(true);

@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Cli\Command;
 
-use Icecave\Collections\NeedsVectorFactoryTrait;
 use Icecave\Parity\Comparator\NeedsParityComparatorTrait;
 use MattyG\BBStatic\Page\NeedsPageBuilderTrait;
-use MattyG\BBStatic\Page\NeedsPageFactoryTrait;
+use MattyG\BBStatic\Page\NeedsPageGathererTrait;
 use MattyG\BBStatic\Signing\NeedsSigningAdapterInterfaceTrait;
 use MattyG\BBStatic\Util\NeedsConfigTrait;
 use Symfony\Component\Filesystem\NeedsFilesystemTrait;
@@ -20,10 +19,9 @@ class FolderHandler
     use NeedsFilesystemTrait;
     use NeedsFinderFactoryTrait;
     use NeedsPageBuilderTrait;
-    use NeedsPageFactoryTrait;
+    use NeedsPageGathererTrait;
     use NeedsParityComparatorTrait;
     use NeedsSigningAdapterInterfaceTrait;
-    use NeedsVectorFactoryTrait;
     use ShouldSignOutputTrait;
 
     /**
@@ -38,20 +36,7 @@ class FolderHandler
         $io->writeLine("Folder path: " . $folderPath);
         $io->writeLine("Signing output: " . ($shouldSign === true ? "yes" : "no"));
 
-        $finder = $this->finderFactory->create();
-        $finder->files()
-            ->name("config.json")
-            ->in($folderPath)
-            ->ignoreVCS(true)
-            ->ignoreDotFiles(true)
-            ->followLinks();
-
-        $pageCollection = $this->vectorFactory->create();
-        foreach ($finder as $file) {
-            $inFilename = $file->getRelativePath();
-            $page = $this->pageFactory->create(array("name" => $inFilename));
-            $pageCollection->pushBack($page);
-        }
+        $pageCollection = $this->pageGatherer->gatherPages();
 
         $sortedPageCollection = $pageCollection->sort($this->parityComparator);
         foreach ($sortedPageCollection as $page) {
