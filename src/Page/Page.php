@@ -136,13 +136,13 @@ class Page implements ExtendedComparableInterface, SubClassComparableInterface
     {
         $finder = $this->finderFactory->create();
         $finder->files()
-            // TODO: Add depth call. Only files in the immediate folder should be considered.
             ->in($this->pageFolder)
+            ->depth(0)
             ->notName(self::CONFIG_FILENAME)
             ->notName(self::CONTENT_FILENAME)
             ->ignoreVCS(true)
             ->ignoreDotFiles(true)
-            ->followLinks(true);
+            ->followLinks();
 
         $filenames = array();
         foreach ($finder as $file) {

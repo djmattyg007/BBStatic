@@ -8,13 +8,15 @@ use MattyG\BBStatic\Page\NeedsPageFactoryTrait;
 use MattyG\BBStatic\Page\NeedsPageRendererTrait;
 use MattyG\BBStatic\Signing\NeedsSigningAdapterInterfaceTrait;
 use Symfony\Component\Filesystem\NeedsFilesystemTrait;
+use Symfony\Component\Finder\NeedsFinderFactoryTrait;
 
 final class PageBuilder
 {
+    use NeedsFinderFactoryTrait;
+    use NeedsFilesystemTrait;
     use NeedsPageFactoryTrait;
     use NeedsPageRendererTrait;
     use NeedsSigningAdapterInterfaceTrait;
-    use NeedsFilesystemTrait;
 
     /**
      * @param PageCollection $pages
@@ -40,8 +42,7 @@ final class PageBuilder
      */
     public function buildPage(Page $page, bool $shouldSign)
     {
-        // TODO: Use finder to get only files directly in folder
-        $this->filesystem->remove($page->getOutputFolder());
+        $this->cleanFolder($page->getOutputFolder());
 
         $renderedPageFilename = $this->pageRenderer->render($page);
         if ($shouldSign === true) {
@@ -55,6 +56,23 @@ final class PageBuilder
             if ($shouldSign === true) {
                 $this->signingAdapter->sign($outputFile);
             }
+        }
+    }
+
+    /**
+     * @param string $folderPath
+     */
+    private function cleanFolder(string $folderPath)
+    {
+        $finder = $this->finderFactory->create();
+        $finder->files()
+            ->in($folderPath)
+            ->depth(0)
+            ->ignoreVCS(true)
+            ->ignoreDotFiles(true);
+
+        foreach ($finder as $file) {
+            $this->filesystem->remove($file->getPathname());
         }
     }
 
