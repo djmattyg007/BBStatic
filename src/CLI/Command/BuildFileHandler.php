@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MattyG\BBStatic\Cli\Command;
+namespace MattyG\BBStatic\CLI\Command;
 
 use MattyG\BBStatic\BBCode\NeedsBBCodeRendererTrait;
 use MattyG\BBStatic\Signing\NeedsSigningAdapterInterfaceTrait;

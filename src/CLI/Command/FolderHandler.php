@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MattyG\BBStatic\Cli\Command;
+namespace MattyG\BBStatic\CLI\Command;
 
 use Icecave\Parity\Comparator\NeedsParityComparatorTrait;
 use MattyG\BBStatic\Page\NeedsPageBuilderTrait;

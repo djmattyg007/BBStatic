@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MattyG\BBStatic\Cli;
+namespace MattyG\BBStatic\CLI;
 
 use Aura\Di\Container as DiContainer;
 use MattyG\BBStatic\BBStatic;

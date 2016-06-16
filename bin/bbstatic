@@ -15,7 +15,7 @@ use MattyG\BBStatic;
 use Webmozart\Console\ConsoleApplication;
 
 $di = (new BBStatic\DiConfig())->createContainer();
-$cliConfig = new BBStatic\Cli\Config();
+$cliConfig = new BBStatic\CLI\Config();
 $cliConfig->setDiContainer($di);
 $cliConfig->addCommands();
 
