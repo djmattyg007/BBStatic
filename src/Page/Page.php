@@ -51,9 +51,9 @@ class Page implements ExtendedComparableInterface, SubClassComparableInterface
     /**
      * @param ConfigFactory $configFactory
      */
-    private function loadPageConfig(ConfigFactory $configFactory)
+    protected function loadPageConfig(ConfigFactory $configFactory)
     {
-        $filename = $this->pageFolder . DIRECTORY_SEPARATOR . self::CONFIG_FILENAME;
+        $filename = $this->pageFolder . DIRECTORY_SEPARATOR . static::CONFIG_FILENAME;
         $this->pageConfig = $configFactory->create(array("filename" => $filename));
     }
 
@@ -78,7 +78,7 @@ class Page implements ExtendedComparableInterface, SubClassComparableInterface
      */
     public function getContentFilename() : string
     {
-        return $this->pageFolder . DIRECTORY_SEPARATOR . self::CONTENT_FILENAME;
+        return $this->pageFolder . DIRECTORY_SEPARATOR . static::CONTENT_FILENAME;
     }
 
     /**
