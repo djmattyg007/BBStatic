@@ -6,13 +6,13 @@ namespace MattyG\BBStatic\Page;
 use Icecave\Collections\NeedsVectorFactoryTrait;
 use Icecave\Collections\Vector as PageCollection;
 use MattyG\BBStatic\NeedsDirectoryManagerTrait;
-use MattyG\BBStatic\Page\NeedsPageFactoryTrait;
 use Symfony\Component\Finder\NeedsFinderFactoryTrait;
 
 final class PageGatherer
 {
     use NeedsDirectoryManagerTrait;
     use NeedsFinderFactoryTrait;
+    use NeedsIndexPageFactoryTrait;
     use NeedsPageFactoryTrait;
     use NeedsVectorFactoryTrait;
 
@@ -21,20 +21,42 @@ final class PageGatherer
      */
     public function gatherPages() : PageCollection
     {
+        $pageCollection = $this->vectorFactory->create();
+
+        $this->loadPages($pageCollection);
+        $this->checkForIndex($pageCollection);
+
+        return $pageCollection;
+    }
+
+    /**
+     * @param PageCollection $pageCollection
+     */
+    private function loadPages(PageCollection $pageCollection)
+    {
         $finder = $this->finderFactory->create();
         $finder->files()
             ->name(Page::CONFIG_FILENAME)
             ->in($this->directoryManager->getPagesDirectory())
+            ->depth("> 0")
             ->ignoreVCS(true)
             ->ignoreDotFiles(true)
             ->followLinks();
 
-        $pageCollection = $this->vectorFactory->create();
         foreach ($finder as $file) {
             $pageName = $file->getRelativePath();
             $pageCollection->pushBack($this->pageFactory->create(array("name" => $pageName)));
         }
+    }
 
-        return $pageCollection;
+    /**
+     * @param PageCollection $pageCollection
+     */
+    private function checkForIndex(PageCollection $pageCollection)
+    {
+        $indexConfigFilename = $this->directoryManager->getPagesDirectory() . DIRECTORY_SEPARATOR . Page::CONFIG_FILENAME;
+        if (file_exists($indexConfigFilename) === true) {
+            $pageCollection->pushBack($this->indexPageFactory->create());
+        }
     }
 }
