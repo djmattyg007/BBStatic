@@ -24,7 +24,7 @@ final class DiConfig
         $this->initConfigConfig($di, $rootNs);
         $this->initDirectoryManagerConfig($di, $rootNs);
         $this->initBBCodeConfig($di, $rootNs);
-        $this->initSigningConfig($di, $rootNs);
+        $this->initSigningConfig($di, "{$rootNs}Signing\\");
         $this->initPageConfig($di, "{$rootNs}Content\\");
         $this->initTemplateEngineConfig($di, $rootNs);
         $this->initIcecaveCollectionsConfig($di, "Icecave\\Collections\\");
@@ -82,10 +82,10 @@ final class DiConfig
      */
     private function initSigningConfig(Container $di, string $rootNs)
     {
-        $di->types[$rootNs . "Signing\\SigningAdapterInterface"] = $di->lazyGet("signer");
-        $di->params[$rootNs . "Signing\\GnuPGAdapter"]["options"] = $di->lazyGetCall("config", "getValue", "signing/gnupg", array());
-        $di->setters[$rootNs . "Signing\\NeedsSigningAdapterInterfaceTrait"]["setSigningAdapter"] = $di->lazyGet("signer");
-        $di->set("signer", $di->lazyNew($rootNs . "Signing\\SigningAdapterInterfaceSharedProxy"));
+        $di->types[$rootNs . "SigningAdapterInterface"] = $di->lazyGet("signer");
+        $di->params[$rootNs . "GnuPGAdapter"]["options"] = $di->lazyGetCall("config", "getValue", "signing/gnupg", array());
+        $di->setters[$rootNs . "NeedsSigningAdapterInterfaceTrait"]["setSigningAdapter"] = $di->lazyGet("signer");
+        $di->set("signer", $di->lazyNew($rootNs . "SigningAdapterInterfaceSharedProxy"));
     }
 
     /**
