@@ -47,7 +47,7 @@ class Page extends ContentEntity implements ExtendedComparableInterface, SubClas
         if (is_object($value) === false) {
             throw new NotComparableException(sprintf("Cannot compare %s with Page", gettype($value)));
         }
-        if (!value instanceof Page) {
+        if (!$value instanceof Page) {
             throw new NotComparableException(sprintf("%s is not of type Page", get_class($value)));
         }
 

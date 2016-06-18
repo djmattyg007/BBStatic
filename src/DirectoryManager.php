@@ -14,7 +14,7 @@ class DirectoryManager
     /**
      * @var array
      */
-    private $directories;
+    protected $directories;
 
     /**
      * @var Filesystem
@@ -24,7 +24,7 @@ class DirectoryManager
     /**
      * @var string
      */
-    private $tempDirectory;
+    protected $tempDirectory;
 
     /**
      * @param Config $config
