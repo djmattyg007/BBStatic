@@ -17,6 +17,11 @@ class DirectoryManager
     protected $directories;
 
     /**
+     * @var array
+     */
+    protected $urlPaths;
+
+    /**
      * @var Filesystem
      */
     private $filesystem;
@@ -34,6 +39,11 @@ class DirectoryManager
     {
         $directories = $config->getValue("directories");
         $this->directories = array_map(function($dir) { return rtrim($dir, self::DS); }, array_filter($directories));
+        $this->urlPaths = array(
+            "pages" => str_replace("/", self::DS, $config->getValue("site/pages_url_path")),
+            "posts" => str_replace("/", self::DS, $config->getValue("site/posts_url_path")),
+        );
+
         $this->filesystem = $filesystem;
 
         $this->initTemp();
@@ -112,7 +122,7 @@ class DirectoryManager
      */
     public function getPageContentDirectory()
     {
-        return $this->directories["pages"] ?? null;
+        return $this->directories["pages"];
     }
 
     /**
@@ -120,7 +130,7 @@ class DirectoryManager
      */
     public function getPageOutputDirectory() : string
     {
-        return $this->getHtmlDirectory();
+        return rtrim($this->getHtmlDirectory() . self::DS . $this->urlPaths["pages"], self::DS);
     }
 
     /**
@@ -128,7 +138,7 @@ class DirectoryManager
      */
     public function getPostContentDirectory()
     {
-        return $this->directories["posts"] ?? null;
+        return $this->directories["posts"];
     }
 
     /**
@@ -136,6 +146,6 @@ class DirectoryManager
      */
     public function getPostOutputDirectory() : string
     {
-        return $this->getHtmlDirectory() . self::DS . "blog";
+        return rtrim($this->getHtmlDirectory() . self::DS . $this->urlPaths["posts"], self::DS);
     }
 }

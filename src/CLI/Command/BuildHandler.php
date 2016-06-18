@@ -28,8 +28,21 @@ class BuildHandler
     {
         $shouldSignOutput = $this->shouldSignOutput($args);
         $io->writeLine("Signing output: " . ($shouldSignOutput === true ? "true" : "false"));
-        $this->buildPages($io, $shouldSignOutput);
-        $this->buildPosts($io, $shouldSignOutput);
+
+        $pagesEnabled = $this->config->getValue("site/pages_url_path") !== null;
+        $postsEnabled = $this->config->getValue("site/posts_url_path") !== null;
+        if ($pagesEnabled === false && $postsEnabled === false) {
+            $io->errorLine("Neither pages nor posts are configured");
+            return 1;
+        }
+
+        if ($pagesEnabled === true) {
+            $this->buildPages($io, $shouldSignOutput);
+        }
+
+        if ($postsEnabled === true) {
+            $this->buildPosts($io, $shouldSignOutput);
+        }
     }
 
     /**

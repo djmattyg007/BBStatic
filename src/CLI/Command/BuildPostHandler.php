@@ -20,6 +20,11 @@ class BuildPostHandler
      */
     public function handle(Args $args, IO $io)
     {
+        if ($this->config->getValue("site/posts_url_path") === null) {
+            $io->errorLine("Posts are not configured");
+            return 1;
+        }
+
         $postName = $args->getArgument("post");
 
         $this->postBuilder->createAndBuildPost($postName, $this->shouldSignOutput($args));

@@ -17,7 +17,7 @@ class IndexPage extends Page
     {
         $this->name = "index";
         $this->contentFolder = $directoryManager->getPageContentDirectory();
-        $this->outputFolder = $directoryManager->getPageOutputDirectory();
+        $this->outputFolder = $directoryManager->getHtmlDirectory();
 
         $this->loadConfig($configFactory);
     }

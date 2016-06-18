@@ -20,6 +20,11 @@ class BuildPageHandler
      */
     public function handle(Args $args, IO $io)
     {
+        if ($this->config->getValue("site/pages_url_path") === null) {
+            $io->errorLine("Pages are not configured");
+            return 1;
+        }
+
         $pageName = $args->getArgument("page");
 
         $this->pageBuilder->createAndBuildPage($pageName, $this->shouldSignOutput($args));
