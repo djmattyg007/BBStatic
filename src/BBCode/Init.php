@@ -5,6 +5,7 @@ namespace MattyG\BBStatic\BBCode;
 
 use Aura\Di\Container as DiContainer;
 use Nbbc\BBCode;
+use Nbbc\Debugger as BBCodeDebugger;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 /**
@@ -81,6 +82,11 @@ final class Init
         $bbcode = new BBCode;
         $this->initRules($bbcode);
         $this->initTemplateOverrides($bbcode);
+
+        if (getenv("BBCODE_DEBUG") == 1) {
+            BBCodeDebugger::$level = 0;
+        }
+
         return $bbcode;
     }
 
