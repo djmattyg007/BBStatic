@@ -42,7 +42,7 @@ class Post extends ContentEntity implements ExtendedComparableInterface, SubClas
      */
     public function getTags() : array
     {
-        return $this->postConfig->getValue("tags", array());
+        return $this->config->getValue("tags", array());
     }
 
     /**

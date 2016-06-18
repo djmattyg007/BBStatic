@@ -74,7 +74,7 @@ final class DiConfig
         $di->setters[$rootNs . "BBCode\\NeedsBBCodeRendererTrait"]["setBBCodeRenderer"] = $di->lazyGet("bbcode_renderer");
         $di->set("bbcode_renderer", $di->lazyNew($rootNs . "BBCode\\BBCodeRenderer"));
 
-        $di->params[$rootNs . "BBCode\\Rules\\URLMap"]["urlMap"] = $di->lazyGetCall("config_folder", "get", "url_map");
+        $di->params[$rootNs . "BBCode\\Rule\\URLMap"]["urlMap"] = $di->lazyGetCall("config_folder", "getValue", "url_map");
     }
 
     /**

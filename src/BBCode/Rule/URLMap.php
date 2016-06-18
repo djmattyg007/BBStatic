@@ -5,7 +5,7 @@ namespace MattyG\BBStatic\BBCode\Rule;
 
 use Nbbc\BBCode;
 
-class QuoteFreeform implements ConfigurableCallableRuleInterface
+class URLMap implements ConfigurableCallableRuleInterface
 {
     /**
      * @var array
