@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MattyG\BBStatic\Page;
+namespace MattyG\BBStatic\Content\Page;
 
 use MattyG\BBStatic\DirectoryManager;
 use MattyG\BBStatic\Util\ConfigFactory;
@@ -16,10 +16,10 @@ class IndexPage extends Page
     public function __construct(DirectoryManager $directoryManager, ConfigFactory $configFactory)
     {
         $this->name = "index";
-        $this->pageFolder = $directoryManager->getPagesDirectory();
+        $this->contentFolder = $directoryManager->getPagesDirectory();
         $this->outputFolder = $directoryManager->getHtmlDirectory();
 
-        $this->loadPageConfig($configFactory);
+        $this->loadConfig($configFactory);
     }
 
     /**

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\CLI\Command;
 
-use MattyG\BBStatic\Page\NeedsPageBuilderTrait;
+use MattyG\BBStatic\Content\Page\NeedsPageBuilderTrait;
 use MattyG\BBStatic\Util\NeedsConfigTrait;
 use Webmozart\Console\Api\Args\Args;
 use Webmozart\Console\Api\IO\IO;

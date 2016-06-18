@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MattyG\BBStatic\Page;
+namespace MattyG\BBStatic\Content\Page;
 
 use Icecave\Collections\NeedsVectorFactoryTrait;
 use Icecave\Collections\Vector as PageCollection;

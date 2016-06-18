@@ -25,7 +25,7 @@ final class DiConfig
         $this->initDirectoryManagerConfig($di, $rootNs);
         $this->initBBCodeConfig($di, $rootNs);
         $this->initSigningConfig($di, $rootNs);
-        $this->initPageConfig($di, $rootNs);
+        $this->initPageConfig($di, "{$rootNs}Content\\");
         $this->initTemplateEngineConfig($di, $rootNs);
         $this->initIcecaveCollectionsConfig($di, "Icecave\\Collections\\");
         $this->initIcecaveParityConfig($di, "Icecave\\Parity\\");

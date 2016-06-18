@@ -1,11 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace MattyG\BBStatic\Page;
+namespace MattyG\BBStatic\Content\Page;
 
 use Icecave\Collections\Vector as PageCollection;
-use MattyG\BBStatic\Page\NeedsPageFactoryTrait;
-use MattyG\BBStatic\Page\NeedsPageRendererTrait;
 use MattyG\BBStatic\Signing\NeedsSigningAdapterInterfaceTrait;
 use Symfony\Component\Filesystem\NeedsFilesystemTrait;
 use Symfony\Component\Finder\NeedsFinderFactoryTrait;
@@ -14,6 +12,7 @@ final class PageBuilder
 {
     use NeedsFinderFactoryTrait;
     use NeedsFilesystemTrait;
+    use NeedsIndexPageFactoryTrait;
     use NeedsPageFactoryTrait;
     use NeedsPageRendererTrait;
     use NeedsSigningAdapterInterfaceTrait;
@@ -64,6 +63,11 @@ final class PageBuilder
      */
     private function cleanFolder(string $folderPath)
     {
+        // Output folder doesn't exist yet
+        if (!is_dir($folderPath)) {
+            return;
+        }
+
         $finder = $this->finderFactory->create();
         $finder->files()
             ->in($folderPath)
@@ -83,7 +87,11 @@ final class PageBuilder
      */
     public function createAndBuildPage(string $pageName, bool $shouldSign) : Page
     {
-        $page = $this->pageFactory->create(array("name" => $pageName));
+        if ($pageName === "index") {
+            $page = $this->indexPageFactory->create();
+        } else {
+            $page = $this->pageFactory->create(array("name" => $pageName));
+        }
         $this->buildPage($page, $shouldSign);
         return $page;
     }
