@@ -87,7 +87,7 @@ final class PostBuilder
     public function createAndBuildPost(string $postName, bool $shouldSign) : Post
     {
         $post = $this->postFactory->create(array("name" => $postName));
-        $this->buildPage($post, $shouldSign);
+        $this->buildPost($post, $shouldSign);
         return $post;
     }
 }

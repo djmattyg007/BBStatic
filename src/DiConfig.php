@@ -25,7 +25,8 @@ final class DiConfig
         $this->initDirectoryManagerConfig($di, $rootNs);
         $this->initBBCodeConfig($di, $rootNs);
         $this->initSigningConfig($di, "{$rootNs}Signing\\");
-        $this->initPageConfig($di, "{$rootNs}Content\\");
+        $this->initPageConfig($di, "{$rootNs}Content\\Page\\");
+        $this->initPostConfig($di, "{$rootNs}Content\\Post\\");
         $this->initTemplateEngineConfig($di, $rootNs);
         $this->initIcecaveCollectionsConfig($di, "Icecave\\Collections\\");
         $this->initIcecaveParityConfig($di, "Icecave\\Parity\\");
@@ -94,16 +95,32 @@ final class DiConfig
      */
     private function initPageConfig(Container $di, string $rootNs)
     {
-        $di->setters[$rootNs . "Page\\NeedsIndexPageFactoryTrait"]["setIndexPageFactory"] = $di->lazyGet("index_page_factory");
-        $di->setters[$rootNs . "Page\\NeedsPageBuilderTrait"]["setPageBuilder"] = $di->lazyGet("page_builder");
-        $di->setters[$rootNs . "Page\\NeedsPageFactoryTrait"]["setPageFactory"] = $di->lazyGet("page_factory");
-        $di->setters[$rootNs . "Page\\NeedsPageGathererTrait"]["setPageGatherer"] = $di->lazyGet("page_gatherer");
-        $di->setters[$rootNs . "Page\\NeedsPageRendererTrait"]["setPageRenderer"] = $di->lazyGet("page_renderer");
+        $di->setters[$rootNs . "NeedsIndexPageFactoryTrait"]["setIndexPageFactory"] = $di->lazyGet("index_page_factory");
+        $di->setters[$rootNs . "NeedsPageBuilderTrait"]["setPageBuilder"] = $di->lazyGet("page_builder");
+        $di->setters[$rootNs . "NeedsPageFactoryTrait"]["setPageFactory"] = $di->lazyGet("page_factory");
+        $di->setters[$rootNs . "NeedsPageGathererTrait"]["setPageGatherer"] = $di->lazyGet("page_gatherer");
+        $di->setters[$rootNs . "NeedsPageRendererTrait"]["setPageRenderer"] = $di->lazyGet("page_renderer");
         $di->set("index_page_factory", $di->lazyNew($rootNs . "Page\\IndexPageFactory"));
-        $di->set("page_builder", $di->lazyNew($rootNs . "Page\\PageBuilder"));
-        $di->set("page_factory", $di->lazyNew($rootNs . "Page\\PageFactory"));
-        $di->set("page_gatherer", $di->lazyNew($rootNs . "Page\\PageGatherer"));
-        $di->set("page_renderer", $di->lazyNew($rootNs . "Page\\PageRenderer"));
+        $di->set("page_builder", $di->lazyNew($rootNs . "PageBuilder"));
+        $di->set("page_factory", $di->lazyNew($rootNs . "PageFactory"));
+        $di->set("page_gatherer", $di->lazyNew($rootNs . "PageGatherer"));
+        $di->set("page_renderer", $di->lazyNew($rootNs . "PageRenderer"));
+    }
+
+    /**
+     * @param Container $di
+     * @param string $rootNs
+     */
+    private function initPostConfig(Container $di, string $rootNs)
+    {
+        $di->setters[$rootNs . "NeedsPostBuilderTrait"]["setPostBuilder"] = $di->lazyGet("post_builder");
+        $di->setters[$rootNs . "NeedsPostFactoryTrait"]["setPostFactory"] = $di->lazyGet("post_factory");
+        $di->setters[$rootNs . "NeedsPostGathererTrait"]["setPostGatherer"] = $di->lazyGet("post_gatherer");
+        $di->setters[$rootNs . "NeedsPostRendererTrait"]["setPostRenderer"] = $di->lazyGet("post_renderer");
+        $di->set("post_builder", $di->lazyNew($rootNs . "PostBuilder"));
+        $di->set("post_factory", $di->lazyNew($rootNs . "PostFactory"));
+        $di->set("post_gatherer", $di->lazyNew($rootNs . "PostGatherer"));
+        $di->set("post_renderer", $di->lazyNew($rootNs . "PostRenderer"));
     }
 
     /**
