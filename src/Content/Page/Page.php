@@ -48,7 +48,7 @@ class Page extends ContentEntity implements ExtendedComparableInterface, SubClas
             throw new NotComparableException(sprintf("Cannot compare %s with Page", gettype($value)));
         }
         if (!value instanceof Page) {
-            throw new NotComparableException(sprintf("5s is not of type Page", get_class($value)));
+            throw new NotComparableException(sprintf("%s is not of type Page", get_class($value)));
         }
 
         return $this->getDatePosted() - $value->getDatePosted();
