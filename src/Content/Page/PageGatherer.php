@@ -37,7 +37,7 @@ final class PageGatherer
         $finder = $this->finderFactory->create();
         $finder->files()
             ->name(Page::CONFIG_FILENAME)
-            ->in($this->directoryManager->getPagesDirectory())
+            ->in($this->directoryManager->getPageContentDirectory())
             ->depth("> 0")
             ->ignoreVCS(true)
             ->ignoreDotFiles(true)
@@ -54,7 +54,7 @@ final class PageGatherer
      */
     private function checkForIndex(PageCollection $pageCollection)
     {
-        $indexConfigFilename = $this->directoryManager->getPagesDirectory() . DIRECTORY_SEPARATOR . Page::CONFIG_FILENAME;
+        $indexConfigFilename = $this->directoryManager->getPageContentDirectory() . DIRECTORY_SEPARATOR . Page::CONFIG_FILENAME;
         if (file_exists($indexConfigFilename) === true) {
             $pageCollection->pushBack($this->indexPageFactory->create());
         }

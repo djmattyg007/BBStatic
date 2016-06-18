@@ -110,16 +110,32 @@ class DirectoryManager
     /**
      * @return string|null
      */
-    public function getPagesDirectory()
+    public function getPageContentDirectory()
     {
         return $this->directories["pages"] ?? null;
     }
 
     /**
+     * @return string
+     */
+    public function getPageOutputDirectory() : string
+    {
+        return $this->getHtmlDirectory();
+    }
+
+    /**
      * @return string|null
      */
-    public function getPostsDirectory()
+    public function getPostContentDirectory()
     {
         return $this->directories["posts"] ?? null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPostOutputDirectory() : string
+    {
+        return $this->getHtmlDirectory() . self::DS . "blog";
     }
 }

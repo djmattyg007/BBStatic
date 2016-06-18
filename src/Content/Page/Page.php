@@ -23,8 +23,8 @@ class Page extends ContentEntity implements ExtendedComparableInterface, SubClas
     public function __construct(string $name, DirectoryManager $directoryManager, ConfigFactory $configFactory)
     {
         $this->name = $name;
-        $this->contentFolder = $directoryManager->getPagesDirectory() . DIRECTORY_SEPARATOR . str_replace("/", DIRECTORY_SEPARATOR, $name);
-        $this->outputFolder = $directoryManager->getHtmlDirectory() . DIRECTORY_SEPARATOR . str_replace("/", DIRECTORY_SEPARATOR, $name);
+        $this->contentFolder = $directoryManager->getPageContentDirectory() . DIRECTORY_SEPARATOR . str_replace("/", DIRECTORY_SEPARATOR, $name);
+        $this->outputFolder = $directoryManager->getPageOutputDirectory() . DIRECTORY_SEPARATOR . str_replace("/", DIRECTORY_SEPARATOR, $name);
 
         $this->loadConfig($configFactory);
     }

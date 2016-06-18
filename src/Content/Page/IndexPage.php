@@ -16,8 +16,8 @@ class IndexPage extends Page
     public function __construct(DirectoryManager $directoryManager, ConfigFactory $configFactory)
     {
         $this->name = "index";
-        $this->contentFolder = $directoryManager->getPagesDirectory();
-        $this->outputFolder = $directoryManager->getHtmlDirectory();
+        $this->contentFolder = $directoryManager->getPageContentDirectory();
+        $this->outputFolder = $directoryManager->getPageOutputDirectory();
 
         $this->loadConfig($configFactory);
     }
