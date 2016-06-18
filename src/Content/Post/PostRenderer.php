@@ -19,11 +19,9 @@ class PostRenderer
      */
     final public function render(Post $post) : string
     {
-        $pageType = $post->getPageType();
-
         $renderedContent = $this->bbcodeRenderer->build($post->getContentFilename());
 
-        $template = $this->templateEngine->loadTemplate($pageType);
+        $template = $this->templateEngine->loadTemplate($post->getPageType());
         $context = array_merge($this->prepareContext($post), array("content" => $renderedContent));
         $renderedPage = $template->render($context);
 

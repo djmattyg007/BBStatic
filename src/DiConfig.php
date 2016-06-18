@@ -100,7 +100,7 @@ final class DiConfig
         $di->setters[$rootNs . "NeedsPageFactoryTrait"]["setPageFactory"] = $di->lazyGet("page_factory");
         $di->setters[$rootNs . "NeedsPageGathererTrait"]["setPageGatherer"] = $di->lazyGet("page_gatherer");
         $di->setters[$rootNs . "NeedsPageRendererTrait"]["setPageRenderer"] = $di->lazyGet("page_renderer");
-        $di->set("index_page_factory", $di->lazyNew($rootNs . "Page\\IndexPageFactory"));
+        $di->set("index_page_factory", $di->lazyNew($rootNs . "IndexPageFactory"));
         $di->set("page_builder", $di->lazyNew($rootNs . "PageBuilder"));
         $di->set("page_factory", $di->lazyNew($rootNs . "PageFactory"));
         $di->set("page_gatherer", $di->lazyNew($rootNs . "PageGatherer"));
