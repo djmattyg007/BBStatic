@@ -7,7 +7,7 @@ use MattyG\BBStatic\BBCode\NeedsBBCodeRendererTrait;
 use MattyG\BBStatic\Util\Vendor\NeedsTemplateEngineTrait;
 use Symfony\Component\Filesystem\NeedsFilesystemTrait;
 
-final class PageRenderer
+class PageRenderer
 {
     use NeedsBBCodeRendererTrait;
     use NeedsFilesystemTrait;
@@ -17,26 +17,33 @@ final class PageRenderer
      * @param Page $page
      * @return string The filename of the rendered page.
      */
-    public function render(Page $page) : string
+    final public function render(Page $page) : string
     {
         $pageType = $page->getPageType();
-        $contentFilename = $page->getContentFilename();
 
-        $convertedContent = $this->bbcodeRenderer->build($contentFilename);
+        $renderedContent = $this->bbcodeRenderer->build($page->getContentFilename());
 
         $template = $this->templateEngine->loadTemplate($pageType);
-        $context = array(
+        $context = array_merge($this->prepareContext($page), array("content" => $renderedContent));
+        $renderedPage = $template->render($context);
+
+        $outFilename = $page->getOutputFolder() . DIRECTORY_SEPARATOR . "index.html";
+        $this->filesystem->dumpFile($outFilename, $renderedPage);
+        return $outFilename;
+    }
+
+    /**
+     * @param Page $page
+     * @return array
+     */
+    protected function prepareContext(Page $page) : array
+    {
+        return array(
             "title" => $page->getTitle(),
             "author" => $page->getAuthor(),
             "date_posted" => $page->getDatePosted(),
             "date_updated" => $page->getDateUpdated(),
-            "content" => $convertedContent,
             "vars" => $page->getTemplateVariables(),
         );
-        $renderedContent = $template->render($context);
-
-        $outFilename = $page->getOutputFolder() . DIRECTORY_SEPARATOR . "index.html";
-        $this->filesystem->dumpFile($outFilename, $renderedContent);
-        return $outFilename;
     }
 }
