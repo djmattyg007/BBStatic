@@ -93,7 +93,7 @@ final class Init
     /**
      * @param BBCode $bbcode
      */
-    protected function initRules(BBCode $bbcode)
+    private function initRules(BBCode $bbcode)
     {
         foreach ($this->rulesDirs as $rulesDir) {
             $globber = clone $this->finderProto;
@@ -110,7 +110,7 @@ final class Init
     /**
      * @param BBCode $bbcode
      */
-    protected function initTemplateOverrides(BBCode $bbcode)
+    private function initTemplateOverrides(BBCode $bbcode)
     {
         foreach ($this->templateOverridesDirs as $templateOverridesDir) {
             $globber = clone $this->finderProto;
