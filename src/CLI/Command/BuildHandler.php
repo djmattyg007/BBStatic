@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\CLI\Command;
 
+use MattyG\BBStatic\CLI\Vendor\NeedsProgressBarFactoryTrait;
 use MattyG\BBStatic\Content\Page\NeedsPageBuilderTrait;
 use MattyG\BBStatic\Content\Page\NeedsPageGathererTrait;
 use MattyG\BBStatic\Content\Post\NeedsPostBuilderTrait;
@@ -18,7 +19,13 @@ class BuildHandler
     use NeedsPageGathererTrait;
     use NeedsPostBuilderTrait;
     use NeedsPostGathererTrait;
+    use NeedsProgressBarFactoryTrait;
     use ShouldSignOutputTrait;
+
+    /**
+     * @var ProgressBar
+     */
+    protected $progressBar;
 
     /**
      * @param Args $args
@@ -54,7 +61,13 @@ class BuildHandler
         $pageCollection = $this->pageGatherer->gatherPages();
         $io->writeLine(sprintf("Found %d pages", count($pageCollection)));
 
-        $this->pageBuilder->buildPages($pageCollection, $shouldSignOutput);
+        $this->startProgressBar($io, count($pageCollection));
+        try {
+            $this->pageBuilder->buildPages($pageCollection, $shouldSignOutput, array($this, "advanceProgressBar"));
+        } finally {
+            $this->finishProgressBar();
+        }
+        $io->writeLine("");
     }
 
     /**
@@ -66,6 +79,36 @@ class BuildHandler
         $postCollection = $this->postGatherer->gatherPosts();
         $io->writeLine(sprintf("Found %d posts", count($postCollection)));
 
-        $this->postBuilder->buildPosts($postCollection, $shouldSignOutput);
+        $this->startProgressBar($io, count($postCollection));
+        try {
+            $this->postBuilder->buildPosts($postCollection, $shouldSignOutput, array($this, "advanceProgressBar"));
+        } finally {
+            $this->finishProgressBar();
+        }
+        $io->writeLine("");
+    }
+
+    /**
+     * @param IO $io
+     * @param int $totalUnits
+     */
+    protected function startProgressBar(IO $io, int $totalUnits)
+    {
+        $this->progressBar = $this->progressBarFactory->create($io, $totalUnits);
+        $this->progressBar->start();
+    }
+
+    /**
+     * TODO: Change to protected, use Closure::fromCallable() in PHP 7.1
+     */
+    public function advanceProgressBar()
+    {
+        $this->progressBar->advance();
+    }
+
+    protected function finishProgressBar()
+    {
+        $this->progressBar->finish();
+        $this->progressBar = null;
     }
 }

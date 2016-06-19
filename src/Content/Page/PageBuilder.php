@@ -21,8 +21,9 @@ final class PageBuilder
      * @param PageCollection $pages
      * @param bool $shouldSign
      * @param callable|null $progressUpdate
+     * TODO: PHP 7.1, change this to Closure and use Closure::fromCallable() to work with it
      */
-    public function buildPages(PageCollection $pages, bool $shouldSign, callable $progressUpdate = null)
+    public function buildPages(PageCollection $pages, bool $shouldSign, $progressUpdate = null)
     {
         $totalPageCount = count($pages);
         $counter = 0;
@@ -30,7 +31,7 @@ final class PageBuilder
             $counter++;
             $this->buildPage($page, $shouldSign);
             if ($progressUpdate !== null) {
-                $progressUpdate($counter, $totalCount);
+                $progressUpdate($counter, $totalPageCount);
             }
         }
     }

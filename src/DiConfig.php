@@ -32,6 +32,7 @@ final class DiConfig
         $this->initIcecaveParityConfig($di, "Icecave\\Parity\\");
         $this->initSymfonyFilesystemConfig($di, "Symfony\\Component\\Filesystem\\");
         $this->initSymfonyFinderConfig($di, "Symfony\\Component\\Finder\\");
+        $this->initCLIConfig($di, $rootNs);
 
         return $di;
     }
@@ -185,5 +186,15 @@ final class DiConfig
     {
         $di->setters[$rootNs . "NeedsFinderFactoryTrait"]["setFinderFactory"] = $di->lazyGet("finder_factory");
         $di->set("finder_factory", $di->lazyNew($rootNs . "FinderFactory"));
+    }
+
+    /**
+     * @param Container $di
+     * @param string $rootNs
+     */
+    private function initCLIConfig(Container $di, string $rootNs)
+    {
+        $di->setters[$rootNs . "CLI\\Vendor\\NeedsProgressBarFactoryTrait"]["setProgressBarFactory"] = $di->lazyGet("progress_bar_factory");
+        $di->set("progress_bar_factory", $di->lazyNew($rootNs . "CLI\\Vendor\\ProgressBarFactory"));
     }
 }

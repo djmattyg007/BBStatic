@@ -20,8 +20,9 @@ final class PostBuilder
      * @param PostCollection $pages
      * @param bool $shouldSign
      * @param callable|null $progressUpdate
+     * TODO: PHP 7.1, change this to Closure and use Closure::fromCallable() to work with it
      */
-    public function buildPosts(PostCollection $posts, bool $shouldSign, callable $progressUpdate = null)
+    public function buildPosts(PostCollection $posts, bool $shouldSign, $progressUpdate = null)
     {
         $totalPostCount = count($posts);
         $counter = 0;
@@ -29,7 +30,7 @@ final class PostBuilder
             $counter++;
             $this->buildPost($post, $shouldSign);
             if ($progressUpdate !== null) {
-                $progressUpdate($counter, $totalCount);
+                $progressUpdate($counter, $totalPostCount);
             }
         }
     }
