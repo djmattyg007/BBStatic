@@ -6,7 +6,7 @@ namespace MattyG\BBStatic\BBCode;
 use Aura\Di\Container as DiContainer;
 use Nbbc\BBCode;
 use Nbbc\Debugger as BBCodeDebugger;
-use Symfony\Component\Finder\Finder as SymfonyFinder;
+use Symfony\Component\Finder\FinderFactory;
 
 /**
  * @param DiContainer $di
@@ -36,21 +36,23 @@ final class Init
     private $templateOverridesDirs = array();
 
     /**
-     * @var SymfonyFinder
+     * @var \Symfony\Component\Finder\Finder
      */
     private $finderProto;
 
     /**
+     * @param DiContainer $di
+     * @param FinderFactory $finderFactory
      * @param string $rulesDir
      * @param string $handlersDir
      */
-    public function __construct(DiContainer $di, string $rulesDir = __DIR__ . "/rules", string $templateOverridesDir = __DIR__ . "/template_overrides")
+    public function __construct(DiContainer $di, FinderFactory $finderFactory, string $rulesDir = __DIR__ . "/rules", string $templateOverridesDir = __DIR__ . "/template_overrides")
     {
         $this->di = $di;
         $this->addRulesDir($rulesDir);
         $this->addTemplateOverridesDir($templateOverridesDir);
 
-        $this->finderProto = new SymfonyFinder();
+        $this->finderProto = $finderFactory->create();
         $this->finderProto->files()
             ->name("*.php")
             ->ignoreVCS(true)
