@@ -9,6 +9,10 @@
             "name": "*.php",
             "exclude": ["autocodeloader", "Tests", "zendframework"],
             "in": "vendor"
+        },
+        {
+            "name": "layout.template",
+            "in": "vendor/eden/handlebars/src"
         }
     ],
     "main": "bin/bbstatic",
