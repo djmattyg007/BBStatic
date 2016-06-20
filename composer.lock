@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "963575168ca7ce003670a8131609c73c",
-    "content-hash": "e827f6870db7d83a360e6d02b122b0a8",
+    "hash": "98322a2894c1047d8684f33fe51ddf96",
+    "content-hash": "4abccf586f13c290224de08787c46867",
     "packages": [
         {
             "name": "aura/di",
@@ -122,6 +122,95 @@
             ],
             "description": "Generate utility classes such as proxies and factories automatically.",
             "time": "2016-06-14 13:00:15"
+        },
+        {
+            "name": "eden/core",
+            "version": "4.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Eden-PHP/Core.git",
+                "reference": "bb09f562f0d9f18fcc03afadbcf378b52b764ef7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Eden-PHP/Core/zipball/bb09f562f0d9f18fcc03afadbcf378b52b764ef7",
+                "reference": "bb09f562f0d9f18fcc03afadbcf378b52b764ef7",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Eden\\Core\\": "src/"
+                },
+                "classmap": [
+                    "src/Decorator.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Blanquera",
+                    "email": "cblanquera@openovate.com"
+                }
+            ],
+            "description": "Eden Core component full of secret sauce",
+            "homepage": "http://eden-php.com",
+            "keywords": [
+                "eden",
+                "library"
+            ],
+            "time": "2015-11-17 05:20:26"
+        },
+        {
+            "name": "eden/handlebars",
+            "version": "5.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Eden-PHP/Handlebars.git",
+                "reference": "ad961e4a6d8505212c3e90edca66e408784c38bd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Eden-PHP/Handlebars/zipball/ad961e4a6d8505212c3e90edca66e408784c38bd",
+                "reference": "ad961e4a6d8505212c3e90edca66e408784c38bd",
+                "shasum": ""
+            },
+            "require": {
+                "eden/core": "4.*",
+                "php": ">=5.4.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Eden\\Handlebars\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Blanquera",
+                    "email": "cblanquera@openovate.com"
+                }
+            ],
+            "description": "PHP Handlebars with JS interface to match with compile time helper support and super nice compile time error reporting.",
+            "homepage": "http://eden-php.com",
+            "keywords": [
+                "eden",
+                "hamdlebars",
+                "library",
+                "template",
+                "templating"
+            ],
+            "time": "2016-05-07 06:12:02"
         },
         {
             "name": "icecave/collections",
@@ -289,52 +378,6 @@
                 "string"
             ],
             "time": "2014-07-25 05:44:41"
-        },
-        {
-            "name": "mustache/mustache",
-            "version": "v2.10.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/bobthecow/mustache.php.git",
-                "reference": "0bb2f76e2f34a8864a32be34c4ec66274d76c05e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/bobthecow/mustache.php/zipball/0bb2f76e2f34a8864a32be34c4ec66274d76c05e",
-                "reference": "0bb2f76e2f34a8864a32be34c4ec66274d76c05e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.2.4"
-            },
-            "require-dev": {
-                "fabpot/php-cs-fixer": "~1.6",
-                "phpunit/phpunit": "~3.7|~4.0|~5.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Mustache": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Justin Hileman",
-                    "email": "justin@justinhileman.info",
-                    "homepage": "http://justinhileman.com"
-                }
-            ],
-            "description": "A Mustache implementation in PHP.",
-            "homepage": "https://github.com/bobthecow/mustache.php",
-            "keywords": [
-                "mustache",
-                "templating"
-            ],
-            "time": "2016-02-27 19:22:46"
         },
         {
             "name": "symfony/console",

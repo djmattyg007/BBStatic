@@ -1,7 +1,7 @@
 BBStatic
 
 BBStatic is a static site generator written in PHP that uses BBCode for content
-and Mustache templates for rendering full pages.
+and Handlebars templates for rendering full pages.
 
 This is still very much a work in progress. Currently, it will render
 standalone pages, and individual blog posts. It won't generate blog list pages,

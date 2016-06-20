@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace MattyG\BBStatic\Content\Post;
 
 use MattyG\BBStatic\BBCode\NeedsBBCodeRendererTrait;
-use MattyG\BBStatic\Util\Vendor\NeedsTemplateEngineTrait;
+use MattyG\BBStatic\Template\NeedsTemplateEngineInterfaceTrait;
 use Symfony\Component\Filesystem\NeedsFilesystemTrait;
 
 class PostRenderer
 {
     use NeedsBBCodeRendererTrait;
     use NeedsFilesystemTrait;
-    use NeedsTemplateEngineTrait;
+    use NeedsTemplateEngineInterfaceTrait;
 
     /**
      * @param Post $post
@@ -21,9 +21,8 @@ class PostRenderer
     {
         $renderedContent = $this->bbcodeRenderer->build($post->getContentFilename());
 
-        $template = $this->templateEngine->loadTemplate($post->getPageType());
         $context = array_merge($this->prepareContext($post), array("content" => $renderedContent));
-        $renderedPage = $template->render($context);
+        $renderedPage = $this->templateEngine->render($post->getPageType(), $context);
 
         $outFilename = $post->getOutputFolder() . DIRECTORY_SEPARATOR . "index.html";
         $this->filesystem->dumpFile($outFilename, $renderedPage);

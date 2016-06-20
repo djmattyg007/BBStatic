@@ -27,7 +27,8 @@ final class DiConfig
         $this->initSigningConfig($di, "{$rootNs}Signing\\");
         $this->initPageConfig($di, "{$rootNs}Content\\Page\\");
         $this->initPostConfig($di, "{$rootNs}Content\\Post\\");
-        $this->initTemplateEngineConfig($di, $rootNs);
+        $this->initTemplateEngineConfig($di, "{$rootNs}Template\\");
+        $this->initTemplateHelperConfig($di, "{$rootNs}Template\\Helper\\");
         $this->initIcecaveCollectionsConfig($di, "Icecave\\Collections\\");
         $this->initIcecaveParityConfig($di, "Icecave\\Parity\\");
         $this->initSymfonyFilesystemConfig($di, "Symfony\\Component\\Filesystem\\");
@@ -131,19 +132,32 @@ final class DiConfig
      */
     private function initTemplateEngineConfig(Container $di, string $rootNs)
     {
-        $di->params["Mustache_Cache_FilesystemCache"]["baseDir"] = $di->lazyGetCall("directory_manager", "getCacheDirectory", "templates");
-        $di->setters["Mustache_Engine"]["setCache"] = $di->lazyGet("template_cache");
-        $di->setters["Mustache_Engine"]["setLoader"] = $di->lazyGet("template_loader");
-        $di->setters["Mustache_Engine"]["setPartialsLoader"] = $di->lazyGet("template_partials_loader");
-        $di->setters[$rootNs . "Util\\Vendor\\NeedsTemplateEngineTrait"]["setTemplateEngine"] = $di->lazyGet("template_engine");
-        $di->set("template_cache", $di->lazyNew("Mustache_Cache_FilesystemCache"));
-        $di->set("template_loader", $di->lazyNew("Mustache_Loader_FilesystemLoader", array(
-            "baseDir" => $di->lazyGetCall("directory_manager", "getTemplatesDirectory"),
+        $di->params[$rootNs . "EdenHandlebarsAdapter"]["engine"] = $di->lazyGet("eden_handlebars");
+        $di->params[$rootNs . "EdenHandlebarsAdapter"]["templateLoader"] = $di->lazyGet("template_loader");
+        $di->setters[$rootNs . "NeedsTemplateEngineInterfaceTrait"]["setTemplateEngine"] = $di->lazyGet("template_engine");
+        $di->setters[$rootNs . "TemplateLoader"]["setFileExtension"] = $di->lazyGetCall("config", "getValue", "templates/fileext", "hbs");
+        $templateEngineInit = $di->lazyNew($rootNs . "Init", array(
+            "partialsDir" => $di->lazyGetCall("directory_manager", "getTemplatePartialsDirectory"),
+        ));
+        $di->set("template_engine", $di->lazy(array($templateEngineInit, "init")));
+        $di->set("eden_handlebars", $di->lazy(function() use ($di) {
+            $handlebars = \Eden\Handlebars\Index::i();
+            $handlebars->setCache($di->get("directory_manager")->getCacheDirectory("templates"));
+            return $handlebars;
+        }));
+        $di->set("template_loader", $di->lazyNew($rootNs . "TemplateLoader", array(
+            "templatesFolder" => $di->lazyGetCall("directory_manager", "getTemplatesDirectory"),
         )));
-        $di->set("template_partials_loader", $di->lazyNew("Mustache_Loader_FilesystemLoader", array(
-            "baseDir" => $di->lazyGetCall("directory_manager", "getTemplatePartialsDirectory"),
-        )));
-        $di->set("template_engine", $di->lazyNew("Mustache_Engine"));
+    }
+
+    /**
+     * @param Container $di
+     * @param string $rootNs
+     */
+    private function initTemplateHelperConfig(Container $di, string $rootNs)
+    {
+        $di->params[$rootNs . "Date"]["timezone"] = $di->lazyGetCall("config", "getValue", "site/timezone", "UTC");
+        $di->params[$rootNs . "Date"]["dateFormats"] = $di->lazyGetCall("config", "getValue", "theme/date_formats", array());
     }
 
     /**
