@@ -33,15 +33,15 @@ class BuildHandler
      */
     public function handle(Args $args, IO $io)
     {
-        $shouldSignOutput = $this->shouldSignOutput($args);
-        $io->writeLine("Signing output: " . ($shouldSignOutput === true ? "true" : "false"));
-
         $pagesEnabled = $this->config->getValue("site/pages_url_path") !== null;
         $postsEnabled = $this->config->getValue("site/posts_url_path") !== null;
         if ($pagesEnabled === false && $postsEnabled === false) {
             $io->errorLine("Neither pages nor posts are configured");
             return 1;
         }
+
+        $shouldSignOutput = $this->shouldSignOutput($args);
+        $io->writeLine("Signing output: " . ($shouldSignOutput === true ? "true" : "false"));
 
         if ($pagesEnabled === true) {
             $this->buildPages($io, $shouldSignOutput);
