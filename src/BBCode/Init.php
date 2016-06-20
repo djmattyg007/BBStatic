@@ -13,7 +13,7 @@ use Symfony\Component\Finder\FinderFactory;
  * @param string $filename
  * @return array
  */
-function MattyGBBStaticInitRequire(DiContainer $di, string $filename): array
+function MattyGBBStaticInitRequire(DiContainer $di, string $filename) : array
 {
     return require($filename);
 }
@@ -81,7 +81,7 @@ final class Init
      */
     public function init() : BBCode
     {
-        $bbcode = new BBCode;
+        $bbcode = $this->di->newInstance(BBCode::class);
         $this->initRules($bbcode);
         $this->initTemplateOverrides($bbcode);
 
@@ -100,10 +100,11 @@ final class Init
         foreach ($this->rulesDirs as $rulesDir) {
             $globber = clone $this->finderProto;
             $globber->in($rulesDir);
+
             foreach ($globber as $ruleFile) {
                 $ruleFilename = $ruleFile->getRelativePathname();
                 $ruleName = pathinfo($ruleFilename, PATHINFO_FILENAME);
-                $rule = MattyGBBStaticInitRequire($this->di, $rulesDir . "/" . $ruleFilename);
+                $rule = MattyGBBStaticInitRequire($this->di, $rulesDir . DIRECTORY_SEPARATOR . $ruleFilename);
                 $bbcode->addRule($ruleName, $rule);
             }
         }
@@ -117,10 +118,11 @@ final class Init
         foreach ($this->templateOverridesDirs as $templateOverridesDir) {
             $globber = clone $this->finderProto;
             $globber->in($templateOverridesDir);
+
             foreach ($globber as $templateOverrideFile) {
                 $templateOverrideFilename = $templateOverrideFile->getRelativePathname();
                 $ruleName = pathinfo($templateOverrideFilename, PATHINFO_FILENAME);
-                $overrides = MattyGBBStaticInitRequire($this->di, $templateOverridesDir . "/" . $templateOverrideFilename);
+                $overrides = MattyGBBStaticInitRequire($this->di, $templateOverridesDir . DIRECTORY_SEPARATOR . $templateOverrideFilename);
                 foreach ($overrides as $key => $value) {
                     $rule = $bbcode->getRule($ruleName);
                     if ($key === "method_template") {

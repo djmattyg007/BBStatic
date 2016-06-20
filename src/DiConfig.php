@@ -71,9 +71,10 @@ final class DiConfig
      */
     private function initBBCodeConfig(Container $di, string $rootNs)
     {
-        $di->types["Nbbc\\BBCode"] = $di->lazy(array($di->lazyNew($rootNs . "BBCode\\Init"), "init"));
+        $di->types["Nbbc\\BBCode"] = $di->lazyGet("bbcode_parser");
         $di->setters[$rootNs . "BBCode\\NeedsBBCodeRendererTrait"]["setBBCodeRenderer"] = $di->lazyGet("bbcode_renderer");
         $di->set("bbcode_renderer", $di->lazyNew($rootNs . "BBCode\\BBCodeRenderer"));
+        $di->set("bbcode_parser", $di->lazy(array($di->lazyNew($rootNs . "BBCode\\Init"), "init")));
 
         $di->params[$rootNs . "BBCode\\Rule\\URLMap"]["urlMap"] = $di->lazyGetCall("config_folder", "getValue", "url_map");
     }
