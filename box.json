@@ -12,7 +12,7 @@
         },
         {
             "name": "layout.template",
-            "in": "vendor/eden/handlebars/src"
+            "in": "vendor/djmattyg007/handlebars/src"
         }
     ],
     "main": "bin/bbstatic",
