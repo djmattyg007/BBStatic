@@ -9,7 +9,7 @@ interface TemplateEngineInterface
      * @param string $name
      * @return callable
      */
-    public function compile(string $name);
+    public function compile(string $name) : callable;
 
     /**
      * @param string $name
@@ -20,9 +20,9 @@ interface TemplateEngineInterface
 
     /**
      * @param string $name
-     * @param Closure $helper
+     * @param callable $helper
      */
-    public function registerHelper(string $name, $helper);
+    public function registerHelper(string $name, callable $helper);
 
     /**
      * @param string $name

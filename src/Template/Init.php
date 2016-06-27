@@ -79,7 +79,7 @@ final class Init
      */
     public function init() : TemplateEngineInterface
     {
-        $engine = $this->di->newInstance(EdenHandlebarsAdapter::class);
+        $engine = $this->di->newInstance(MattyGHandlebarsAdapter::class);
         $this->initPartials($engine);
         $this->initHelpers($engine);
 

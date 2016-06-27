@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Template;
 
-use Eden\Handlebars\Index as Handlebars;
+use MattyG\Handlebars\Handlebars;
 
-class EdenHandlebarsAdapter implements TemplateEngineInterface
+class MattyGHandlebarsAdapter implements TemplateEngineInterface
 {
     /**
      * @var Handlebars
@@ -31,7 +31,7 @@ class EdenHandlebarsAdapter implements TemplateEngineInterface
      * @param string $name
      * @return callable
      */
-    public function compile(string $name)
+    public function compile(string $name) : callable
     {
         $templateString = $this->templateLoader->load($name);
         return $this->handlebars->compile($templateString);
@@ -52,16 +52,9 @@ class EdenHandlebarsAdapter implements TemplateEngineInterface
      * @param string $name
      * @param callable $helper
      */
-    public function registerHelper(string $name, $helper)
+    public function registerHelper(string $name, callable $helper)
     {
-        if ($helper instanceof \Closure) {
-            $this->handlebars->registerHelper($name, $helper);
-            return;
-        }
-
-        $this->handlebars->registerHelper($name, function() use ($helper) {
-            return call_user_func_array($helper, func_get_args());
-        });
+        $this->handlebars->registerHelper($name, $helper);
     }
 
     /**

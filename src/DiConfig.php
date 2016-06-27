@@ -132,19 +132,21 @@ final class DiConfig
      */
     private function initTemplateEngineConfig(Container $di, string $rootNs)
     {
-        $di->params[$rootNs . "EdenHandlebarsAdapter"]["engine"] = $di->lazyGet("eden_handlebars");
-        $di->params[$rootNs . "EdenHandlebarsAdapter"]["templateLoader"] = $di->lazyGet("template_loader");
+        $di->params[$rootNs . "MattyGHandlebarsAdapter"]["handlebars"] = $di->lazyGet("mattyg_handlebars");
+        $di->params[$rootNs . "MattyGHandlebarsAdapter"]["templateLoader"] = $di->lazyGet("template_loader");
+        $di->params["MattyG\\Handlebars\\Compiler"]["runtime"] = $di->lazyGet("handlebars_runtime");
+        $di->params["MattyG\\Handlebars\\Handlebars"]["compiler"] = $di->lazyGet("handlebars_compiler");
+        $di->params["MattyG\\Handlebars\\Handlebars"]["runtime"] = $di->lazyGet("handlebars_runtime");
         $di->setters[$rootNs . "NeedsTemplateEngineInterfaceTrait"]["setTemplateEngine"] = $di->lazyGet("template_engine");
         $di->setters[$rootNs . "TemplateLoader"]["setFileExtension"] = $di->lazyGetCall("config", "getValue", "templates/fileext", "hbs");
+        $di->setters["MattyG\\Handlebars\\Handlebars"]["setCachePath"] = $di->lazyGetCall("directory_manager", "getCacheDirectory", "templates");
+        $di->set("handlebars_compiler", $di->lazyNew("MattyG\\Handlebars\\Compiler"));
+        $di->set("handlebars_runtime", $di->lazyNew("MattyG\\Handlebars\\Runtime"));
         $templateEngineInit = $di->lazyNew($rootNs . "Init", array(
             "partialsDir" => $di->lazyGetCall("directory_manager", "getTemplatePartialsDirectory"),
         ));
         $di->set("template_engine", $di->lazy(array($templateEngineInit, "init")));
-        $di->set("eden_handlebars", $di->lazy(function() use ($di) {
-            $handlebars = \Eden\Handlebars\Index::i();
-            $handlebars->setCache($di->get("directory_manager")->getCacheDirectory("templates"));
-            return $handlebars;
-        }));
+        $di->set("mattyg_handlebars", $di->lazyNew("MattyG\\Handlebars\\Handlebars"));
         $di->set("template_loader", $di->lazyNew($rootNs . "TemplateLoader", array(
             "templatesFolder" => $di->lazyGetCall("directory_manager", "getTemplatesDirectory"),
         )));

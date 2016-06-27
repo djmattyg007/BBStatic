@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "98322a2894c1047d8684f33fe51ddf96",
-    "content-hash": "4abccf586f13c290224de08787c46867",
+    "hash": "9e3a2921d0b49915d8d72553fb5763fc",
+    "content-hash": "3fe8124b77aac08b57b5c13ae40af676",
     "packages": [
         {
             "name": "aura/di",
@@ -124,93 +124,50 @@
             "time": "2016-06-14 13:00:15"
         },
         {
-            "name": "eden/core",
-            "version": "4.0.2",
+            "name": "djmattyg007/handlebars",
+            "version": "6.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Eden-PHP/Core.git",
-                "reference": "bb09f562f0d9f18fcc03afadbcf378b52b764ef7"
+                "url": "https://github.com/djmattyg007/Handlebars.git",
+                "reference": "0cc0bafa3d6a13c5c6172de80f20c60c6433ed0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Eden-PHP/Core/zipball/bb09f562f0d9f18fcc03afadbcf378b52b764ef7",
-                "reference": "bb09f562f0d9f18fcc03afadbcf378b52b764ef7",
+                "url": "https://api.github.com/repos/djmattyg007/Handlebars/zipball/0cc0bafa3d6a13c5c6172de80f20c60c6433ed0b",
+                "reference": "0cc0bafa3d6a13c5c6172de80f20c60c6433ed0b",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.4.1"
+                "php": ">=7.0.0"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Eden\\Core\\": "src/"
+                    "MattyG\\Handlebars\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christian Blanquera",
+                    "email": "cblanquera@openovate.com"
                 },
-                "classmap": [
-                    "src/Decorator.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
                 {
-                    "name": "Christian Blanquera",
-                    "email": "cblanquera@openovate.com"
+                    "name": "Matthew Gamble",
+                    "email": "git@matthewgamble.net"
                 }
             ],
-            "description": "Eden Core component full of secret sauce",
-            "homepage": "http://eden-php.com",
+            "description": "PHP implementation of Handlebars templates aiming to match the JS interface.",
+            "homepage": "https://github.com/djmattyg007/handlebars",
             "keywords": [
-                "eden",
-                "library"
-            ],
-            "time": "2015-11-17 05:20:26"
-        },
-        {
-            "name": "eden/handlebars",
-            "version": "5.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Eden-PHP/Handlebars.git",
-                "reference": "ad961e4a6d8505212c3e90edca66e408784c38bd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Eden-PHP/Handlebars/zipball/ad961e4a6d8505212c3e90edca66e408784c38bd",
-                "reference": "ad961e4a6d8505212c3e90edca66e408784c38bd",
-                "shasum": ""
-            },
-            "require": {
-                "eden/core": "4.*",
-                "php": ">=5.4.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Eden\\Handlebars\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Christian Blanquera",
-                    "email": "cblanquera@openovate.com"
-                }
-            ],
-            "description": "PHP Handlebars with JS interface to match with compile time helper support and super nice compile time error reporting.",
-            "homepage": "http://eden-php.com",
-            "keywords": [
-                "eden",
                 "hamdlebars",
-                "library",
                 "template",
                 "templating"
             ],
-            "time": "2016-05-07 06:12:02"
+            "time": "2016-06-27 11:04:05"
         },
         {
             "name": "icecave/collections",
