@@ -9,7 +9,6 @@ use MattyG\BBStatic\Content\NeedsBlogFactoryTrait;
 use MattyG\BBStatic\Content\Page\NeedsPageBuilderTrait;
 use MattyG\BBStatic\Content\Page\NeedsPageGathererTrait;
 use MattyG\BBStatic\Content\Post\NeedsPostBuilderTrait;
-use MattyG\BBStatic\Content\Post\NeedsPostGathererTrait;
 use MattyG\BBStatic\Util\NeedsConfigTrait;
 use Webmozart\Console\Api\Args\Args;
 use Webmozart\Console\Api\IO\IO;
@@ -22,7 +21,6 @@ class BuildHandler
     use NeedsPageBuilderTrait;
     use NeedsPageGathererTrait;
     use NeedsPostBuilderTrait;
-    use NeedsPostGathererTrait;
     use NeedsProgressBarFactoryTrait;
     use ShouldSignOutputTrait;
 
@@ -38,8 +36,8 @@ class BuildHandler
     public function handle(Args $args, IO $io)
     {
         $pagesEnabled = $this->config->getValue("pages/enabled");
-        $postsEnabled = $this->config->getValue("posts/enabled");
-        if ($pagesEnabled === false && $postsEnabled === false) {
+        $blogEnabled = $this->config->getValue("blog/enabled");
+        if ($pagesEnabled === false && $blogEnabled === false) {
             $io->errorLine("Neither pages nor posts are configured");
             return 1;
         }
@@ -51,8 +49,8 @@ class BuildHandler
             $this->buildPages($io, $shouldSignOutput);
         }
 
-        if ($postsEnabled === true) {
-            $this->buildPosts($io, $shouldSignOutput);
+        if ($blogEnabled === true) {
+            $this->buildBlog($io, $shouldSignOutput);
         }
     }
 
@@ -78,7 +76,7 @@ class BuildHandler
      * @param IO $io
      * @param bool $shouldSignOutput
      */
-    private function buildPosts(IO $io, bool $shouldSignOutput)
+    private function buildBlog(IO $io, bool $shouldSignOutput)
     {
         $blog = $this->blogFactory->create();
         $postCollection = $blog->getPostCollection();

@@ -130,8 +130,8 @@ final class DiConfig
      */
     private function initBlogConfig(Container $di, string $rootNs)
     {
-        $di->params[$rootNs . "Blog"]["outputPath"] = $di->lazyGetCall("directory_manager", "getPostOutputDirectory");
-        $di->params[$rootNs . "Blog"]["urlPath"] = $di->lazyGetCall("url_manager", "getPostsUrlPath");
+        $di->params[$rootNs . "Blog"]["outputPath"] = $di->lazyGetCall("directory_manager", "getBlogOutputDirectory");
+        $di->params[$rootNs . "Blog"]["urlPath"] = $di->lazyGetCall("url_manager", "getBlogUrlPath");
         $di->setters[$rootNs . "NeedsBlogFactoryTrait"]["setBlogFactory"] = $di->lazyGet("blog_factory");
         $di->setters[$rootNs . "NeedsBlogBuilderTrait"]["setBlogBuilder"] = $di->lazyGet("blog_builder");
         $di->set("blog_factory", $di->lazyNew($rootNs . "BlogFactory"));
@@ -145,7 +145,7 @@ final class DiConfig
     private function initPostConfig(Container $di, string $rootNs)
     {
         $di->types[$rootNs . "PostGathererInterface"] = $di->lazyGet("post_gatherer");
-        $di->params[$rootNs . "Post"]["blogUrlPath"] = $di->lazyGetCall("url_manager", "getPostsUrlPath");
+        $di->params[$rootNs . "Post"]["blogUrlPath"] = $di->lazyGetCall("url_manager", "getBlogUrlPath");
         $di->setters[$rootNs . "NeedsPostBuilderTrait"]["setPostBuilder"] = $di->lazyGet("post_builder");
         $di->setters[$rootNs . "NeedsPostFactoryTrait"]["setPostFactory"] = $di->lazyGet("post_factory");
         $di->setters[$rootNs . "NeedsPostGathererTrait"]["setPostGatherer"] = $di->lazyGet("post_gatherer");

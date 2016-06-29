@@ -20,7 +20,7 @@ class BuildPostHandler
      */
     public function handle(Args $args, IO $io)
     {
-        if ($this->config->getValue("posts/enabled") === false) {
+        if ($this->config->getValue("blog/enabled") === false) {
             $io->errorLine("Posts are not configured");
             return 1;
         }

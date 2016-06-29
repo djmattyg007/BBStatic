@@ -20,7 +20,7 @@ final class URLManager
     /**
      * @var string
      */
-    private $postsUrlPath;
+    private $blogUrlPath;
 
     /**
      * @param Config $config
@@ -29,7 +29,7 @@ final class URLManager
     {
         $this->baseUrl = rtrim($config->getValue("site/base_url"), "/") . "/";
         $this->pagesUrlPath = ltrim($config->getValue("pages/url_path"), "/");
-        $this->postsUrlPath = ltrim($config->getValue("posts/url_path"), "/");
+        $this->blogUrlPath = ltrim($config->getValue("blog/url_path"), "/");
     }
 
     /**
@@ -51,8 +51,8 @@ final class URLManager
     /**
      * @return string
      */
-    public function getPostsUrlPath() : string
+    public function getBlogUrlPath() : string
     {
-        return $this->postsUrlPath;
+        return $this->blogUrlPath;
     }
 }

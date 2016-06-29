@@ -16,6 +16,7 @@ final class PostGatherer implements PostGathererInterface
     use NeedsVectorFactoryTrait;
 
     /**
+     * TODO: Pass directory from Blog object
      * @return PostCollection
      */
     public function gatherPosts() : PostCollection
@@ -35,7 +36,7 @@ final class PostGatherer implements PostGathererInterface
         $finder = $this->finderFactory->create();
         $finder->files()
             ->name(Post::CONFIG_FILENAME)
-            ->in($this->directoryManager->getPostContentDirectory())
+            ->in($this->directoryManager->getBlogContentDirectory())
             ->depth("1")
             ->ignoreVCS(true)
             ->ignoreDotFiles(true)

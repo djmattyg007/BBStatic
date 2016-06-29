@@ -32,8 +32,8 @@ class Post extends ContentEntity implements ExtendedComparableInterface, SubClas
     {
         $this->name = $name;
         $this->blogUrlPath = $blogUrlPath;
-        $this->contentFolder = $directoryManager->getPostContentDirectory() . DIRECTORY_SEPARATOR . str_replace("/", DIRECTORY_SEPARATOR, $name);
-        $this->outputFolder = $directoryManager->getPostOutputDirectory() . DIRECTORY_SEPARATOR . str_replace("/", DIRECTORY_SEPARATOR, $name);
+        $this->contentFolder = $directoryManager->getBlogContentDirectory() . DIRECTORY_SEPARATOR . str_replace("/", DIRECTORY_SEPARATOR, $name);
+        $this->outputFolder = $directoryManager->getBlogOutputDirectory() . DIRECTORY_SEPARATOR . str_replace("/", DIRECTORY_SEPARATOR, $name);
 
         $this->loadConfig($configFactory);
     }

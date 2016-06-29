@@ -42,7 +42,7 @@ class DirectoryManager
         $this->directories = array_map(function($dir) { return rtrim($dir, self::DS); }, array_filter($directories));
         $this->urlPaths = array(
             "pages" => str_replace("/", self::DS, $urlManager->getPagesUrlPath()),
-            "posts" => str_replace("/", self::DS, $urlManager->getPostsUrlPath()),
+            "blog" => str_replace("/", self::DS, $urlManager->getBlogUrlPath()),
         );
 
         $this->filesystem = $filesystem;
@@ -137,16 +137,16 @@ class DirectoryManager
     /**
      * @return string|null
      */
-    public function getPostContentDirectory()
+    public function getBlogContentDirectory()
     {
-        return $this->directories["posts"];
+        return $this->directories["blog"];
     }
 
     /**
      * @return string
      */
-    public function getPostOutputDirectory() : string
+    public function getBlogOutputDirectory() : string
     {
-        return rtrim($this->getHtmlDirectory() . self::DS . $this->urlPaths["posts"], self::DS);
+        return rtrim($this->getHtmlDirectory() . self::DS . $this->urlPaths["blog"], self::DS);
     }
 }
