@@ -148,7 +148,6 @@ final class DiConfig
         $di->params[$rootNs . "Post"]["blogUrlPath"] = $di->lazyGetCall("url_manager", "getBlogUrlPath");
         $di->setters[$rootNs . "NeedsPostBuilderTrait"]["setPostBuilder"] = $di->lazyGet("post_builder");
         $di->setters[$rootNs . "NeedsPostFactoryTrait"]["setPostFactory"] = $di->lazyGet("post_factory");
-        $di->setters[$rootNs . "NeedsPostGathererTrait"]["setPostGatherer"] = $di->lazyGet("post_gatherer");
         $di->setters[$rootNs . "NeedsPostGathererInterfaceTrait"]["setPostGatherer"] = $di->lazyGet("post_gatherer");
         $di->setters[$rootNs . "NeedsPostRendererTrait"]["setPostRenderer"] = $di->lazyGet("post_renderer");
         $di->set("post_builder", $di->lazyNew($rootNs . "PostBuilder"));
