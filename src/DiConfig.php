@@ -130,6 +130,7 @@ final class DiConfig
      */
     private function initBlogConfig(Container $di, string $rootNs)
     {
+        $di->params[$rootNs . "Blog"]["contentPath"] = $di->lazyGetCall("directory_manager", "getBlogContentDirectory");
         $di->params[$rootNs . "Blog"]["outputPath"] = $di->lazyGetCall("directory_manager", "getBlogOutputDirectory");
         $di->params[$rootNs . "Blog"]["urlPath"] = $di->lazyGetCall("url_manager", "getBlogUrlPath");
         $di->setters[$rootNs . "NeedsBlogFactoryTrait"]["setBlogFactory"] = $di->lazyGet("blog_factory");

@@ -13,6 +13,11 @@ class Blog
     /**
      * @var string
      */
+    private $contentPath;
+
+    /**
+     * @var string
+     */
     private $outputPath;
 
     /**
@@ -26,13 +31,23 @@ class Blog
     private $postCollection = null;
 
     /**
+     * @param string $contentPath
      * @param string $outputPath
      * @param string $urlPath
      */
-    public function __construct(string $outputPath, string $urlPath)
+    public function __construct(string $contentPath, string $outputPath, string $urlPath)
     {
+        $this->contentPath = $contentPath;
         $this->outputPath = $outputPath;
         $this->urlPath = $urlPath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContentPath() : string
+    {
+        return $this->contentPath;
     }
 
     /**
@@ -57,7 +72,7 @@ class Blog
     public function getPostCollection() : PostCollection
     {
         if ($this->postCollection === null) {
-            $this->postCollection = $this->postGatherer->gatherPosts();
+            $this->postCollection = $this->postGatherer->gatherPosts($this->contentPath);
         }
         return $this->postCollection;
     }
