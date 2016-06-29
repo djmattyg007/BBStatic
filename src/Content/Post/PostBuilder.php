@@ -22,7 +22,7 @@ final class PostBuilder
      * @param callable|null $progressUpdate
      * TODO: PHP 7.1, change this to Closure and use Closure::fromCallable() to work with it
      */
-    public function buildPosts(PostCollection $posts, bool $shouldSign, $progressUpdate = null)
+    public function buildPosts(PostCollection $posts, bool $shouldSign, callable $progressUpdate = null)
     {
         $totalPostCount = count($posts);
         $counter = 0;

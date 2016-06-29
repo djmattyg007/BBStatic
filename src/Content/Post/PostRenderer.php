@@ -42,6 +42,7 @@ class PostRenderer
             "date_updated" => $post->getDateUpdated(),
             "tags" => $post->getTags(),
             "vars" => $post->getTemplateVariables(),
+            "url_path" => $post->getUrlPath(),
         );
     }
 }

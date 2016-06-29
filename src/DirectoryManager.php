@@ -32,16 +32,17 @@ class DirectoryManager
     protected $tempDirectory;
 
     /**
-     * @param Config $config
+     * @param string[] $directories
+     * @param URLManager $urlManager
      * @param Filesystem $filesystem
      */
-    public function __construct(Config $config, Filesystem $filesystem)
+    public function __construct(array $directories, URLManager $urlManager, Filesystem $filesystem)
     {
-        $directories = $config->getValue("directories");
+        $directories = $directories;
         $this->directories = array_map(function($dir) { return rtrim($dir, self::DS); }, array_filter($directories));
         $this->urlPaths = array(
-            "pages" => str_replace("/", self::DS, $config->getValue("site/pages_url_path")),
-            "posts" => str_replace("/", self::DS, $config->getValue("site/posts_url_path")),
+            "pages" => str_replace("/", self::DS, $urlManager->getPagesUrlPath()),
+            "posts" => str_replace("/", self::DS, $urlManager->getPostsUrlPath()),
         );
 
         $this->filesystem = $filesystem;

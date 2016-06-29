@@ -20,7 +20,7 @@ class BuildPageHandler
      */
     public function handle(Args $args, IO $io)
     {
-        if ($this->config->getValue("site/pages_url_path") === null) {
+        if ($this->config->getValue("pages/enabled") === false) {
             $io->errorLine("Pages are not configured");
             return 1;
         }

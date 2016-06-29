@@ -8,7 +8,7 @@ use Icecave\Collections\Vector as PostCollection;
 use MattyG\BBStatic\NeedsDirectoryManagerTrait;
 use Symfony\Component\Finder\NeedsFinderFactoryTrait;
 
-final class PostGatherer
+final class PostGatherer implements PostGathererInterface
 {
     use NeedsDirectoryManagerTrait;
     use NeedsFinderFactoryTrait;

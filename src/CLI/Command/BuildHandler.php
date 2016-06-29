@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace MattyG\BBStatic\CLI\Command;
 
 use MattyG\BBStatic\CLI\Vendor\NeedsProgressBarFactoryTrait;
+use MattyG\BBStatic\Content\NeedsBlogBuilderTrait;
+use MattyG\BBStatic\Content\NeedsBlogFactoryTrait;
 use MattyG\BBStatic\Content\Page\NeedsPageBuilderTrait;
 use MattyG\BBStatic\Content\Page\NeedsPageGathererTrait;
 use MattyG\BBStatic\Content\Post\NeedsPostBuilderTrait;
@@ -14,6 +16,8 @@ use Webmozart\Console\Api\IO\IO;
 
 class BuildHandler
 {
+    use NeedsBlogBuilderTrait;
+    use NeedsBlogFactoryTrait;
     use NeedsConfigTrait;
     use NeedsPageBuilderTrait;
     use NeedsPageGathererTrait;
@@ -33,8 +37,8 @@ class BuildHandler
      */
     public function handle(Args $args, IO $io)
     {
-        $pagesEnabled = $this->config->getValue("site/pages_url_path") !== null;
-        $postsEnabled = $this->config->getValue("site/posts_url_path") !== null;
+        $pagesEnabled = $this->config->getValue("pages/enabled");
+        $postsEnabled = $this->config->getValue("posts/enabled");
         if ($pagesEnabled === false && $postsEnabled === false) {
             $io->errorLine("Neither pages nor posts are configured");
             return 1;
@@ -76,7 +80,8 @@ class BuildHandler
      */
     private function buildPosts(IO $io, bool $shouldSignOutput)
     {
-        $postCollection = $this->postGatherer->gatherPosts();
+        $blog = $this->blogFactory->create();
+        $postCollection = $blog->getPostCollection();
         $io->writeLine(sprintf("Found %d posts", count($postCollection)));
 
         $this->startProgressBar($io, count($postCollection));
@@ -86,6 +91,9 @@ class BuildHandler
             $this->finishProgressBar();
         }
         $io->writeLine("");
+
+        $io->writeLine("Building blog index");
+        $this->blogBuilder->buildBlogIndex($blog, $shouldSignOutput);
     }
 
     /**

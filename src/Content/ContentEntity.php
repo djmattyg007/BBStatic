@@ -98,9 +98,9 @@ abstract class ContentEntity
     /**
      * @return int
      */
-    public function getDateUpdated() : int
+    public function getDateUpdated() // PHP 7.1 nullable types : int
     {
-        return $this->config->getValue("date_updated", $this->getDatePosted());
+        return $this->config->getValue("date_updated");
     }
 
     /**

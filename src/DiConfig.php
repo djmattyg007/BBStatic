@@ -22,10 +22,12 @@ final class DiConfig
         $di->types["Aura\\Di\\Container"] = $di;
 
         $this->initConfigConfig($di, $rootNs);
+        $this->initURLManagerConfig($di, $rootNs);
         $this->initDirectoryManagerConfig($di, $rootNs);
         $this->initBBCodeConfig($di, $rootNs);
         $this->initSigningConfig($di, "{$rootNs}Signing\\");
         $this->initPageConfig($di, "{$rootNs}Content\\Page\\");
+        $this->initBlogConfig($di, "{$rootNs}Content\\");
         $this->initPostConfig($di, "{$rootNs}Content\\Post\\");
         $this->initTemplateEngineConfig($di, "{$rootNs}Template\\");
         $this->initTemplateHelperConfig($di, "{$rootNs}Template\\Helper\\");
@@ -58,10 +60,22 @@ final class DiConfig
      * @param Container $di
      * @param string $rootNs
      */
+    private function initURLManagerConfig(Container $di, string $rootNs)
+    {
+        $di->types[$rootNs . "URLManager"] = $di->lazyGet("url_manager");
+        $di->params[$rootNs . "URLManager"]["config"] = $di->lazyGet("config");
+        $di->setters[$rootNs . "NeedsURLManagerTrait"]["setURLManager"] = $di->lazyGet("url_manager");
+        $di->set("url_manager", $di->lazyNew($rootNs . "URLManager"));
+    }
+
+    /**
+     * @param Container $di
+     * @param string $rootNs
+     */
     private function initDirectoryManagerConfig(Container $di, string $rootNs)
     {
         $di->types[$rootNs . "DirectoryManager"] = $di->lazyGet("directory_manager");
-        $di->params[$rootNs . "DirectoryManager"]["config"] = $di->lazyGet("config");
+        $di->params[$rootNs . "DirectoryManager"]["directories"] = $di->lazyGetCall("config", "getValue", "directories");
         $di->setters[$rootNs . "NeedsDirectoryManagerTrait"]["setDirectoryManager"] = $di->lazyGet("directory_manager");
         $di->set("directory_manager", $di->lazyNew($rootNs . "DirectoryManager"));
     }
@@ -114,11 +128,28 @@ final class DiConfig
      * @param Container $di
      * @param string $rootNs
      */
+    private function initBlogConfig(Container $di, string $rootNs)
+    {
+        $di->params[$rootNs . "Blog"]["outputPath"] = $di->lazyGetCall("directory_manager", "getPostOutputDirectory");
+        $di->params[$rootNs . "Blog"]["urlPath"] = $di->lazyGetCall("url_manager", "getPostsUrlPath");
+        $di->setters[$rootNs . "NeedsBlogFactoryTrait"]["setBlogFactory"] = $di->lazyGet("blog_factory");
+        $di->setters[$rootNs . "NeedsBlogBuilderTrait"]["setBlogBuilder"] = $di->lazyGet("blog_builder");
+        $di->set("blog_factory", $di->lazyNew($rootNs . "BlogFactory"));
+        $di->set("blog_builder", $di->lazyNew($rootNs . "BlogBuilder"));
+    }
+
+    /**
+     * @param Container $di
+     * @param string $rootNs
+     */
     private function initPostConfig(Container $di, string $rootNs)
     {
+        $di->types[$rootNs . "PostGathererInterface"] = $di->lazyGet("post_gatherer");
+        $di->params[$rootNs . "Post"]["blogUrlPath"] = $di->lazyGetCall("url_manager", "getPostsUrlPath");
         $di->setters[$rootNs . "NeedsPostBuilderTrait"]["setPostBuilder"] = $di->lazyGet("post_builder");
         $di->setters[$rootNs . "NeedsPostFactoryTrait"]["setPostFactory"] = $di->lazyGet("post_factory");
         $di->setters[$rootNs . "NeedsPostGathererTrait"]["setPostGatherer"] = $di->lazyGet("post_gatherer");
+        $di->setters[$rootNs . "NeedsPostGathererInterfaceTrait"]["setPostGatherer"] = $di->lazyGet("post_gatherer");
         $di->setters[$rootNs . "NeedsPostRendererTrait"]["setPostRenderer"] = $di->lazyGet("post_renderer");
         $di->set("post_builder", $di->lazyNew($rootNs . "PostBuilder"));
         $di->set("post_factory", $di->lazyNew($rootNs . "PostFactory"));
@@ -160,6 +191,7 @@ final class DiConfig
     {
         $di->params[$rootNs . "Date"]["timezone"] = $di->lazyGetCall("config", "getValue", "site/timezone", "UTC");
         $di->params[$rootNs . "Date"]["dateFormats"] = $di->lazyGetCall("config", "getValue", "theme/date_formats", array());
+        $di->params[$rootNs . "URL"]["baseUrl"] = $di->lazyGetCall("url_manager", "getBaseUrl");
     }
 
     /**
@@ -179,7 +211,7 @@ final class DiConfig
     private function initIcecaveParityConfig(Container $di, string $rootNs)
     {
         $di->params[$rootNs . "Comparator\\ParityComparator"]["fallbackComparator"] = $di->lazyGet("null_comparator");
-        $di->setters[$rootNs . "NeedsParityComparatorTrait"]["setParityComparator"] = $di->lazyGet("parity_comparator");
+        $di->setters[$rootNs . "Comparator\\NeedsParityComparatorTrait"]["setParityComparator"] = $di->lazyGet("parity_comparator");
         $di->set("parity_comparator", $di->lazyNew($rootNs . "Comparator\\ParityComparator"));
         $di->set("null_comparator", $di->lazyNew("MattyG\\BBStatic\\Util\\Vendor\\NullComparator"));
     }

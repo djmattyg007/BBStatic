@@ -15,14 +15,23 @@ class Post extends ContentEntity implements ExtendedComparableInterface, SubClas
 {
     use ExtendedComparableTrait;
 
+    const SUMMARY_FILENAME = "summary.bb";
+
+    /**
+     * @var string
+     */
+    protected $blogUrlPath;
+
     /**
      * @param string $name
+     * @param string $blogUrlPath
      * @param DirectoryManager $directoryManager
      * @param ConfigFactory $configFactory
      */
-    public function __construct(string $name, DirectoryManager $directoryManager, ConfigFactory $configFactory)
+    public function __construct(string $name, string $blogUrlPath, DirectoryManager $directoryManager, ConfigFactory $configFactory)
     {
         $this->name = $name;
+        $this->blogUrlPath = $blogUrlPath;
         $this->contentFolder = $directoryManager->getPostContentDirectory() . DIRECTORY_SEPARATOR . str_replace("/", DIRECTORY_SEPARATOR, $name);
         $this->outputFolder = $directoryManager->getPostOutputDirectory() . DIRECTORY_SEPARATOR . str_replace("/", DIRECTORY_SEPARATOR, $name);
 
@@ -32,9 +41,25 @@ class Post extends ContentEntity implements ExtendedComparableInterface, SubClas
     /**
      * @return string
      */
+    public function getUrlPath() : string
+    {
+        return $this->blogUrlPath . "/" . $this->name;
+    }
+
+    /**
+     * @return string
+     */
     public function getPageType() : string
     {
         return "post";
+    }
+
+    /**
+     * @return string
+     */
+    public function getSummaryFilename() : string
+    {
+        return $this->contentFolder . DIRECTORY_SEPARATOR . static::SUMMARY_FILENAME;
     }
 
     /**
@@ -50,7 +75,7 @@ class Post extends ContentEntity implements ExtendedComparableInterface, SubClas
      * @return int The result of the comparison
      * @throws NotComparableException
      */
-    public function compare($value)
+    public function compare($value) : int
     {
         if (is_object($value) === false) {
             throw new NotComparableException(sprintf("Cannot compare %s with Post", gettype($value)));
@@ -59,6 +84,6 @@ class Post extends ContentEntity implements ExtendedComparableInterface, SubClas
             throw new NotComparableException(sprintf("%s is not of type Post", get_class($value)));
         }
 
-        return $this->getDatePosted() - $value->getDatePosted();
+        return $value->getDatePosted() - $this->getDatePosted();
     }
 }
