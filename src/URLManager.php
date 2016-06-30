@@ -23,13 +23,19 @@ final class URLManager
     private $blogUrlPath;
 
     /**
+     * @var string
+     */
+    private $assetUrlPath;
+
+    /**
      * @param Config $config
      */
     public function __construct(Config $config)
     {
         $this->baseUrl = rtrim($config->getValue("site/base_url"), "/") . "/";
-        $this->pagesUrlPath = ltrim($config->getValue("pages/url_path"), "/");
-        $this->blogUrlPath = ltrim($config->getValue("blog/url_path"), "/");
+        $this->pagesUrlPath = trim($config->getValue("pages/url_path"), "/");
+        $this->blogUrlPath = trim($config->getValue("blog/url_path"), "/");
+        $this->assetUrlPath = trim($config->getValue("site/assets/url_path"), "/");
     }
 
     /**
@@ -54,5 +60,13 @@ final class URLManager
     public function getBlogUrlPath() : string
     {
         return $this->blogUrlPath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAssetUrlPath() : string
+    {
+        return $this->assetUrlPath;
     }
 }

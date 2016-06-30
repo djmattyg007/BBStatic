@@ -23,6 +23,11 @@ class URL
      */
     public function __invoke(string $urlPath) : string
     {
-        return $this->baseUrl . ltrim($urlPath, "/") . "/";
+        $pathinfo = pathinfo($urlPath, PATHINFO_EXTENSION);
+        $url = $this->baseUrl . trim($urlPath, "/");
+        if (!$pathinfo) {
+            $url .= "/";
+        }
+        return $url;
     }
 }

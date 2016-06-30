@@ -189,6 +189,8 @@ final class DiConfig
      */
     private function initTemplateHelperConfig(Container $di, string $rootNs)
     {
+        $di->params[$rootNs . "Asset"]["baseUrl"] = $di->lazyGetCall("url_manager", "getBaseUrl");
+        $di->params[$rootNs . "Asset"]["assetUrlPath"] = $di->lazyGetCall("url_manager", "getAssetUrlPath");
         $di->params[$rootNs . "Date"]["timezone"] = $di->lazyGetCall("config", "getValue", "site/timezone", "UTC");
         $di->params[$rootNs . "Date"]["dateFormats"] = $di->lazyGetCall("config", "getValue", "theme/date_formats", array());
         $di->params[$rootNs . "URL"]["baseUrl"] = $di->lazyGetCall("url_manager", "getBaseUrl");
