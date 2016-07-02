@@ -21,6 +21,7 @@ class Asset
 
     /**
      * @param string $assetPath
+     * @return string
      */
     public function __invoke(string $assetPath) : string
     {

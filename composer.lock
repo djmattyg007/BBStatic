@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9e3a2921d0b49915d8d72553fb5763fc",
-    "content-hash": "3fe8124b77aac08b57b5c13ae40af676",
+    "hash": "6b1cc6acc910e9c48fafa19c55b19aac",
+    "content-hash": "400c9e28df55bd74b96037b0959f5eb0",
     "packages": [
         {
             "name": "aura/di",
@@ -125,16 +125,16 @@
         },
         {
             "name": "djmattyg007/handlebars",
-            "version": "6.0.0",
+            "version": "6.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/djmattyg007/Handlebars.git",
-                "reference": "0cc0bafa3d6a13c5c6172de80f20c60c6433ed0b"
+                "reference": "1ba655e941f2c94e51d75eabe7c03cec94147a2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/djmattyg007/Handlebars/zipball/0cc0bafa3d6a13c5c6172de80f20c60c6433ed0b",
-                "reference": "0cc0bafa3d6a13c5c6172de80f20c60c6433ed0b",
+                "url": "https://api.github.com/repos/djmattyg007/Handlebars/zipball/1ba655e941f2c94e51d75eabe7c03cec94147a2f",
+                "reference": "1ba655e941f2c94e51d75eabe7c03cec94147a2f",
                 "shasum": ""
             },
             "require": {
@@ -163,11 +163,11 @@
             "description": "PHP implementation of Handlebars templates aiming to match the JS interface.",
             "homepage": "https://github.com/djmattyg007/handlebars",
             "keywords": [
-                "hamdlebars",
+                "handlebars",
                 "template",
                 "templating"
             ],
-            "time": "2016-06-27 11:04:05"
+            "time": "2016-07-02 06:55:46"
         },
         {
             "name": "icecave/collections",

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Template\Helper;
 
+use MattyG\BBStatic\Template\SafeString;
+
 class CSSTag
 {
     /**
@@ -15,10 +17,11 @@ class CSSTag
 
     /**
      * @param string $cssFilePath
+     * @return SafeString
      */
-    public function __invoke(string $cssFilePath) : string
+    public function __invoke(string $cssFilePath) : SafeString
     {
         $cssFileUrl = call_user_func($this->assetUrlGenerator, "css/$cssFilePath");
-        return '<link rel="stylesheet" type="text/css" href="' . $cssFileUrl . '" />';
+        return new SafeString('<link rel="stylesheet" type="text/css" href="' . $cssFileUrl . '" />');
     }
 }
