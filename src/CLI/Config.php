@@ -10,7 +10,7 @@ use Webmozart\Console\Config\DefaultApplicationConfig;
 
 /**
  * @param string $filename
- * @param Init $config
+ * @param Config $config
  * @param DiContainer $di
  */
 function MattyGBBStaticRequireCommandConfig(string $filename, Config $config, DiContainer $di)
@@ -21,24 +21,11 @@ function MattyGBBStaticRequireCommandConfig(string $filename, Config $config, Di
 class Config extends DefaultApplicationConfig
 {
     /**
-     * @var DiContainer
-     */
-    protected $di;
-
-    /**
      * @var string[]
      */
     protected $commandsDirs = array(
         __DIR__ . "/commands",
     );
-
-    /**
-     * @param Container $di
-     */
-    public function setDiContainer(DiContainer $di)
-    {
-        $this->di = $di;
-    }
 
     /**
      * @param string $commandsDir
@@ -59,7 +46,10 @@ class Config extends DefaultApplicationConfig
             ->setVersion(BBStatic::VERSION);
     }
 
-    public function addCommands()
+    /**
+     * @param DiContainer $di
+     */
+    public function addCommands(DiContainer $di)
     {
         $globberProto = new SymfonyFinder();
         $globberProto->files()
@@ -72,7 +62,7 @@ class Config extends DefaultApplicationConfig
             $globber = clone $globberProto;
             $globber->in($commandsDir);
             foreach ($globber as $file) {
-                MattyGBBStaticRequireCommandConfig($file->getPathname(), $this, $this->di);
+                MattyGBBStaticRequireCommandConfig($file->getPathname(), $this, $di);
             }
         }
     }

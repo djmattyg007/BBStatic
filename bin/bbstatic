@@ -10,13 +10,6 @@ if (class_exists("\\MattyG\\AutoCodeLoader\\Autoloader") === true) {
 }
 Webmozart\Console\Util\ProcessTitle::setProcessTitle("bbstatic");
 
-use MattyG\BBStatic;
-use Webmozart\Console\ConsoleApplication;
-
-$di = (new BBStatic\DiConfig())->createContainer();
-$cliConfig = new BBStatic\CLI\Config();
-$cliConfig->setDiContainer($di);
-$cliConfig->addCommands();
-
-$app = new ConsoleApplication($cliConfig);
+$di = (new \MattyG\BBStatic\DiConfig())->createContainer();
+$app = $di->get("console_application");
 $app->run();
