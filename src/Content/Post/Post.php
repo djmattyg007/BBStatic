@@ -71,6 +71,16 @@ class Post extends ContentEntity implements ExtendedComparableInterface, SubClas
     }
 
     /**
+     * @return string[]
+     */
+    protected function getAdditionalFileExcludes() : array
+    {
+        return array_merge(parent::getAdditionalFileExcludes(), array(
+            static::SUMMARY_FILENAME,
+        ));
+    }
+
+    /**
      * @param Post $value
      * @return int The result of the comparison
      * @throws NotComparableException

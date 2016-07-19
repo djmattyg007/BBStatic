@@ -120,11 +120,12 @@ abstract class ContentEntity
         $finder->files()
             ->in($this->contentFolder)
             ->depth(0)
-            ->notName(static::CONFIG_FILENAME)
-            ->notName(static::CONTENT_FILENAME)
             ->ignoreVCS(true)
             ->ignoreDotFiles(true)
             ->followLinks();
+        foreach ($this->getAdditionalFileExcludes() as $fileExclude) {
+            $finder->notName($fileExclude);
+        }
 
         $filenames = array();
         foreach ($finder as $file) {
@@ -132,5 +133,16 @@ abstract class ContentEntity
         }
 
         return $filenames;
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getAdditionalFileExcludes() : array
+    {
+        return array(
+            static::CONFIG_FILENAME,
+            static::CONTENT_FILENAME,
+        );
     }
 }
