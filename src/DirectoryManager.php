@@ -43,6 +43,7 @@ class DirectoryManager
         $this->urlPaths = array(
             "pages" => str_replace("/", self::DS, $urlManager->getPagesUrlPath()),
             "blog" => str_replace("/", self::DS, $urlManager->getBlogUrlPath()),
+            "assets" => str_replace("/", self::DS, $urlManager->getAssetUrlPath()),
         );
 
         $this->filesystem = $filesystem;
@@ -148,5 +149,21 @@ class DirectoryManager
     public function getBlogOutputDirectory() : string
     {
         return rtrim($this->getHtmlDirectory() . self::DS . $this->urlPaths["blog"], self::DS);
+    }
+
+    /**
+     * @return string
+     */
+    public function getAssetContentDirectory() : string
+    {
+        return $this->directories["theme"] . self::DS . "assets";
+    }
+
+    /**
+     * @return string
+     */
+    public function getAssetOutputDirectory() : string
+    {
+        return $this->getHtmlDirectory() . self::DS . $this->urlPaths["assets"];
     }
 }

@@ -13,8 +13,7 @@ class TemplateHelper implements ContainerConfigInterface
 
     public function define(Container $di)
     {
-        $di->params[self::ROOT_NS . "Asset"]["baseUrl"] = $di->lazyGetCall("url_manager", "getBaseUrl");
-        $di->params[self::ROOT_NS . "Asset"]["assetUrlPath"] = $di->lazyGetCall("url_manager", "getAssetUrlPath");
+        $di->params[self::ROOT_NS . "Asset"]["assetManager"] = $di->lazyGet("asset_manager");
         $di->params[self::ROOT_NS . "Date"]["timezone"] = $di->lazyGetCall("config", "getValue", "site/timezone", "UTC");
         $di->params[self::ROOT_NS . "Date"]["dateFormats"] = $di->lazyGetCall("config", "getValue", "theme/date_formats", array());
         $di->params[self::ROOT_NS . "URL"]["baseUrl"] = $di->lazyGetCall("url_manager", "getBaseUrl");

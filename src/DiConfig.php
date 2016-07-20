@@ -17,6 +17,8 @@ final class DiConfig
     public function createContainer() : Container
     {
         $diConfigurers = array(
+            self::ROOT_NS . "Asset",
+            self::ROOT_NS . "Assetic",
             self::ROOT_NS . "BBCode",
             self::ROOT_NS . "Blog",
             self::ROOT_NS . "CLI",

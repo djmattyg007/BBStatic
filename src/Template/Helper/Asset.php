@@ -3,28 +3,30 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Template\Helper;
 
+use MattyG\BBStatic\Asset\AssetManager;
+
 class Asset
 {
     /**
-     * @var string
+     * @var AssetManager
      */
-    private $baseAssetUrl;
+    private $assetManager;
 
     /**
-     * @param string $baseUrl
-     * @param string $assetUrlPath
+     * @param AssetManager $assetManager
      */
-    public function __construct(string $baseUrl, string $assetUrlPath)
+    public function __construct(AssetManager $assetManager)
     {
-        $this->baseAssetUrl = $baseUrl . $assetUrlPath . "/";
+        $this->assetManager = $assetManager;
     }
 
     /**
-     * @param string $assetPath
+     * @param string $assetName
      * @return string
      */
-    public function __invoke(string $assetPath) : string
+    public function __invoke(string $assetName) : string
     {
+        return $this->assetManager->getAssetUrl($assetName);
         return $this->baseAssetUrl . ltrim($assetPath, "/");
     }
 }

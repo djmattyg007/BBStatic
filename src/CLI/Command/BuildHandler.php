@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\CLI\Command;
 
+use MattyG\BBStatic\Asset\NeedsAssetManagerTrait;
 use MattyG\BBStatic\CLI\Vendor\NeedsProgressBarFactoryTrait;
 use MattyG\BBStatic\Content\NeedsBlogBuilderTrait;
 use MattyG\BBStatic\Content\NeedsBlogFactoryTrait;
@@ -15,6 +16,7 @@ use Webmozart\Console\Api\IO\IO;
 
 class BuildHandler
 {
+    use NeedsAssetManagerTrait;
     use NeedsBlogBuilderTrait;
     use NeedsBlogFactoryTrait;
     use NeedsConfigTrait;
@@ -27,7 +29,12 @@ class BuildHandler
     /**
      * @var ProgressBar
      */
-    protected $progressBar;
+    protected $progressBar = null;
+
+    /**
+     * @var bool
+     */
+    protected $progressBarStarted = false;
 
     /**
      * @param Args $args
@@ -52,6 +59,8 @@ class BuildHandler
         if ($blogEnabled === true) {
             $this->buildBlog($io, $shouldSignOutput);
         }
+
+        $this->prepareAssets($io, $shouldSignOutput);
     }
 
     /**
@@ -96,25 +105,56 @@ class BuildHandler
 
     /**
      * @param IO $io
-     * @param int $totalUnits
+     * @param bool $shouldSignOutput
      */
-    protected function startProgressBar(IO $io, int $totalUnits)
+    private function prepareAssets(IO $io, bool $shouldSignOutput)
     {
-        $this->progressBar = $this->progressBarFactory->create($io, $totalUnits);
-        $this->progressBar->start();
+        $io->writeLine("Preparing assets");
+
+        $this->startProgressBar($io);
+        try {
+            $this->assetManager->writeAssets($shouldSignOutput, array($this, "advanceProgressBar"));
+        } finally {
+            $this->finishProgressBar();
+        }
+        $io->writeLine("");
+    }
+
+    /**
+     * TODO: Use nullable types for $totalUnits
+     * @param IO $io
+     * @param int|null $totalUnits
+     */
+    protected function startProgressBar(IO $io, $totalUnits = null)
+    {
+        $this->progressBar = $this->progressBarFactory->create($io, $totalUnits === null ? 0 : $totalUnits);
+        if ($totalUnits !== null) {
+            $this->progressBar->start($totalUnits);
+            $this->progressBarStarted = true;
+        }
     }
 
     /**
      * TODO: Change to protected, use Closure::fromCallable() in PHP 7.1
+     *
+     * @param int $counter
+     * @param int $totalCount
      */
-    public function advanceProgressBar()
+    public function advanceProgressBar(int $counter, int $totalCount)
     {
+        if ($this->progressBarStarted === false) {
+            $this->progressBar->start($totalCount);
+            $this->progressBarStarted = true;
+        }
         $this->progressBar->advance();
     }
 
     protected function finishProgressBar()
     {
-        $this->progressBar->finish();
+        if ($this->progressBarStarted === true) {
+            $this->progressBar->finish();
+        }
         $this->progressBar = null;
+        $this->progressBarStarted = false;
     }
 }

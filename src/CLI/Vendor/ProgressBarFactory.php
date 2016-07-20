@@ -34,7 +34,7 @@ class ProgressBarFactory
      * @param int $max
      * @return ProgressBar
      */
-    public function create(IO $io, $max = 0) : ProgressBar
+    public function create(IO $io, int $max = 0) : ProgressBar
     {
         $ioOutputAdapter = $this->diContainer->newInstance(IOOutputAdapter::class, array("io" => $io));
         return $this->diContainer->newInstance(ProgressBar::class, array("output" => $ioOutputAdapter, "max" => $max));

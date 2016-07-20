@@ -26,6 +26,7 @@ class BlogBuilder
      */
     final public function buildBlogIndex(Blog $blog, bool $shouldSign, callable $progressUpdate = null)
     {
+        // TODO: Clean folder before building a la posts and pages
         $sortedPosts = $blog->getPostCollection()->sort($this->parityComparator);
 
         $postContext = array();
