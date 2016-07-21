@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace MattyG\BBStatic\Asset;
 
+use Assetic\Asset\AssetInterface;
 use Assetic\Factory\AssetFactory;
+use InvalidArgumentException;
 use MattyG\BBStatic\Asset\Assetic\AssetWriter;
 use Symfony\Component\Asset\UrlPackage;
 
@@ -35,11 +37,6 @@ class AssetManager
     protected $baseAssetUrl;
 
     /**
-     * @var bool
-     */
-    protected $loaded = false;
-
-    /**
      * @param AssetFactory $assetFactory
      * @param AssetWriter $assetWriter
      * @param array $assetFileConfig
@@ -56,12 +53,8 @@ class AssetManager
 
     public function loadAssets()
     {
-        // TODO: Provide lazy-loading of assets
-        if ($this->loaded === true) {
-            return;
-        }
-
-        foreach ($this->assetFileConfig as $name => $config) {
+        $remainingAssets = array_diff_key($this->assetFileConfig, array_flip($this->asseticAssetManager->getNames()));
+        foreach ($remainingAssets as $name => $config) {
             $options = array("name" => $name);
             if (isset($config["output_pattern"])) {
                 $options["output"] = $config["output_pattern"];
@@ -69,8 +62,40 @@ class AssetManager
             $asset = $this->assetFactory->createAsset($config["input_pattern"], $config["filters"], $options);
             $this->asseticAssetManager->set($name, $asset);
         }
+    }
 
-        $this->loaded = true;
+    /**
+     * @param string $name
+     * @throws InvalidArgumentException
+     */
+    public function loadAsset(string $name)
+    {
+        if (isset($this->assetFileConfig[$name]) === false) {
+            throw new InvalidArgumentException();
+        }
+        if (in_array($name, $this->asseticAssetManager->getNames(), true) === true) {
+            // Already loaded
+            return;
+        }
+        $config = $this->assetFileConfig[$name];
+
+        $factoryOptions = array("name" => $name);
+        if (isset($config["output_pattern"])) {
+            $options["output"] = $config["output_pattern"];
+        }
+        $asset = $this->assetFactory->createAsset($config["input_pattern"], $config["filters"] ?? array(), $options);
+        $this->asseticAssetManager->set($name, $asset);
+    }
+
+    /**
+     * @param string $name
+     * @return AssetInterface
+     * @throws InvalidArgumentException
+     */
+    public function getAsset(string $name) : AssetInterface
+    {
+        $this->loadAsset($name);
+        return $this->asseticAssetManager->get($name);
     }
 
     /**
@@ -87,13 +112,11 @@ class AssetManager
     /**
      * @param string $name
      * @return string
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function getAssetUrl(string $name) : string
     {
-        $this->loadAssets();
-
-        $asset = $this->asseticAssetManager->get($name);
+        $asset = $this->getAsset($name);
         return $this->baseAssetUrl . ltrim($asset->getTargetPath(), "/");
     }
 }
