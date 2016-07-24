@@ -29,6 +29,7 @@ final class DiConfig
             self::ROOT_NS . "IcecaveCollections",
             self::ROOT_NS . "IcecaveParity",
             self::ROOT_NS . "Page",
+            self::ROOT_NS . "Pagerfanta",
             self::ROOT_NS . "Post",
             self::ROOT_NS . "Signing",
             self::ROOT_NS . "SymfonyFilesystem",

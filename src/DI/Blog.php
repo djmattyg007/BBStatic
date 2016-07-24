@@ -16,6 +16,7 @@ class Blog implements ContainerConfigInterface
         $di->params[self::ROOT_NS . "Blog"]["contentPath"] = $di->lazyGetCall("directory_manager", "getBlogContentDirectory");
         $di->params[self::ROOT_NS . "Blog"]["outputPath"] = $di->lazyGetCall("directory_manager", "getBlogOutputDirectory");
         $di->params[self::ROOT_NS . "Blog"]["urlPath"] = $di->lazyGetCall("url_manager", "getBlogUrlPath");
+        $di->params[self::ROOT_NS . "Blog"]["postsPerPage"] = $di->lazyGetCall("config", "getValue", "blog/posts_per_page");
         $di->setters[self::ROOT_NS . "NeedsBlogFactoryTrait"]["setBlogFactory"] = $di->lazyGet("blog_factory");
         $di->setters[self::ROOT_NS . "NeedsBlogBuilderTrait"]["setBlogBuilder"] = $di->lazyGet("blog_builder");
         $di->set("blog_factory", $di->lazyNew(self::ROOT_NS . "BlogFactory"));

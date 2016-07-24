@@ -17,6 +17,7 @@
         "icecave/collections": "1.1.0",
         "icecave/parity": "1.0.0",
         "kriswallsmith/assetic": "1.3.2",
+        "pagerfanta/pagerfanta": "1.0.3",
         "symfony/console": "3.1.2",
         "symfony/finder": "3.1.2",
         "symfony/filesystem": "3.1.2",

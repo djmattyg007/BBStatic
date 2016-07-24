@@ -26,6 +26,11 @@ class Blog
     private $urlPath;
 
     /**
+     * @var int
+     */
+    private $postsPerPage;
+
+    /**
      * @var PostCollection
      */
     private $postCollection = null;
@@ -34,12 +39,14 @@ class Blog
      * @param string $contentPath
      * @param string $outputPath
      * @param string $urlPath
+     * @param int $postsPerPage
      */
-    public function __construct(string $contentPath, string $outputPath, string $urlPath)
+    public function __construct(string $contentPath, string $outputPath, string $urlPath, int $postsPerPage)
     {
         $this->contentPath = $contentPath;
         $this->outputPath = $outputPath;
         $this->urlPath = $urlPath;
+        $this->postsPerPage = $postsPerPage;
     }
 
     /**
@@ -64,6 +71,14 @@ class Blog
     public function getUrlPath() : string
     {
         return $this->urlPath;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPostsPerPage() : int
+    {
+        return $this->postsPerPage;
     }
 
     /**
