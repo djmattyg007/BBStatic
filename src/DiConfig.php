@@ -32,6 +32,7 @@ final class DiConfig
             self::ROOT_NS . "Pagerfanta",
             self::ROOT_NS . "Post",
             self::ROOT_NS . "Signing",
+            self::ROOT_NS . "SymfonyEventDispatcher",
             self::ROOT_NS . "SymfonyFilesystem",
             self::ROOT_NS . "SymfonyFinder",
             self::ROOT_NS . "TemplateEngine",

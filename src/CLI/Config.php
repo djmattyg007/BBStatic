@@ -5,6 +5,7 @@ namespace MattyG\BBStatic\CLI;
 
 use Aura\Di\Container as DiContainer;
 use MattyG\BBStatic\BBStatic;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 use Webmozart\Console\Config\DefaultApplicationConfig;
 
@@ -26,6 +27,18 @@ class Config extends DefaultApplicationConfig
     protected $commandsDirs = array(
         __DIR__ . "/commands",
     );
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param string|null $name
+     * @param string|null $version
+     */
+    public function __construct(EventDispatcherInterface $eventDispatcher, $name = null, $version = null)
+    {
+        $this->setEventDispatcher($eventDispatcher);
+
+        parent::__construct($name, $version);
+    }
 
     /**
      * @param string $commandsDir

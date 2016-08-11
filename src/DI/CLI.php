@@ -14,7 +14,7 @@ class CLI implements ContainerConfigInterface
     public function define(Container $di)
     {
         $di->set("console_application", $di->lazyNew("Webmozart\\Console\\ConsoleApplication", array(
-            "config" => $di->lazyNew(self::ROOT_NS . "CLI\\Config", array(), array("addCommands" => $di)),
+            "config" => $di->lazyNew(self::ROOT_NS . "CLI\\Config", array("eventDispatcher" => $di->lazyGet("event_dispatcher")), array("addCommands" => $di)),
         )));
     }
 
