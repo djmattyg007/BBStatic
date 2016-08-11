@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "93d5c3f6cc428d9d077151b6d1a53581",
-    "content-hash": "de92b5e6de109f86302c8c9d94ceb4ee",
+    "hash": "347638468768d2562f9bd871a52b36bf",
+    "content-hash": "d88a7de9b62a3f52dfed71193e9c7a7a",
     "packages": [
         {
             "name": "aura/di",
@@ -168,6 +168,71 @@
                 "templating"
             ],
             "time": "2016-07-02 06:55:46"
+        },
+        {
+            "name": "henrikbjorn/lurker",
+            "version": "dev-djmattyg",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/djmattyg007/Lurker.git",
+                "reference": "d469df53dc9bd4e7b6d5b46e29d15386499e05ee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/djmattyg007/Lurker/zipball/d469df53dc9bd4e7b6d5b46e29d15386499e05ee",
+                "reference": "d469df53dc9bd4e7b6d5b46e29d15386499e05ee",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "symfony/event-dispatcher": "^2.2|^3.0"
+            },
+            "suggest": {
+                "ext-inotify": ">=0.1.6"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Lurker": "src"
+                }
+            },
+            "autoload-dev": {
+                "psr-0": {
+                    "Lurker\\Tests": "tests"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Konstantin Kudryashov",
+                    "email": "ever.zet@gmail.com"
+                },
+                {
+                    "name": "Yaroslav Kiliba",
+                    "email": "om.dattaya@gmail.com"
+                },
+                {
+                    "name": "Henrik Bjrnskov",
+                    "email": "henrik@bjrnskov.dk"
+                }
+            ],
+            "description": "Resource Watcher.",
+            "keywords": [
+                "filesystem",
+                "resource",
+                "watching"
+            ],
+            "support": {
+                "source": "https://github.com/djmattyg007/Lurker/tree/djmattyg"
+            },
+            "time": "2016-08-11 23:11:25"
         },
         {
             "name": "icecave/collections",
@@ -844,28 +909,29 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "30eed06dd6bc88410a4ff7f77b6d22f3ce13dbde"
+                "reference": "bb2d123231c095735130cc8f6d31385a44c7b308"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/30eed06dd6bc88410a4ff7f77b6d22f3ce13dbde",
-                "reference": "30eed06dd6bc88410a4ff7f77b6d22f3ce13dbde",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/bb2d123231c095735130cc8f6d31385a44c7b308",
+                "reference": "bb2d123231c095735130cc8f6d31385a44c7b308",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": "^5.3.3|^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.6"
+                "phpunit/phpunit": "^4.6",
+                "sebastian/version": "^1.0.1"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.2-dev"
                 }
             },
             "autoload": {
@@ -889,7 +955,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2015-08-24 13:29:44"
+            "time": "2016-08-09 15:02:57"
         },
         {
             "name": "webmozart/console",
@@ -1053,6 +1119,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "henrikbjorn/lurker": 20,
         "webmozart/console": 10
     },
     "prefer-stable": false,
