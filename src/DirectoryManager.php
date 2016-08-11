@@ -98,7 +98,7 @@ class DirectoryManager
     /**
      * @return string
      */
-    public function getTemplatesDirectory() : string
+    public function getThemeDirectory() : string
     {
         return $this->directories["theme"];
     }
@@ -106,9 +106,17 @@ class DirectoryManager
     /**
      * @return string
      */
+    public function getTemplatesDirectory() : string
+    {
+        return $this->directories["theme"] . self::DS . "templates";
+    }
+
+    /**
+     * @return string
+     */
     public function getTemplatePartialsDirectory() : string
     {
-        return $this->directories["theme"] . self::DS . "partials";
+        return $this->getTemplatesDirectory() . self::DS . "partials";
     }
 
     /**
