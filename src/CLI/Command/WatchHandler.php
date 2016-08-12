@@ -61,5 +61,6 @@ class WatchHandler extends AbstractBuildHandler
     public function resourceWatcherCallback()
     {
         $this->build($this->args, $this->io);
+        $this->io->writeLine("");
     }
 }
