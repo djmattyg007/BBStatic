@@ -13,7 +13,7 @@
         "php": "~7.0.9",
         "aura/di": "3.1.0",
         "djmattyg007/autocodeloader": "1.0.0",
-        "djmattyg007/handlebars": "6.1.0",
+        "djmattyg007/handlebars": "7.0.1",
         "henrikbjorn/lurker": "dev-djmattyg",
         "icecave/collections": "1.1.0",
         "icecave/parity": "1.0.0",

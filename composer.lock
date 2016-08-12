@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "347638468768d2562f9bd871a52b36bf",
-    "content-hash": "d88a7de9b62a3f52dfed71193e9c7a7a",
+    "hash": "c516b3bcae5f47058419c9e792fe38e6",
+    "content-hash": "0326c4cc731808a700165527f1049f73",
     "packages": [
         {
             "name": "aura/di",
@@ -125,20 +125,21 @@
         },
         {
             "name": "djmattyg007/handlebars",
-            "version": "6.1.0",
+            "version": "7.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/djmattyg007/Handlebars.git",
-                "reference": "1ba655e941f2c94e51d75eabe7c03cec94147a2f"
+                "reference": "94a529fa944a2c41f7a9166299ddbe17c2557831"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/djmattyg007/Handlebars/zipball/1ba655e941f2c94e51d75eabe7c03cec94147a2f",
-                "reference": "1ba655e941f2c94e51d75eabe7c03cec94147a2f",
+                "url": "https://api.github.com/repos/djmattyg007/Handlebars/zipball/94a529fa944a2c41f7a9166299ddbe17c2557831",
+                "reference": "94a529fa944a2c41f7a9166299ddbe17c2557831",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0.0"
+                "ext-mbstring": "*",
+                "php": ">=7.0.8"
             },
             "type": "library",
             "autoload": {
@@ -167,7 +168,7 @@
                 "template",
                 "templating"
             ],
-            "time": "2016-07-02 06:55:46"
+            "time": "2016-08-12 03:34:18"
         },
         {
             "name": "henrikbjorn/lurker",
